@@ -1,5 +1,4 @@
 import { createClient } from "@/utils/supabase/server";
-import { type NextRequest } from 'next/server'
 
 export async function GET() {
     const supabase = createClient();
