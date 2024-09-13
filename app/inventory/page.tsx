@@ -19,7 +19,7 @@ export default function Inventory() {
     })
 
     //@ts-ignore
-    const addProduct = async (values: any) => {
+    const addProduct = async (values) => {
         console.log('Submitting form with values:', values);
         const response = await fetch('api/product/add_product', {
             method: "POST",
