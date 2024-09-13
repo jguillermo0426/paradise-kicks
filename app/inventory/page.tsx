@@ -18,7 +18,7 @@ export default function Inventory() {
         }
     })
 
-    //@ts-expect-error
+    //@ts-expect-error eslint throws an error here
     const addProduct = async (values) => {
         console.log('Submitting form with values:', values);
         const response = await fetch('api/product/add_product', {
