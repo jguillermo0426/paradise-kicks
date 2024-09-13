@@ -5,13 +5,16 @@ export async function POST(req: Request) {
     const formData = await req.json();
 
     const { data, error } = await supabase
-        .from('variant')
+        .from('product')
         .insert([
             { 
-                size: formData.size,
-                price: formData.price,
+                sku: formData.sku,
+                name: formData.name,
+                category: formData.category,
+                vendor: formData.vendor,
                 stock: formData.stock,
-                type: formData.type    
+                price: formData.price,
+                size: formData.size  
             },
         ])
         .select()

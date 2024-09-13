@@ -1,25 +1,27 @@
 'use client'
+import { Product } from '@/types/types';
 import { useForm } from '@mantine/form';
-import { MantineProvider, TextInput, Button, NumberInput } from '@mantine/core';
+import { MantineProvider, TextInput, Button, NumberInput, NativeSelect } from '@mantine/core';
+import { useEffect, useState } from 'react';
 
 export default function Inventory() {
-    const form = useForm({
+    const [productList, setProductList] = useState([]);
+
+    const productForm = useForm({
         initialValues: {
-            size: "",
-            price: 0.00,
+            sku: "",
+            name: "",
+            category: "",
+            vendor: "",
             stock: 0,
-            type: ""
-        },
-
-        validate: {
-            price: (value) => (isNaN(value) ? "price must be a float" : null),
-            stock: (value) => (isNaN(value) ? "stock must be an integer" : null),
+            price: 0.00,
+            size: 0.0
         }
-    });
+    })
 
-    const addVariant = async (values: any) => {
+    const addProduct = async (values: any) => {
         console.log('Submitting form with values:', values);
-        const response = await fetch('api/variant/add_variant', {
+        const response = await fetch('api/product/add_product', {
             method: "POST",
             body: JSON.stringify(values)
         })
@@ -28,38 +30,69 @@ export default function Inventory() {
         console.log(result);
     }
 
+
+    useEffect(() => {
+        const getProduct = async() => {
+            const response = await fetch('api/product/get_product', {
+                method: "GET"
+            })
+    
+            const result = await response.json();
+            setProductList(result);
+        }
+        getProduct();
+    }, [])
+
     return (
         <MantineProvider>
             <div className="flex flex-col items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-                <form onSubmit={form.onSubmit(addVariant)}>
-                    <p>add variant</p>
+                <form onSubmit={productForm.onSubmit(addProduct)}>
+                    <p>add product</p>
 
                     <TextInput 
-                        label="size"
-                        placeholder="variant size" 
-                        {...form.getInputProps('size')}
+                        label="sku"
+                        placeholder="product sku" 
+                        {...productForm.getInputProps('sku')}
                     />
 
-                    <NumberInput 
-                        label="price"
-                        placeholder="variant price" 
-                        {...form.getInputProps('price')}
+                    <TextInput 
+                        label="name"
+                        placeholder="product name" 
+                        {...productForm.getInputProps('name')}
                     />
 
-                    <NumberInput 
+                    <TextInput 
+                        label="category"
+                        placeholder="product category" 
+                        {...productForm.getInputProps('category')}
+                    />
+
+                    <TextInput 
+                        label="vendor"
+                        placeholder="product vendor" 
+                        {...productForm.getInputProps('vendor')}
+                    />
+
+                    <NumberInput
                         label="stock"
-                        placeholder="variant stock" 
-                        {...form.getInputProps('stock')}
+                        placeholder="product stock"
+                        {...productForm.getInputProps('stock')}
                     />
 
-                    <TextInput 
-                        label="type"
-                        placeholder="variant type" 
-                        {...form.getInputProps('type')}
+                    <NumberInput
+                        label="price"
+                        placeholder="product price"
+                        {...productForm.getInputProps('price')}
                     />
-                    <Button type="submit" variant="filled">Submit variant</Button>
+
+                    <TextInput
+                        label="size"
+                        placeholder="product size"
+                        {...productForm.getInputProps('size')}
+                    />
+                    
+                    <Button type="submit" variant="filled">Submit product</Button>
                 </form>
-                <p>add product</p>
             </div>
         </MantineProvider>
     );
