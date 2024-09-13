@@ -1,7 +1,6 @@
 'use client'
-import { Product } from '@/types/types';
 import { useForm } from '@mantine/form';
-import { MantineProvider, TextInput, Button, NumberInput, NativeSelect } from '@mantine/core';
+import { MantineProvider, TextInput, Button, NumberInput } from '@mantine/core';
 import { useEffect, useState } from 'react';
 
 export default function Inventory() {
@@ -19,6 +18,7 @@ export default function Inventory() {
         }
     })
 
+    //@ts-ignore
     const addProduct = async (values: any) => {
         console.log('Submitting form with values:', values);
         const response = await fetch('api/product/add_product', {
@@ -41,6 +41,7 @@ export default function Inventory() {
             setProductList(result);
         }
         getProduct();
+        console.log(productList);
     }, [])
 
     return (

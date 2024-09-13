@@ -4,7 +4,7 @@ export async function POST(req: Request) {
     const supabase = createClient();
     const formData = await req.json();
 
-    const { data, error } = await supabase
+    const { data } = await supabase
         .from('product')
         .insert([
             { 
