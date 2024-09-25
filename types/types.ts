@@ -8,6 +8,24 @@ export type Product = {
     Colorway: string;
 };
 
+export type GroupedProduct = {
+    model: string;
+    brand: string;
+    colorways: Colorway[];
+}
+
+export type Colorway = {
+    colorway: string;
+    sizes: Size[];
+}
+
+export type Size = {
+    SKU: string;
+    size: string;
+    stock: number;
+    price: number;
+}
+
 export type Order = {
     id: number;
     time_ordered: Date;

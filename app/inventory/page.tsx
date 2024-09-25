@@ -2,17 +2,21 @@
 import { useForm } from '@mantine/form';
 import { MantineProvider, TextInput, Button, NumberInput, FileButton } from '@mantine/core';
 import { useEffect, useState } from 'react';
-import { Product } from '@/types/types';
+import { GroupedProduct, Product } from '@/types/types';
 import Papa from 'papaparse';
 import CardTest from '@/components/CardTest';
 
+// file input will only accept .csv files
 const acceptableCSVFileTypes = ".csv";
 
 export default function Inventory() {
+
+    // setting up product variables
     const [productData, setProductData] = useState<Product[]>([]);
     //const [productList, setProductList] = useState([]);
-    const [itemCard, setItemCard] = useState<Product[]>([]);
+    const [groupedProducts, setGroupedProducts] = useState<GroupedProduct[]>([]);
 
+    // initialize the form for single submission
     const productForm = useForm({
         initialValues: {
             SKU: "",
@@ -25,22 +29,31 @@ export default function Inventory() {
         }
     });
 
+    // when file is uploaded, parse its data
     const onFileChangeHandler = (event: File | null) => {
+        // set the displayed data to reset when a file is not chosen
         setProductData([]);
+        setGroupedProducts([]);
         if (event) {
             const csvFile = event;
 
+            // parse data from csv file into object
             Papa.parse<Product>(csvFile, {
                 skipEmptyLines: true,
                 header: true,
                 complete: function(results) {
                     console.log("Finished:", results.data);
-                    setProductData(results.data as Product[]); 
+                    const products: Product[] = results.data;
+                    const grouped = groupProducts(products);
+                    setProductData(products);
+                    setGroupedProducts(grouped);
+                    console.log(grouped);
                 }
             });
         }
     }
 
+    // add products in bulk
     const addProducts = () => {
         if (productData.length > 0) {
             productData.map((item) => {
@@ -50,6 +63,7 @@ export default function Inventory() {
     }
 
 
+    // adds single product
     //@ts-expect-error eslint throws an error here
     const addProduct = async (values) => {
         console.log('Submitting form with values:', values);
@@ -62,15 +76,40 @@ export default function Inventory() {
         console.log(result);
     }
 
-    useEffect(() => {
-        if (productData.length > 0) {
-            const tempProducts: Product[] = [];
-            productData.map((item1) => {
-                const matchedShoes = productData.filter((item) => item.Model === item1.Model);
-                console.log(matchedShoes);
-            })
-        }
-    }, [productData])
+    // groups the products based on their model, colorway, and size/stock/price
+    const groupProducts = (products: Product[]) => {
+        const grouped: { [Model: string]: GroupedProduct } = {};
+        products.forEach((product) => {
+            const { SKU, Model, Brand, Colorway, Size, Stock, Price } = product;
+
+            // initialize the model if it doesnt exist
+            if (!grouped[Model]) {
+                grouped[Model] = {
+                    model: Model,
+                    brand: Brand,
+                    colorways: []
+                };   
+            };
+            
+            // find the shoe of the same brand with matching colorway
+            let colorwayGroup = grouped[Model].colorways.find(shoe => shoe.colorway === Colorway);
+
+            // if the group of the colorways doesnt exist, create it
+            if (!colorwayGroup) {
+                colorwayGroup = { colorway: Colorway, sizes: [] };
+                grouped[Model].colorways.push(colorwayGroup);
+            }
+
+            // assign the individual sku, size, stock, and price for the shoe
+            colorwayGroup.sizes.push({
+                SKU: SKU,
+                size: Size,
+                stock: Stock,
+                price: Price 
+            });
+        });      
+        return Object.values(grouped);      
+    }
 
     /*
     useEffect(() => {
@@ -143,9 +182,18 @@ export default function Inventory() {
                 </FileButton>
 
                 <div className='w-full h-auto flex flex-row flex-wrap'>
-                    {productData && productData.map((item, key) => (
-                        <CardTest item={item} key={key}/>
-                    ))}
+                    {groupedProducts &&
+                        groupedProducts.map((product, productIndex) =>
+                        product.colorways.map((colorway, colorwayIndex) => (
+                            <CardTest
+                                key={`${productIndex}-${colorwayIndex}`} // Unique key using product and colorway index
+                                product={product.model} // Pass the model name
+                                brand={product.brand} // Pass the brand name
+                                colorway={colorway.colorway} // Pass the colorway
+                                sizes={colorway.sizes} // Pass the array of sizes for this colorway
+                            />
+                        ))
+                    )}
                 </div>
 
                 <Button variant='filled' onClick={addProducts}>Submit Products</Button>
