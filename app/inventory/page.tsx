@@ -4,12 +4,14 @@ import { MantineProvider, TextInput, Button, NumberInput, FileButton } from '@ma
 import { useEffect, useState } from 'react';
 import { Product } from '@/types/types';
 import Papa from 'papaparse';
+import CardTest from '@/components/CardTest';
 
 const acceptableCSVFileTypes = ".csv";
 
 export default function Inventory() {
-    const [productData, setProductData] = useState<any[]>([]);
+    const [productData, setProductData] = useState<Product[]>([]);
     const [productList, setProductList] = useState([]);
+    const [addedCsv, setAddedCsv] = useState(false);
 
     const productForm = useForm({
         initialValues: {
@@ -25,20 +27,23 @@ export default function Inventory() {
     });
 
     const onFileChangeHandler = (event: any) => {
+        setAddedCsv(false);
         if (event) {
             const csvFile = event;
 
-            Papa.parse(csvFile, {
+            Papa.parse<Product>(csvFile, {
                 skipEmptyLines: true,
                 header: true,
                 complete: function(results) {
                     console.log("Finished:", results.data);
-                    setProductData(results.data); 
+                    setAddedCsv(true);
+                    setProductData(results.data as Product[]); 
                 }
             });
         }
     }
 
+    /*
     useEffect(() => {
         if (productData.length > 0) {
             productData.map((item) => {
@@ -46,6 +51,7 @@ export default function Inventory() {
             });
         }
     }, [productData])
+    */
 
     //@ts-expect-error eslint throws an error here
     const addProduct = async (values) => {
@@ -133,6 +139,12 @@ export default function Inventory() {
                 <FileButton accept={acceptableCSVFileTypes} onChange={onFileChangeHandler}>
                     {(props) => <Button {...props}>Upload CSV File</Button>}
                 </FileButton>
+
+                <div className='w-full h-auto flex flex-row flex-wrap'>
+                    {productData && productData.map((item, key) => (
+                        <CardTest item={item} key={key}/>
+                    ))}
+                </div>
             </div>
         </MantineProvider>
     );
