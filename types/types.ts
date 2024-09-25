@@ -1,5 +1,4 @@
 export type Product = {
-    id: number;
     sku: string;
     name: string;
     category: string;
@@ -19,5 +18,5 @@ export type Order = {
 
 export type ProductsOrdered = {
     order_id: number;
-    product_id: number;
+    product_sku: number;
 }

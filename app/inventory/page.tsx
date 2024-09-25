@@ -14,7 +14,8 @@ export default function Inventory() {
             vendor: "",
             stock: 0,
             price: 0.00,
-            size: 0.0
+            size: "",
+            colorway: ""
         }
     })
 
@@ -90,6 +91,12 @@ export default function Inventory() {
                         label="size"
                         placeholder="product size"
                         {...productForm.getInputProps('size')}
+                    />
+
+                    <TextInput
+                        label="colorway"
+                        placeholder="product colorway"
+                        {...productForm.getInputProps('colorway')}
                     />
                     
                     <Button type="submit" variant="filled">Submit product</Button>
