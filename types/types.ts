@@ -6,6 +6,7 @@ export type Product = {
     stock: number;
     price: number;
     size: string;
+    colorway: string;
 };
 
 export type Order = {

@@ -1,9 +1,14 @@
 'use client'
 import { useForm } from '@mantine/form';
-import { MantineProvider, TextInput, Button, NumberInput } from '@mantine/core';
+import { MantineProvider, TextInput, Button, NumberInput, FileButton } from '@mantine/core';
 import { useEffect, useState } from 'react';
+import { Product } from '@/types/types';
+import Papa from 'papaparse';
+
+const acceptableCSVFileTypes = ".csv";
 
 export default function Inventory() {
+    const [productData, setProductData] = useState<any[]>([]);
     const [productList, setProductList] = useState([]);
 
     const productForm = useForm({
@@ -17,7 +22,30 @@ export default function Inventory() {
             size: "",
             colorway: ""
         }
-    })
+    });
+
+    const onFileChangeHandler = (event: any) => {
+        if (event) {
+            const csvFile = event;
+
+            Papa.parse(csvFile, {
+                skipEmptyLines: true,
+                header: true,
+                complete: function(results) {
+                    console.log("Finished:", results.data);
+                    setProductData(results.data); 
+                }
+            });
+        }
+    }
+
+    useEffect(() => {
+        if (productData.length > 0) {
+            productData.map((item) => {
+                addProduct(item)
+            });
+        }
+    }, [productData])
 
     //@ts-expect-error eslint throws an error here
     const addProduct = async (values) => {
@@ -43,7 +71,7 @@ export default function Inventory() {
         }
         getProduct();
         console.log(productList);
-    }, [])
+    }, []);
 
     return (
         <MantineProvider>
@@ -101,6 +129,10 @@ export default function Inventory() {
                     
                     <Button type="submit" variant="filled">Submit product</Button>
                 </form>
+
+                <FileButton accept={acceptableCSVFileTypes} onChange={onFileChangeHandler}>
+                    {(props) => <Button {...props}>Upload CSV File</Button>}
+                </FileButton>
             </div>
         </MantineProvider>
     );
