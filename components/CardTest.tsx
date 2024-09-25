@@ -29,7 +29,7 @@ export default function CardTest({product, brand, colorway, sizes}: CardTestProp
             <Modal 
                 opened={opened} 
                 onClose={close} 
-                title="Edit Inventory" 
+                title={`Edit Inventory: ${product} - ${colorway}`}
                 overlayProps={{
                     backgroundOpacity: 0.55,
                     blur: 3,
@@ -37,7 +37,7 @@ export default function CardTest({product, brand, colorway, sizes}: CardTestProp
                 centered
             >
                 {sizes.map((item, key) => (
-                    <div className='flex flex-row'>
+                    <div className='flex flex-row' key={key}>
                         <div className='flex flex-col m-5'>
                             <p>Size</p>
                             <p>{item.size}</p>
