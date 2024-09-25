@@ -17,12 +17,18 @@
     "@supabase/supabase-js": "^2.45.4",
     "dayjs": "^1.11.13",
     "next": "14.2.9",
+<<<<<<< HEAD
     "react": "^18.3.1",
+=======
+    "papaparse": "^5.4.1",
+    "react": "^18",
+>>>>>>> 572385e3dbfb8a1a1d1e5e90d8ec3386fac002f6
     "react-dom": "^18",
     "supabase": "^1.192.5"
   },
   "devDependencies": {
     "@types/node": "^20",
+    "@types/papaparse": "^5.3.14",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
