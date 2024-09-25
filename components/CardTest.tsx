@@ -12,14 +12,12 @@ export default function CardTest({item}: CardTestProps) {
                 <p>Image here</p>
             </div>
             <div className='flex flex-col items-start justify-start w-full p-5'>
-                <p>{item.sku}</p>
-                <p>{item.name}</p>
-                <p>{item.category}</p>
-                <p>{item.vendor}</p>
-                <p>{item.stock}</p>
-                <p>{item.price}</p>
-                <p>{item.size}</p>
-                <p>{item.colorway}</p>
+                <p>{item.SKU}</p>
+                <p>{item.Model}</p>
+                <p>{item.Brand}</p>
+                <p>{item.Stock}</p>
+                <p>{item.Price}</p>
+                <p>{item.Size}</p>
             </div>
         </div>
     );

@@ -8,14 +8,13 @@ export async function POST(req: Request) {
         .from('product')
         .insert([
             { 
-                sku: formData.sku,
-                name: formData.name,
-                category: formData.category,
-                vendor: formData.vendor,
-                stock: formData.stock,
-                price: formData.price,
-                size: formData.size,
-                colorway: formData.colorway
+                SKU: formData.SKU,
+                Model: formData.Model,
+                Brand: formData.Brand,
+                Stock: formData.Stock,
+                Price: formData.Price,
+                Size: formData.Size,
+                Colorway: formData.Colorway
             },
         ])
         .select()

@@ -10,24 +10,23 @@ const acceptableCSVFileTypes = ".csv";
 
 export default function Inventory() {
     const [productData, setProductData] = useState<Product[]>([]);
-    const [productList, setProductList] = useState([]);
-    const [addedCsv, setAddedCsv] = useState(false);
+    //const [productList, setProductList] = useState([]);
+    const [itemCard, setItemCard] = useState<Product[]>([]);
 
     const productForm = useForm({
         initialValues: {
-            sku: "",
-            name: "",
-            category: "",
-            vendor: "",
-            stock: 0,
-            price: 0.00,
-            size: "",
-            colorway: ""
+            SKU: "",
+            Name: "",
+            Brand: "",
+            Stock: 0,
+            Price: 0.00,
+            Size: "",
+            Colorway: ""
         }
     });
 
-    const onFileChangeHandler = (event: any) => {
-        setAddedCsv(false);
+    const onFileChangeHandler = (event: File | null) => {
+        setProductData([]);
         if (event) {
             const csvFile = event;
 
@@ -36,22 +35,20 @@ export default function Inventory() {
                 header: true,
                 complete: function(results) {
                     console.log("Finished:", results.data);
-                    setAddedCsv(true);
                     setProductData(results.data as Product[]); 
                 }
             });
         }
     }
 
-    /*
-    useEffect(() => {
+    const addProducts = () => {
         if (productData.length > 0) {
             productData.map((item) => {
                 addProduct(item)
             });
         }
-    }, [productData])
-    */
+    }
+
 
     //@ts-expect-error eslint throws an error here
     const addProduct = async (values) => {
@@ -65,7 +62,17 @@ export default function Inventory() {
         console.log(result);
     }
 
+    useEffect(() => {
+        if (productData.length > 0) {
+            const tempProducts: Product[] = [];
+            productData.map((item1) => {
+                const matchedShoes = productData.filter((item) => item.Model === item1.Model);
+                console.log(matchedShoes);
+            })
+        }
+    }, [productData])
 
+    /*
     useEffect(() => {
         const getProduct = async() => {
             const response = await fetch('api/product/get_product', {
@@ -78,6 +85,7 @@ export default function Inventory() {
         getProduct();
         console.log(productList);
     }, []);
+    */
 
     return (
         <MantineProvider>
@@ -88,49 +96,43 @@ export default function Inventory() {
                     <TextInput 
                         label="sku"
                         placeholder="product sku" 
-                        {...productForm.getInputProps('sku')}
+                        {...productForm.getInputProps('SKU')}
                     />
 
                     <TextInput 
                         label="name"
                         placeholder="product name" 
-                        {...productForm.getInputProps('name')}
-                    />
-
-                    <TextInput 
-                        label="category"
-                        placeholder="product category" 
-                        {...productForm.getInputProps('category')}
+                        {...productForm.getInputProps('Name')}
                     />
 
                     <TextInput 
                         label="vendor"
                         placeholder="product vendor" 
-                        {...productForm.getInputProps('vendor')}
+                        {...productForm.getInputProps('Brand')}
                     />
 
                     <NumberInput
                         label="stock"
                         placeholder="product stock"
-                        {...productForm.getInputProps('stock')}
+                        {...productForm.getInputProps('Stock')}
                     />
 
                     <NumberInput
                         label="price"
                         placeholder="product price"
-                        {...productForm.getInputProps('price')}
+                        {...productForm.getInputProps('Price')}
                     />
 
                     <TextInput
                         label="size"
                         placeholder="product size"
-                        {...productForm.getInputProps('size')}
+                        {...productForm.getInputProps('Size')}
                     />
 
                     <TextInput
                         label="colorway"
                         placeholder="product colorway"
-                        {...productForm.getInputProps('colorway')}
+                        {...productForm.getInputProps('Colorway')}
                     />
                     
                     <Button type="submit" variant="filled">Submit product</Button>
@@ -145,6 +147,8 @@ export default function Inventory() {
                         <CardTest item={item} key={key}/>
                     ))}
                 </div>
+
+                <Button variant='filled' onClick={addProducts}>Submit Products</Button>
             </div>
         </MantineProvider>
     );

@@ -1,12 +1,11 @@
 export type Product = {
-    sku: string;
-    name: string;
-    category: string;
-    vendor: string;
-    stock: number;
-    price: number;
-    size: string;
-    colorway: string;
+    SKU: string;
+    Model: string;
+    Brand: string;
+    Stock: number;
+    Price: number;
+    Size: string;
+    Colorway: string;
 };
 
 export type Order = {
