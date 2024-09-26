@@ -1,6 +1,6 @@
 'use client'
-import { CardProduct, GroupedProduct, Size } from '@/types/types';
-import { ChangeEvent, ChangeEventHandler, useEffect, useState } from 'react';
+import { CardProduct, Size } from '@/types/types';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useDisclosure } from '@mantine/hooks';
 import { Modal, TextInput, NumberInput } from '@mantine/core';
 
