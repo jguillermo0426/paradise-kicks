@@ -34,7 +34,7 @@ export default function CardTest({product, brand, colorway, sizes, onChange}: Ca
             tempStock += Number(size.stock);
         });
         setTotalStock(tempStock);
-    });
+    }, [sizes]);
     
     // handles changing the value of the field for numbers
     const handleChangeNumber = (e: string | number, index: number, toChange: string) => {
