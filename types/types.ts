@@ -14,6 +14,14 @@ export type GroupedProduct = {
     colorways: Colorway[];
 }
 
+export type CardProduct = {
+    model: string;
+    brand: string;
+    colorway: string;
+    sizes: Size[];
+}
+
+
 export type Colorway = {
     colorway: string;
     sizes: Size[];

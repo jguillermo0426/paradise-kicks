@@ -1,8 +1,8 @@
 'use client'
 import { useForm } from '@mantine/form';
 import { MantineProvider, TextInput, Button, NumberInput, FileButton } from '@mantine/core';
-import { useEffect, useState } from 'react';
-import { GroupedProduct, Product } from '@/types/types';
+import { useState } from 'react';
+import { CardProduct, GroupedProduct, Product } from '@/types/types';
 import Papa from 'papaparse';
 import CardTest from '@/components/CardTest';
 
@@ -20,7 +20,7 @@ export default function Inventory() {
     const productForm = useForm({
         initialValues: {
             SKU: "",
-            Name: "",
+            Model: "",
             Brand: "",
             Stock: 0,
             Price: 0.00,
@@ -53,12 +53,38 @@ export default function Inventory() {
         }
     }
 
+    const handleChange = (updatedProduct: CardProduct) => {
+        const updatedGroupProducts = groupedProducts.map((product) => {
+            if (product.model === updatedProduct.model) {
+                return {
+                    ...product,
+                    colorways: product.colorways.map((colorway) => {
+                        if (colorway.colorway === updatedProduct.colorway) {
+                            return {
+                                ...colorway,
+                                sizes: updatedProduct.sizes
+                            };
+                        }
+                        return colorway;
+                    })
+                };
+            }
+            return product;
+        });
+
+        setGroupedProducts(updatedGroupProducts);
+    }
+
     // add products in bulk
-    const addProducts = () => {
+    const addProducts = async () => {
         if (productData.length > 0) {
-            productData.map((item) => {
-                addProduct(item)
+            const response = await fetch('api/product/add_multiple', {
+                method: "POST",
+                body: JSON.stringify(productData)
             });
+
+            const result = await response.json();
+            console.log(result);
         }
     }
 
@@ -141,7 +167,7 @@ export default function Inventory() {
                     <TextInput 
                         label="name"
                         placeholder="product name" 
-                        {...productForm.getInputProps('Name')}
+                        {...productForm.getInputProps('Model')}
                     />
 
                     <TextInput 
@@ -191,6 +217,7 @@ export default function Inventory() {
                                 brand={product.brand} // Pass the brand name
                                 colorway={colorway.colorway} // Pass the colorway
                                 sizes={colorway.sizes} // Pass the array of sizes for this colorway
+                                onChange={handleChange}
                             />
                         ))
                     )}
