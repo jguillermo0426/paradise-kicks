@@ -1,5 +1,5 @@
 'use client'
-import { CardProduct, Size } from '@/types/types';
+import { CardProduct } from '@/types/types';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useDisclosure } from '@mantine/hooks';
 import { Modal, TextInput, NumberInput, Button } from '@mantine/core';
@@ -7,10 +7,11 @@ import { Modal, TextInput, NumberInput, Button } from '@mantine/core';
 type CardTestProps = {
     cardProduct: CardProduct;
     onChange: (updatedProduct: CardProduct) => void;
+    editable: boolean;
 }
 
 
-export default function CardTest({cardProduct, onChange}: CardTestProps) {
+export default function CardTest({cardProduct, onChange, editable}: CardTestProps) {
 
     const { modelId, colorId, model, brand, colorway, sizes } = cardProduct;
 
@@ -93,6 +94,7 @@ export default function CardTest({cardProduct, onChange}: CardTestProps) {
                             <p>SKU</p>
                             <TextInput 
                                 value={item.SKU}
+                                disabled={editable}
                                 onChange={(e) => handleChangeString(e, key, "SKU")}
                             />
                         </div>

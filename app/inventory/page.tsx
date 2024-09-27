@@ -1,9 +1,9 @@
 'use client'
 import { useForm } from '@mantine/form';
-import { MantineProvider, TextInput, Button, NumberInput, FileButton, Notification } from '@mantine/core';
+import { MantineProvider, TextInput, Button, NumberInput, FileButton } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import { CardProduct, GroupedProduct, Product } from '@/types/types';
-import { Notifications, notifications, showNotification } from '@mantine/notifications';
+import { Notifications, showNotification } from '@mantine/notifications';
 import Papa from 'papaparse';
 import CardTest from '@/components/CardTest';
 
@@ -14,7 +14,8 @@ export default function Inventory() {
 
     // setting up product variables
     const [productData, setProductData] = useState<Product[]>([]);
-    //const [productList, setProductList] = useState([]);
+    const [editProductData, setEditProductData] = useState<Product[]>([]);
+    const [editProducts, setEditProducts] = useState<GroupedProduct[]>([]);
     const [groupedProducts, setGroupedProducts] = useState<GroupedProduct[]>([]);
     //const [successUploaded, setSuccessUpload] = useState(false);
 
@@ -80,6 +81,31 @@ export default function Inventory() {
         setGroupedProducts(updatedGroupProducts);
     }
 
+    const handleEditChange = (updatedProduct: CardProduct) => {
+        const updatedGroupProducts = editProducts.map((product) => {
+            if (product.id === updatedProduct.modelId) {
+                return {
+                    ...product,
+                    model: updatedProduct.model,
+                    brand: updatedProduct.brand,
+                    colorways: product.colorways.map((colorway) => {
+                        if (colorway.id === updatedProduct.colorId) {
+                            return {
+                                ...colorway,
+                                colorway: updatedProduct.colorway,
+                                sizes: updatedProduct.sizes
+                            }
+                        }
+                        return colorway;
+                    })
+                };
+            }
+            return product;
+        });
+
+        setEditProducts(updatedGroupProducts);
+    }
+
     // add products in bulk
     const addProducts = async () => {
         //setSuccessUpload(false);
@@ -98,10 +124,33 @@ export default function Inventory() {
                     message: 'The products have been successfully uploaded.'
                   });
                 //setSuccessUpload(true);
+                setGroupedProducts([]);
             }
         }
     }
 
+    // edit Products
+    const updateProducts = async () => {
+        //setSuccessUpload(false);
+        if (editProductData.length > 0) {
+            const response = await fetch('api/product/edit_product', {
+                method: "POST",
+                body: JSON.stringify(editProductData)
+            });
+
+            const result = await response.json();
+            console.log(result);
+
+            if (result) {
+                showNotification({
+                    title: 'Successfully submitted!',
+                    message: 'The products have been successfully edited.'
+                  });
+                //setSuccessUpload(true);
+                setGroupedProducts([]);
+            }
+        }
+    }
 
     // adds single product
     //@ts-expect-error eslint throws an error here
@@ -189,12 +238,47 @@ export default function Inventory() {
         setProductData(products);
     }
 
+    const convertEditProducts = () => {
+        const products: Product[] = [];
+        editProducts.forEach((product) => {
+            const { model, brand, colorways } = product;
+
+            colorways.forEach((color) => {
+                const { colorway, sizes } = color;
+
+                sizes.forEach((shoeSize) => {
+                    const { SKU, size, stock, price } = shoeSize;
+
+                    const tempProduct: Product = {
+                        SKU: SKU,
+                        Model: model,
+                        Brand: brand,
+                        Stock: stock,
+                        Price: price,
+                        Size: size,
+                        Colorway: colorway
+                    };
+
+                    products.push(tempProduct);
+                });
+            });
+        });
+
+        setEditProductData(products);
+    }
+
+
     useEffect(() => {
         convertGroupedProducts();
         //console.log(productData);
     }, [groupedProducts]);
 
-    /*
+    useEffect(() => {
+        convertEditProducts();
+        //console.log(productData);
+    }, [editProducts]);
+
+    
     useEffect(() => {
         const getProduct = async() => {
             const response = await fetch('api/product/get_product', {
@@ -202,12 +286,17 @@ export default function Inventory() {
             })
     
             const result = await response.json();
-            setProductList(result);
+            console.log(result.product);
+            if (result.product.length != 0) {
+                const products = groupProducts(result.product);
+                setEditProducts(products);
+                console.log(products);
+            }
         }
         getProduct();
-        console.log(productList);
-    }, []);
-    */
+    }, [groupedProducts]);
+    
+    
 
     return (
         <MantineProvider>
@@ -279,13 +368,38 @@ export default function Inventory() {
                                     sizes: colorway.sizes,
                                 }}
                                 onChange={handleChange}
+                                editable={false}
                             />
                         ))
                     )}
                 </div>
 
                 <Button variant='filled' onClick={addProducts}>Submit Products</Button>
-                
+
+                <p>Edit Products</p>
+                <div className='w-full h-auto flex flex-row flex-wrap'>
+                    {editProducts &&
+                        editProducts.map((product, productIndex) =>
+                        product.colorways.map((colorway, colorwayIndex) => (
+                            <CardTest
+                                key={`${productIndex}-${colorwayIndex}`} // Unique key using product and colorway index
+                                cardProduct={{
+                                    modelId: product.id,
+                                    model: product.model,
+                                    brand: product.brand,
+                                    colorId: colorway.id,
+                                    colorway: colorway.colorway,
+                                    sizes: colorway.sizes,
+                                }}
+                                onChange={handleEditChange}
+                                editable={true}
+                            />
+                        ))
+                    )}
+                </div>
+
+                <Button variant='filled' onClick={updateProducts}>Submit Edited Products</Button>
+
                 <Notifications>
                     
                 </Notifications>
