@@ -1,8 +1,9 @@
 'use client'
 import { useForm } from '@mantine/form';
-import { MantineProvider, TextInput, Button, NumberInput, FileButton } from '@mantine/core';
-import { useState } from 'react';
+import { MantineProvider, TextInput, Button, NumberInput, FileButton, Notification } from '@mantine/core';
+import { useEffect, useState } from 'react';
 import { CardProduct, GroupedProduct, Product } from '@/types/types';
+import { Notifications, notifications, showNotification } from '@mantine/notifications';
 import Papa from 'papaparse';
 import CardTest from '@/components/CardTest';
 
@@ -15,6 +16,7 @@ export default function Inventory() {
     const [productData, setProductData] = useState<Product[]>([]);
     //const [productList, setProductList] = useState([]);
     const [groupedProducts, setGroupedProducts] = useState<GroupedProduct[]>([]);
+    //const [successUploaded, setSuccessUpload] = useState(false);
 
     // initialize the form for single submission
     const productForm = useForm({
@@ -55,15 +57,18 @@ export default function Inventory() {
 
     const handleChange = (updatedProduct: CardProduct) => {
         const updatedGroupProducts = groupedProducts.map((product) => {
-            if (product.model === updatedProduct.model) {
+            if (product.id === updatedProduct.modelId) {
                 return {
                     ...product,
+                    model: updatedProduct.model,
+                    brand: updatedProduct.brand,
                     colorways: product.colorways.map((colorway) => {
-                        if (colorway.colorway === updatedProduct.colorway) {
+                        if (colorway.id === updatedProduct.colorId) {
                             return {
                                 ...colorway,
+                                colorway: updatedProduct.colorway,
                                 sizes: updatedProduct.sizes
-                            };
+                            }
                         }
                         return colorway;
                     })
@@ -77,6 +82,7 @@ export default function Inventory() {
 
     // add products in bulk
     const addProducts = async () => {
+        //setSuccessUpload(false);
         if (productData.length > 0) {
             const response = await fetch('api/product/add_multiple', {
                 method: "POST",
@@ -85,6 +91,14 @@ export default function Inventory() {
 
             const result = await response.json();
             console.log(result);
+
+            if (result) {
+                showNotification({
+                    title: 'Successfully submitted!',
+                    message: 'The products have been successfully uploaded.'
+                  });
+                //setSuccessUpload(true);
+            }
         }
     }
 
@@ -104,6 +118,10 @@ export default function Inventory() {
 
     // groups the products based on their model, colorway, and size/stock/price
     const groupProducts = (products: Product[]) => {
+        let modelId = 0;
+        let colorwayId = 0;
+        let sizeId = 0;
+
         const grouped: { [Model: string]: GroupedProduct } = {};
         products.forEach((product) => {
             const { SKU, Model, Brand, Colorway, Size, Stock, Price } = product;
@@ -111,31 +129,70 @@ export default function Inventory() {
             // initialize the model if it doesnt exist
             if (!grouped[Model]) {
                 grouped[Model] = {
+                    id: modelId,
                     model: Model,
                     brand: Brand,
                     colorways: []
                 };   
+                
+                modelId += 1;
             };
             
             // find the shoe of the same brand with matching colorway
             let colorwayGroup = grouped[Model].colorways.find(shoe => shoe.colorway === Colorway);
-
             // if the group of the colorways doesnt exist, create it
-            if (!colorwayGroup) {
-                colorwayGroup = { colorway: Colorway, sizes: [] };
+            if (!colorwayGroup) { 
+                colorwayGroup = { id: colorwayId, colorway: Colorway, sizes: [] };
                 grouped[Model].colorways.push(colorwayGroup);
+                colorwayId += 1;
             }
 
             // assign the individual sku, size, stock, and price for the shoe
             colorwayGroup.sizes.push({
+                id: sizeId,
                 SKU: SKU,
                 size: Size,
                 stock: Stock,
                 price: Price 
             });
+            sizeId += 1;
         });      
         return Object.values(grouped);      
     }
+
+    const convertGroupedProducts = () => {
+        const products: Product[] = [];
+        groupedProducts.forEach((product) => {
+            const { model, brand, colorways } = product;
+
+            colorways.forEach((color) => {
+                const { colorway, sizes } = color;
+
+                sizes.forEach((shoeSize) => {
+                    const { SKU, size, stock, price } = shoeSize;
+
+                    const tempProduct: Product = {
+                        SKU: SKU,
+                        Model: model,
+                        Brand: brand,
+                        Stock: stock,
+                        Price: price,
+                        Size: size,
+                        Colorway: colorway
+                    };
+
+                    products.push(tempProduct);
+                });
+            });
+        });
+
+        setProductData(products);
+    }
+
+    useEffect(() => {
+        convertGroupedProducts();
+        //console.log(productData);
+    }, [groupedProducts]);
 
     /*
     useEffect(() => {
@@ -213,10 +270,14 @@ export default function Inventory() {
                         product.colorways.map((colorway, colorwayIndex) => (
                             <CardTest
                                 key={`${productIndex}-${colorwayIndex}`} // Unique key using product and colorway index
-                                product={product.model} // Pass the model name
-                                brand={product.brand} // Pass the brand name
-                                colorway={colorway.colorway} // Pass the colorway
-                                sizes={colorway.sizes} // Pass the array of sizes for this colorway
+                                cardProduct={{
+                                    modelId: product.id,
+                                    model: product.model,
+                                    brand: product.brand,
+                                    colorId: colorway.id,
+                                    colorway: colorway.colorway,
+                                    sizes: colorway.sizes,
+                                }}
                                 onChange={handleChange}
                             />
                         ))
@@ -224,6 +285,11 @@ export default function Inventory() {
                 </div>
 
                 <Button variant='filled' onClick={addProducts}>Submit Products</Button>
+                
+                <Notifications>
+                    
+                </Notifications>
+                
             </div>
         </MantineProvider>
     );

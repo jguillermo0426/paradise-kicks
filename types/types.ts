@@ -9,30 +9,35 @@ export type Product = {
 };
 
 export type GroupedProduct = {
+    id: number;
     model: string;
     brand: string;
     colorways: Colorway[];
 }
 
-export type CardProduct = {
-    model: string;
-    brand: string;
-    colorway: string;
-    sizes: Size[];
-}
-
-
 export type Colorway = {
+    id: number;
     colorway: string;
     sizes: Size[];
 }
 
 export type Size = {
+    id: number;
     SKU: string;
     size: string;
     stock: number;
     price: number;
 }
+
+export type CardProduct = {
+    modelId: number;
+    model: string;
+    brand: string;
+    colorId: number;
+    colorway: string;
+    sizes: Size[];
+}
+
 
 export type Order = {
     id: number;
