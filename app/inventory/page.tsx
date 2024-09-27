@@ -1,6 +1,6 @@
 'use client'
 import { useForm } from '@mantine/form';
-import { MantineProvider, TextInput, Button, NumberInput, FileButton } from '@mantine/core';
+import { MantineProvider, TextInput, Button, NumberInput, FileButton, Tooltip } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import { CardProduct, GroupedProduct, Product } from '@/types/types';
 import { Notifications, showNotification } from '@mantine/notifications';
@@ -17,7 +17,8 @@ export default function Inventory() {
     const [editProductData, setEditProductData] = useState<Product[]>([]);
     const [editProducts, setEditProducts] = useState<GroupedProduct[]>([]);
     const [groupedProducts, setGroupedProducts] = useState<GroupedProduct[]>([]);
-    //const [successUploaded, setSuccessUpload] = useState(false);
+    const [hasErrors, setHasErrors] = useState<boolean>(false);
+    const [hasErrorsEdit, setHasErrorsEdit] = useState<boolean>(false);
 
     // initialize the form for single submission
     const productForm = useForm({
@@ -31,6 +32,7 @@ export default function Inventory() {
             Colorway: ""
         }
     });
+    
 
     // when file is uploaded, parse its data
     const onFileChangeHandler = (event: File | null) => {
@@ -369,12 +371,20 @@ export default function Inventory() {
                                 }}
                                 onChange={handleChange}
                                 editable={false}
+                                setHasErrors={setHasErrors}
                             />
                         ))
                     )}
                 </div>
-
-                <Button variant='filled' onClick={addProducts}>Submit Products</Button>
+                
+                {hasErrors ? (
+                    <Tooltip label="Fix all errors before submitting.">   
+                        <Button variant='filled' onClick={addProducts} disabled={hasErrors}>Submit Products</Button>
+                    </Tooltip>
+                ) : (
+                   <Button variant='filled' onClick={addProducts} disabled={hasErrors}>Submit Products</Button>
+                )}
+                
 
                 <p>Edit Products</p>
                 <div className='w-full h-auto flex flex-row flex-wrap'>
@@ -393,16 +403,22 @@ export default function Inventory() {
                                 }}
                                 onChange={handleEditChange}
                                 editable={true}
+                                setHasErrors={setHasErrorsEdit}
                             />
                         ))
                     )}
                 </div>
 
-                <Button variant='filled' onClick={updateProducts}>Submit Edited Products</Button>
+                {hasErrors ? (
+                    <Tooltip label="Fix all errors before submitting.">   
+                        <Button variant='filled' onClick={updateProducts} disabled={hasErrorsEdit}>Submit Edited Products</Button>
+                    </Tooltip>
+                ) : (
+                    <Button variant='filled' onClick={updateProducts} disabled={hasErrorsEdit}>Submit Edited Products</Button>
+                )}
 
-                <Notifications>
-                    
-                </Notifications>
+                
+                <Notifications></Notifications>
                 
             </div>
         </MantineProvider>
