@@ -3,6 +3,7 @@ import "../globals.css";
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 
+
 export const metadata: Metadata = {
   title: "Paradise Kicks Admin Dashboard"
 };
