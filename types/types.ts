@@ -40,14 +40,28 @@ export type CardProduct = {
 
 
 export type Order = {
-    id: number;
+    id: string;
     time_ordered: Date;
     status: string;
     total_price: number;
     customer_name: string;
+    address: string;
+    contact_no: string;
+    email: string;
+    payment_method: string;
+    proof_link?: string;
 }
 
 export type ProductsOrdered = {
-    order_id: number;
-    product_sku: number;
+    orders: Order;
+    product: Product;
+}
+
+export type OrderHistory = {
+    history_id: number;
+    order_id: string;
+    updated_at: string;
+    order_status: {
+        status: string;
+    };
 }
