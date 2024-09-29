@@ -1,4 +1,3 @@
-import { ProductsOrdered } from "@/types/types";
 import { createClient } from "@/utils/supabase/server";
 
 export async function POST(req: Request) {

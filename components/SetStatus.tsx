@@ -1,16 +1,9 @@
 'use client'
 
-import { Epilogue } from 'next/font/google';
 import { useEffect, useState } from 'react';
-import { Button, Combobox, ComboboxStore, InputBase, useCombobox } from '@mantine/core';
-import { GroupedProduct, Order, OrderHistory, Product, ProductsOrdered } from '@/types/types';
+import { Button, Combobox, InputBase, useCombobox } from '@mantine/core';
+import { OrderHistory, Product, ProductsOrdered } from '@/types/types';
 import CardStatus from './CardStatus';
-import moment from 'moment';
-
-const epilogue = Epilogue({
-  subsets: ['latin'],
-  display: 'swap',
-})
 
 export default function SetStatus() {
     const [orderIds, setOrderIds] = useState<string[]>([]);
@@ -90,49 +83,6 @@ export default function SetStatus() {
         console.log(chosenOrder);
     }, [chosenOrder]);
 
-    const groupProducts = (products: Product[]) => {
-        let modelId = 0;
-        let colorwayId = 0;
-        let sizeId = 0;
-
-        const grouped: { [Model: string]: GroupedProduct } = {};
-        products.forEach((product) => {
-            const { SKU, Model, Brand, Colorway, Size, Stock, Price } = product;
-
-            // initialize the model if it doesnt exist
-            if (!grouped[Model]) {
-                grouped[Model] = {
-                    id: modelId,
-                    model: Model,
-                    brand: Brand,
-                    colorways: []
-                };   
-                
-                modelId += 1;
-            };
-            
-            // find the shoe of the same brand with matching colorway
-            let colorwayGroup = grouped[Model].colorways.find(shoe => shoe.colorway === Colorway);
-            // if the group of the colorways doesnt exist, create it
-            if (!colorwayGroup) { 
-                colorwayGroup = { id: colorwayId, colorway: Colorway, sizes: [] };
-                grouped[Model].colorways.push(colorwayGroup);
-                colorwayId += 1;
-            }
-
-            // assign the individual sku, size, stock, and price for the shoe
-            colorwayGroup.sizes.push({
-                id: sizeId,
-                SKU: SKU,
-                size: Size,
-                stock: Stock,
-                price: Price 
-            });
-            sizeId += 1;
-        });      
-        return Object.values(grouped);      
-    }
-
     useEffect(() => {
         const tempOrders: Product[] = [];
         chosenOrder?.map((order) => {
@@ -199,7 +149,7 @@ export default function SetStatus() {
                         <p>Order summary</p>
                         <div className='flex flex-row flex-wrap'>
                             { orderProducts?.map((product, index) => (
-                                <CardStatus product={product} />
+                                <CardStatus key={index} product={product} />
                             ))}
                         </div>
 
@@ -207,7 +157,7 @@ export default function SetStatus() {
 
                         <div className='flex flex-col'>
                             { statusHistory?.map((status, index) => (
-                                <div className='flex flex-col m-5'>
+                                <div className='flex flex-col m-5' key={index}>
                                     <p>Date: {new Date(status.updated_at).toLocaleDateString('en-US', {
                                         year: 'numeric',
                                         month: 'long',

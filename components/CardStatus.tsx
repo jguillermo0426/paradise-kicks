@@ -1,8 +1,5 @@
 'use client'
-import { CardProduct, Product } from '@/types/types';
-import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { useDisclosure } from '@mantine/hooks';
-import { Modal, TextInput, NumberInput, Button } from '@mantine/core';
+import { Product } from '@/types/types';
 
 type CardProps = {
     product: Product

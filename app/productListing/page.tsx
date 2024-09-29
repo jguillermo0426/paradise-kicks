@@ -1,18 +1,13 @@
 'use client'
-import { useForm } from '@mantine/form';
-import { SimpleGrid, MantineProvider, TextInput, Button, NumberInput, FileButton, Tooltip } from '@mantine/core';
+import { SimpleGrid, MantineProvider } from '@mantine/core';
 import { useEffect, useState } from 'react';
-import { CardProduct, GroupedProduct, Product, Colorway } from '@/types/types';
-import { Notifications, showNotification } from '@mantine/notifications';
-import Papa from 'papaparse';
-import CardTest from '@/components/CardTest';
+import { GroupedProduct, Product } from '@/types/types';
 import {Card, CardHeader, CardBody, Image} from "@nextui-org/react";
 import Link from 'next/link';
 
 
 
 export default function ProductListing() {
-    const [products, setProducts] = useState<Product[]>([]);
     const [groupedProducts, setGroupedProducts] = useState<GroupedProduct[]>([]);
 
     useEffect(() => {
@@ -95,7 +90,7 @@ export default function ProductListing() {
                 <SimpleGrid cols={3} spacing="xl">
                 {groupedProducts && 
                     groupedProducts.map((product, productIndex) => 
-                        <Link href={`/productListing/${product.model}`}>
+                        <Link key={productIndex} href={`/productListing/${product.model}`}>
                             <Card key={productIndex} className="py-4">
                                 <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
                                     <h4 className="font-bold text-large">{product.model}</h4>

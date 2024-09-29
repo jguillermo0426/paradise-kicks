@@ -1,13 +1,7 @@
 'use client'
-import { useForm } from '@mantine/form';
-import { SimpleGrid, MantineProvider, TextInput, Button, NumberInput, FileButton, Tooltip } from '@mantine/core';
+import { MantineProvider} from '@mantine/core';
 import { useEffect, useState } from 'react';
-import { CardProduct, GroupedProduct, Product, Colorway } from '@/types/types';
-import { Notifications, showNotification } from '@mantine/notifications';
-import Papa from 'papaparse';
-import CardTest from '@/components/CardTest';
-import {Card, CardHeader, CardBody, Image} from "@nextui-org/react";
-
+import { GroupedProduct, Product } from '@/types/types';
 
 
 export default function ProductDetails({ 
@@ -15,7 +9,6 @@ export default function ProductDetails({
 }: {
     params: { productModel: string };
 }) {
-    const [product, setProduct] = useState<Product[]>([]);
     const [groupedProducts, setGroupedProducts] = useState<GroupedProduct[]>([]);
     const productModel = decodeURIComponent(params.productModel);
 
@@ -85,6 +78,7 @@ export default function ProductDetails({
         return Object.values(grouped);      
     }
 
+    /*
     const getTotalStocks = (groupedProduct: GroupedProduct) => {
         let totalStocks = 0;
         groupedProduct.colorways.forEach((colorway) => {
@@ -95,6 +89,7 @@ export default function ProductDetails({
 
         return totalStocks;
     }
+    */
 
     return (
         <MantineProvider>
@@ -102,9 +97,9 @@ export default function ProductDetails({
                 <h4 className="font-bold text-large">{productModel}</h4>
                 <p className="font-bold">Colorways: </p>
                 {groupedProducts && 
-                    groupedProducts.map((product, productIndex) => 
+                    groupedProducts.map((product) => 
                         product.colorways.map((colorway, colorwayIndex) => 
-                            <div className='flex flex-col justify-left'>
+                            <div key={colorwayIndex} className='flex flex-col justify-left'>
                                 <p className="font-bold" key={colorwayIndex}>{colorway.colorway}</p>
                                 <p>Available Sizes:</p>
                                 {colorway.sizes.map((size, sizeIndex) =>
