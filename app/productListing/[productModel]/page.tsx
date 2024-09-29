@@ -7,31 +7,39 @@ import { Notifications, showNotification } from '@mantine/notifications';
 import Papa from 'papaparse';
 import CardTest from '@/components/CardTest';
 import {Card, CardHeader, CardBody, Image} from "@nextui-org/react";
-import Link from 'next/link';
 
 
 
-export default function ProductListing() {
-    const [products, setProducts] = useState<Product[]>([]);
+export default function ProductDetails({ 
+    params,
+}: {
+    params: { productModel: string };
+}) {
+    const [product, setProduct] = useState<Product[]>([]);
     const [groupedProducts, setGroupedProducts] = useState<GroupedProduct[]>([]);
+    const productModel = decodeURIComponent(params.productModel);
+
 
     useEffect(() => {
-        const getProducts = async() => {
-            const response = await fetch('api/product/get_product', {
+        const getModel = async() => {
+            const response = await fetch(`/api/product/get_model?model=${productModel}`, {
                 method: "GET"
-            })
+            });
 
             const result = await response.json();
-            console.log(result.product);
-            if (result.product.length != 0) {
-                const products = groupProducts(result.product);
-                setGroupedProducts(products);
-                console.log(products);
+            console.log(result.model);
+            if (result.model.length != 0) {
+                const product = groupProducts(result.model);
+                setGroupedProducts(product);
+                console.log(product);
+            }
+            else {
+                console.log(productModel + "not found")
             }
         }
-        getProducts();
+        getModel();
     }, []);
-
+    
 
     // groups the products based on their model, colorway, and size/stock/price
     const groupProducts = (products: Product[]) => {
@@ -91,31 +99,21 @@ export default function ProductListing() {
     return (
         <MantineProvider>
             <div className='flex flex-col items-center m-4'>
-                <p>Products</p>
-                <SimpleGrid cols={3} spacing="xl">
+                <h4 className="font-bold text-large">{productModel}</h4>
+                <p className="font-bold">Colorways: </p>
                 {groupedProducts && 
                     groupedProducts.map((product, productIndex) => 
-                        <Link href={`/productListing/${product.model}`}>
-                            <Card key={productIndex} className="py-4">
-                                <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
-                                    <h4 className="font-bold text-large">{product.model}</h4>
-                                    <small className="text-default-500">{getTotalStocks(product)} stocks left</small>
-                                </CardHeader>
-                                <CardBody className="overflow-visible py-2">
-                                    <Image
-                                        alt="Card background"
-                                        className="object-cover rounded-xl"
-                                        src="https://scontent.fmnl33-5.fna.fbcdn.net/v/t39.30808-6/461207543_1030666055735889_1571487299371181397_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_ohc=3a46pwS16UkQ7kNvgHyeFjq&_nc_ht=scontent.fmnl33-5.fna&_nc_gid=AcZyBKDo2yuPjFPjF11AMsx&oh=00_AYBQ8dN43ENeQq7pYdTwsbC_VfXSAJtTqH4s17Dotdp79w&oe=66FE0842"
-                                        width={270} />
-                                <p className="text-tiny font-bold">Colors: </p>
-                                {product.colorways.map((colorway, colorwayIndex) => 
-                                    <small key={colorwayIndex} className="text-default-500">{colorway.colorway}</small>
+                        product.colorways.map((colorway, colorwayIndex) => 
+                            <div className='flex flex-col justify-left'>
+                                <p className="font-bold" key={colorwayIndex}>{colorway.colorway}</p>
+                                <p>Available Sizes:</p>
+                                {colorway.sizes.map((size, sizeIndex) =>
+                                    <p key={sizeIndex}>{size.size} - {size.stock} stocks - P{size.price}</p>
                                 )}
-                                </CardBody>
-                            </Card>
-                        </Link>
-                )}
-                </SimpleGrid>
+                            </div>
+                        )
+                    )
+                }
             </div>
         </MantineProvider>
     );
