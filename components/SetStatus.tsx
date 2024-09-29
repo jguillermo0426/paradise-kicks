@@ -14,6 +14,7 @@ export default function SetStatus() {
     const [chosenOrder, setChosenOrder] = useState<ProductsOrdered[]>();
     const [orderProducts, setOrderProducts] = useState<Product[]>();
     const [statusHistory, setStatusHistory] = useState<OrderHistory[]>();
+    const [currentStatus, setCurrentStatus] = useState<string>("");
     
     useEffect(() => {
         const getOrder = async() => {
@@ -91,6 +92,33 @@ export default function SetStatus() {
 
         setOrderProducts(tempOrders);
     }, [chosenOrder]);
+
+    useEffect(() => {
+        const getCurrentStatus = () => {
+            if (statusHistory) {
+                const latestIndex = statusHistory.length;
+                setCurrentStatus(statusHistory[latestIndex - 1].order_status.status);
+            }   
+        }
+
+        getCurrentStatus();
+    }, [statusHistory]);
+
+    const changeStatus = async (id: string, status: string) => {
+        const response = await fetch('api/orders/change_status', {
+            method: "POST",
+            body: JSON.stringify({
+                id, status
+            }),
+        })
+
+        const result = await response.json()
+        console.log(result);
+
+        if (value) {
+            getStatus(value);
+        }   
+    }
     
     return(
         <div className="relative z-50 mb-[18rem] bg-white overflow-hidden flex flex-col items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
@@ -136,7 +164,7 @@ export default function SetStatus() {
                     
             { chosenOrder && 
                 (
-                    <div className='flex flex-col justify-center items-center'>
+                    <div className='flex flex-col justify-center items-center w-[38rem]'>
                         <p>Address: {chosenOrder[0].orders.address}</p>
                         <p>Email Address: {chosenOrder[0].orders.email}</p>
                         <p>Contact no: {chosenOrder[0].orders.contact_no}</p>
@@ -152,8 +180,45 @@ export default function SetStatus() {
                                 <CardStatus key={index} product={product} />
                             ))}
                         </div>
+                        
+                        <div className='flex flex-row w-full items-center justify-between'>
+                            <Button 
+                            onClick={() => changeStatus(selectedOrderId, "Cancelled")}
+                            disabled={
+                                !(currentStatus === "Order Placed" || currentStatus === "Awaiting Payment")}
+                            >
+                                Cancel Order
+                            </Button>
 
-                        <Button>Ship Order</Button>
+                            <Button 
+                            onClick={() => changeStatus(selectedOrderId, "Paid")}
+                            disabled={
+                                !(currentStatus === "Awaiting Payment")}
+                            >
+                                Order Paid
+                            </Button>
+
+                            <Button
+                            onClick={() => changeStatus(selectedOrderId, "Order Approved")}
+                            disabled={!(currentStatus === "Paid")}
+                            >
+                                Approve Order
+                            </Button>
+
+                            <Button
+                            onClick={() => changeStatus(selectedOrderId, "In Transit")}
+                            disabled={!(currentStatus === "Order Approved")}
+                            >
+                                Ship Order
+                            </Button>
+
+                            <Button
+                            onClick={() => changeStatus(selectedOrderId, "Completed")}
+                            disabled={!(currentStatus === "In Transit")}
+                            >
+                                Complete Order
+                            </Button>
+                        </div>
 
                         <div className='flex flex-col'>
                             { statusHistory?.map((status, index) => (
