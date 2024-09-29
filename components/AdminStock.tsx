@@ -301,7 +301,7 @@ export default function AdminStock() {
     
 
     return ( 
-        <div className="relative z-50 mb-[18rem] bg-white overflow-hidden flex flex-col items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+        <div className="relative z-50 mb-[18rem] bg-white overflow-hidden flex flex-col items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
             <form onSubmit={productForm.onSubmit(addProduct)}>
                 <p>add product</p>
 
