@@ -29,7 +29,7 @@ export default function ProductListing() {
             }
         }
         getProducts();
-    }, [groupedProducts]);
+    }, []);
 
     // groups the products based on their model, colorway, and size/stock/price
     const groupProducts = (products: Product[]) => {
@@ -75,10 +75,12 @@ export default function ProductListing() {
         return Object.values(grouped);      
     }
 
-    const getTotalStocks = (colorway: Colorway) => {
+    const getTotalStocks = (groupedProduct: GroupedProduct) => {
         let totalStocks = 0;
-        colorway.sizes.forEach((size) => {
-            totalStocks += size.stock;
+        groupedProduct.colorways.forEach((colorway) => {
+            colorway.sizes.forEach((size) => {
+                totalStocks += size.stock;
+            });
         });
 
         return totalStocks;
@@ -91,13 +93,11 @@ export default function ProductListing() {
                 <SimpleGrid cols={3} spacing="xl">
                 {groupedProducts && 
                     groupedProducts.map((product, productIndex) => 
-                    product.colorways.map((colorway, colorwayIndex) => (
                         <>
-                            <Card key={`${productIndex}-${colorwayIndex}`} className="py-4">
+                            <Card key={productIndex} className="py-4">
                                 <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
                                     <h4 className="font-bold text-large">{product.model}</h4>
-                                    <p key={colorwayIndex} className="text-tiny font-bold">{colorway.colorway}</p>
-                                    <small className="text-default-500">{getTotalStocks(colorway)} stocks left</small>
+                                    <small className="text-default-500">{getTotalStocks(product)} stocks left</small>
                                 </CardHeader>
                                 <CardBody className="overflow-visible py-2">
                                     <Image
@@ -105,10 +105,13 @@ export default function ProductListing() {
                                         className="object-cover rounded-xl"
                                         src="https://scontent.fmnl33-5.fna.fbcdn.net/v/t39.30808-6/461207543_1030666055735889_1571487299371181397_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_ohc=3a46pwS16UkQ7kNvgHyeFjq&_nc_ht=scontent.fmnl33-5.fna&_nc_gid=AcZyBKDo2yuPjFPjF11AMsx&oh=00_AYBQ8dN43ENeQq7pYdTwsbC_VfXSAJtTqH4s17Dotdp79w&oe=66FE0842"
                                         width={270} />
+                                <p className="text-tiny font-bold">Colors: </p>
+                                {product.colorways.map((colorway, colorwayIndex) => 
+                                    <small key={colorwayIndex} className="text-default-500">{colorway.colorway}</small>
+                                )}
                                 </CardBody>
                             </Card>
                         </>
-                    ))
                 )}
                 </SimpleGrid>
             </div>
