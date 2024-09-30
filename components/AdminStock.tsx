@@ -1,420 +1,88 @@
 'use client'
 import { useForm } from '@mantine/form';
-import { TextInput, Button, NumberInput, FileButton, Tooltip } from '@mantine/core';
+import { TextInput, Button, NumberInput, FileButton, Tooltip, FloatingIndicator, Tabs } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import { CardProduct, GroupedProduct, Product } from '@/types/types';
 import { Notifications, showNotification } from '@mantine/notifications';
 import Papa from 'papaparse';
-import CardTest from '@/components/CardTest';
+import InventoryCard from '@/components/InventoryCard';
+import SearchBar from './SearchBar';
+import { Epilogue } from 'next/font/google';
+import classes from './css/tabs.module.css';
+import BrandSelect from './BrandsSelect';
+import AddItem from './AddItem';
+import EditItems from './EditItems';
 
-// file input will only accept .csv files
-const acceptableCSVFileTypes = ".csv";
+const epilogue = Epilogue({
+  subsets: ['latin'],
+  display: 'swap',
+})
+
 
 export default function AdminStock() {
+    const [rootRef, setRootRef] = useState<HTMLDivElement | null>(null);
 
-    // setting up product variables
-    const [productData, setProductData] = useState<Product[]>([]);
-    const [editProductData, setEditProductData] = useState<Product[]>([]);
-    const [editProducts, setEditProducts] = useState<GroupedProduct[]>([]);
-    const [groupedProducts, setGroupedProducts] = useState<GroupedProduct[]>([]);
-    const [hasErrors, setHasErrors] = useState<boolean>(false);
-    const [hasErrorsEdit, setHasErrorsEdit] = useState<boolean>(false);
-
-    // initialize the form for single submission
-    const productForm = useForm({
-        initialValues: {
-            SKU: "",
-            Model: "",
-            Brand: "",
-            Stock: 0,
-            Price: 0.00,
-            Size: "",
-            Colorway: ""
-        }
-    });
+    const [value, setValue] = useState<string | null>('1');
+    const [controlsRefs, setControlsRefs] = useState<Record<string, HTMLButtonElement | null>>({});
+    const setControlRef = (val: string) => (node: HTMLButtonElement) => {
+        controlsRefs[val] = node;
+        setControlsRefs(controlsRefs);
+    };
     
-
-    // when file is uploaded, parse its data
-    const onFileChangeHandler = (event: File | null) => {
-        // set the displayed data to reset when a file is not chosen
-        setProductData([]);
-        setGroupedProducts([]);
-        if (event) {
-            const csvFile = event;
-
-            // parse data from csv file into object
-            Papa.parse<Product>(csvFile, {
-                skipEmptyLines: true,
-                header: true,
-                complete: function(results) {
-                    console.log("Finished:", results.data);
-                    const products: Product[] = results.data;
-                    const grouped = groupProducts(products);
-                    setProductData(products);
-                    setGroupedProducts(grouped);
-                    console.log(grouped);
-                }
-            });
-        }
-    }
-
-    const handleChange = (updatedProduct: CardProduct) => {
-        const updatedGroupProducts = groupedProducts.map((product) => {
-            if (product.id === updatedProduct.modelId) {
-                return {
-                    ...product,
-                    model: updatedProduct.model,
-                    brand: updatedProduct.brand,
-                    colorways: product.colorways.map((colorway) => {
-                        if (colorway.id === updatedProduct.colorId) {
-                            return {
-                                ...colorway,
-                                colorway: updatedProduct.colorway,
-                                sizes: updatedProduct.sizes
-                            }
-                        }
-                        return colorway;
-                    })
-                };
-            }
-            return product;
+    const handleNotification = () => {
+        showNotification({
+          title: 'Successfully submitted!',
+          message: 'The products have been successfully submitted.',
         });
-
-        setGroupedProducts(updatedGroupProducts);
-    }
-
-    const handleEditChange = (updatedProduct: CardProduct) => {
-        const updatedGroupProducts = editProducts.map((product) => {
-            if (product.id === updatedProduct.modelId) {
-                return {
-                    ...product,
-                    model: updatedProduct.model,
-                    brand: updatedProduct.brand,
-                    colorways: product.colorways.map((colorway) => {
-                        if (colorway.id === updatedProduct.colorId) {
-                            return {
-                                ...colorway,
-                                colorway: updatedProduct.colorway,
-                                sizes: updatedProduct.sizes
-                            }
-                        }
-                        return colorway;
-                    })
-                };
-            }
-            return product;
-        });
-
-        setEditProducts(updatedGroupProducts);
-    }
-
-    // add products in bulk
-    const addProducts = async () => {
-        //setSuccessUpload(false);
-        if (productData.length > 0) {
-            const response = await fetch('api/product/add_multiple', {
-                method: "POST",
-                body: JSON.stringify(productData)
-            });
-
-            const result = await response.json();
-            console.log(result);
-
-            if (result) {
-                showNotification({
-                    title: 'Successfully submitted!',
-                    message: 'The products have been successfully uploaded.'
-                  });
-                //setSuccessUpload(true);
-                setGroupedProducts([]);
-            }
-        }
-    }
-
-    // edit Products
-    const updateProducts = async () => {
-        //setSuccessUpload(false);
-        if (editProductData.length > 0) {
-            const response = await fetch('api/product/edit_product', {
-                method: "POST",
-                body: JSON.stringify(editProductData)
-            });
-
-            const result = await response.json();
-            console.log(result);
-
-            if (result) {
-                showNotification({
-                    title: 'Successfully submitted!',
-                    message: 'The products have been successfully edited.'
-                  });
-                //setSuccessUpload(true);
-                setGroupedProducts([]);
-            }
-        }
-    }
-
-    // adds single product
-    //@ts-expect-error eslint throws an error here
-    const addProduct = async (values) => {
-        console.log('Submitting form with values:', values);
-        const response = await fetch('api/product/add_product', {
-            method: "POST",
-            body: JSON.stringify(values)
-        })
-
-        const result = await response.json()
-        console.log(result);
-    }
-
-    // groups the products based on their model, colorway, and size/stock/price
-    const groupProducts = (products: Product[]) => {
-        let modelId = 0;
-        let colorwayId = 0;
-        let sizeId = 0;
-
-        const grouped: { [Model: string]: GroupedProduct } = {};
-        products.forEach((product) => {
-            const { SKU, Model, Brand, Colorway, Size, Stock, Price } = product;
-
-            // initialize the model if it doesnt exist
-            if (!grouped[Model]) {
-                grouped[Model] = {
-                    id: modelId,
-                    model: Model,
-                    brand: Brand,
-                    colorways: []
-                };   
-                
-                modelId += 1;
-            };
-            
-            // find the shoe of the same brand with matching colorway
-            let colorwayGroup = grouped[Model].colorways.find(shoe => shoe.colorway === Colorway);
-            // if the group of the colorways doesnt exist, create it
-            if (!colorwayGroup) { 
-                colorwayGroup = { id: colorwayId, colorway: Colorway, sizes: [] };
-                grouped[Model].colorways.push(colorwayGroup);
-                colorwayId += 1;
-            }
-
-            // assign the individual sku, size, stock, and price for the shoe
-            colorwayGroup.sizes.push({
-                id: sizeId,
-                SKU: SKU,
-                size: Size,
-                stock: Stock,
-                price: Price 
-            });
-            sizeId += 1;
-        });      
-        return Object.values(grouped);      
-    }
-
-    const convertGroupedProducts = () => {
-        const products: Product[] = [];
-        groupedProducts.forEach((product) => {
-            const { model, brand, colorways } = product;
-
-            colorways.forEach((color) => {
-                const { colorway, sizes } = color;
-
-                sizes.forEach((shoeSize) => {
-                    const { SKU, size, stock, price } = shoeSize;
-
-                    const tempProduct: Product = {
-                        SKU: SKU,
-                        Model: model,
-                        Brand: brand,
-                        Stock: stock,
-                        Price: price,
-                        Size: size,
-                        Colorway: colorway
-                    };
-
-                    products.push(tempProduct);
-                });
-            });
-        });
-
-        setProductData(products);
-    }
-
-    const convertEditProducts = () => {
-        const products: Product[] = [];
-        editProducts.forEach((product) => {
-            const { model, brand, colorways } = product;
-
-            colorways.forEach((color) => {
-                const { colorway, sizes } = color;
-
-                sizes.forEach((shoeSize) => {
-                    const { SKU, size, stock, price } = shoeSize;
-
-                    const tempProduct: Product = {
-                        SKU: SKU,
-                        Model: model,
-                        Brand: brand,
-                        Stock: stock,
-                        Price: price,
-                        Size: size,
-                        Colorway: colorway
-                    };
-
-                    products.push(tempProduct);
-                });
-            });
-        });
-
-        setEditProductData(products);
-    }
-
-
-    useEffect(() => {
-        convertGroupedProducts();
-        //console.log(productData);
-    }, [groupedProducts]);
-
-    useEffect(() => {
-        convertEditProducts();
-        //console.log(productData);
-    }, [editProducts]);
-
-    
-    useEffect(() => {
-        const getProduct = async() => {
-            const response = await fetch('api/product/get_product', {
-                method: "GET"
-            })
-    
-            const result = await response.json();
-            console.log(result.product);
-            if (result.product.length != 0) {
-                const products = groupProducts(result.product);
-                setEditProducts(products);
-                console.log(products);
-            }
-        }
-        getProduct();
-    }, [groupedProducts]);
-    
-    
+      };
 
     return ( 
-        <div className="relative z-50 mb-[18rem] bg-white overflow-hidden flex flex-col items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-            <form onSubmit={productForm.onSubmit(addProduct)}>
-                <p>add product</p>
+        <div className="relative z-50 mb-[18rem] bg-white overflow-hidden flex flex-col items-center justify-items-center min-h-screen p-8 pb-20 sm:p-20">            
+            <div className='flex flex-row items-center justify-end w-full'>
+                <SearchBar/>
+            </div>
 
-                <TextInput 
-                    label="sku"
-                    placeholder="product sku" 
-                    {...productForm.getInputProps('SKU')}
-                />
+            <div className='flex flex-row items-center justify-between w-full'>
 
-                <TextInput 
-                    label="name"
-                    placeholder="product name" 
-                    {...productForm.getInputProps('Model')}
-                />
-
-                <TextInput 
-                    label="vendor"
-                    placeholder="product vendor" 
-                    {...productForm.getInputProps('Brand')}
-                />
-
-                <NumberInput
-                    label="stock"
-                    placeholder="product stock"
-                    {...productForm.getInputProps('Stock')}
-                />
-
-                <NumberInput
-                    label="price"
-                    placeholder="product price"
-                    {...productForm.getInputProps('Price')}
-                />
-
-                <TextInput
-                    label="size"
-                    placeholder="product size"
-                    {...productForm.getInputProps('Size')}
-                />
-
-                <TextInput
-                    label="colorway"
-                    placeholder="product colorway"
-                    {...productForm.getInputProps('Colorway')}
-                />
+            {value == "1" && <p style={epilogue.style} className="text-[72px] font-bold">Add Item</p> }
+            {value == "2" && <p style={epilogue.style} className="text-[72px] font-bold">Edit Inventory</p> }
+            {value == "3" && <p style={epilogue.style} className="text-[72px] font-bold">Delete Item</p> }
                 
-                <Button type="submit" variant="filled">Submit product</Button>
-            </form>
+                <div className='flex flex-row items-center justify-center w-[42rem] h-[6rem] rounded-xl bg-[#38bdba] pt-[1rem] -mr-[6rem] mt-[5rem]'>
 
-            <FileButton accept={acceptableCSVFileTypes} onChange={onFileChangeHandler}>
-                {(props) => <Button {...props}>Upload CSV File</Button>}
-            </FileButton>
+                    <Tabs variant="none" value={value} onChange={setValue}>
+                        <Tabs.List ref={setRootRef} className={classes.list}>
+                            <Tabs.Tab style={epilogue.style} value="1" ref={setControlRef('1')} className={classes.tab}>
+                                Add
+                            </Tabs.Tab>
+                            <Tabs.Tab style={epilogue.style} value="2" ref={setControlRef('2')} className={classes.tab}>
+                                Edit
+                            </Tabs.Tab>
+                            <Tabs.Tab style={epilogue.style} value="3" ref={setControlRef('3')} className={classes.tab}>
+                                Delete
+                            </Tabs.Tab>
 
-            <div className='w-full h-auto flex flex-row flex-wrap'>
-                {groupedProducts &&
-                    groupedProducts.map((product, productIndex) =>
-                    product.colorways.map((colorway, colorwayIndex) => (
-                        <CardTest
-                            key={`${productIndex}-${colorwayIndex}`} // Unique key using product and colorway index
-                            cardProduct={{
-                                modelId: product.id,
-                                model: product.model,
-                                brand: product.brand,
-                                colorId: colorway.id,
-                                colorway: colorway.colorway,
-                                sizes: colorway.sizes,
-                            }}
-                            onChange={handleChange}
-                            editable={false}
-                            setHasErrors={setHasErrors}
-                        />
-                    ))
-                )}
+                            <FloatingIndicator
+                                target={value ? controlsRefs[value] : null}
+                                parent={rootRef}
+                                className={classes.indicator}
+                            />
+                        </Tabs.List>
+                    </Tabs>
+                
+                </div>
             </div>
             
-            {hasErrors ? (
-                <Tooltip label="Fix all errors before submitting.">   
-                    <Button variant='filled' onClick={addProducts} disabled={hasErrors}>Submit Products</Button>
-                </Tooltip>
-            ) : (
-                <Button variant='filled' onClick={addProducts} disabled={hasErrors}>Submit Products</Button>
-            )}
+            {value == "1" && 
+                <AddItem onSuccess={handleNotification}/>
+            }
             
-
-            <p>Edit Products</p>
-            <div className='w-full h-auto flex flex-row flex-wrap'>
-                {editProducts &&
-                    editProducts.map((product, productIndex) =>
-                    product.colorways.map((colorway, colorwayIndex) => (
-                        <CardTest
-                            key={`${productIndex}-${colorwayIndex}`} // Unique key using product and colorway index
-                            cardProduct={{
-                                modelId: product.id,
-                                model: product.model,
-                                brand: product.brand,
-                                colorId: colorway.id,
-                                colorway: colorway.colorway,
-                                sizes: colorway.sizes,
-                            }}
-                            onChange={handleEditChange}
-                            editable={true}
-                            setHasErrors={setHasErrorsEdit}
-                        />
-                    ))
-                )}
-            </div>
-
-            {hasErrors ? (
-                <Tooltip label="Fix all errors before submitting.">   
-                    <Button variant='filled' onClick={updateProducts} disabled={hasErrorsEdit}>Submit Edited Products</Button>
-                </Tooltip>
-            ) : (
-                <Button variant='filled' onClick={updateProducts} disabled={hasErrorsEdit}>Submit Edited Products</Button>
-            )}
+            {value === "2" && 
+                <>
+                    <BrandSelect/>
+                    <EditItems onSuccess={handleNotification}/>
+                </>
+            }
 
             
             <Notifications></Notifications>

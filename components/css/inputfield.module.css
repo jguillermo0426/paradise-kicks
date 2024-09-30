@@ -1,0 +1,33 @@
+.input {
+    border-radius: 4px;
+    background-color: #EDEDED;
+    border: none;
+    height: 2.5rem;
+}
+
+.inputWrapper input:focus {
+    border-color: #38bdba;
+    outline: 1px solid #38bdba;
+}
+
+.numberInput {
+    width: 50px;
+    height: 40px;
+    text-align: center;
+    border-radius: 0;
+    color: black;
+    border-bottom: 1px solid #38bdba;
+    border-top: 1px solid #38bdba;
+}
+
+.numberWrapper {
+    width: 50px;
+    height: 40px;
+    border-radius: 0;
+    border: none;
+}
+
+.regularNumberInput input:focus{
+    border-color: #38bdba;
+    outline: 1px solid #38bdba;
+}

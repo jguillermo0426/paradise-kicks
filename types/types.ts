@@ -6,6 +6,8 @@ export type Product = {
     Price: number;
     Size: string;
     Colorway: string;
+    image_link: string;
+    available: boolean;
 };
 
 export type GroupedProduct = {
@@ -27,6 +29,7 @@ export type Size = {
     size: string;
     stock: number;
     price: number;
+    image_link: string;
 }
 
 export type CardProduct = {

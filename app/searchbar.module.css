@@ -1,0 +1,14 @@
+/* SearchBar.css */
+.inputWrapper {
+    border-color: #38bdba;
+  }
+  
+  .inputWapper input {
+    border: 1px solid #38bdba;
+  }
+  
+  .inputWrapper input:focus {
+    border-color: #ff5733;
+    outline: 2px solid #ff5733;
+    outline-offset: -2px;
+  }

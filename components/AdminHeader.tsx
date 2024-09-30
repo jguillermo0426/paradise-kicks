@@ -32,24 +32,41 @@ export default function Header({navSelected}: SelectedProps) {
                 </div>
 
                 <div className='flex flex-row w-[40rem] items-center justify-center'>
-                    <Anchor href="/product-listing" underline='never'>
-                        <div className={`group ${navSelected === "Catalogue" ? selected : unselected}`}>
-                            <p style={epilogue.style} className={navSelected === "Catalogue" ? selectedText : unselectedText}>Catalogue</p>
+                    <Anchor href="/admin-dashboard/inventory" underline='never'>
+                        <div className={`group ${navSelected === "Inventory" ? selected : unselected}`}>
+                            <p style={epilogue.style} className={navSelected === "Inventory" ? selectedText : unselectedText}>Inventory</p>
                         </div>
                     </Anchor>
 
                     <Anchor href="/" underline='never'>
-                        <div className={navSelected === "Contact" ? selected : unselected}>
-                            <p style={epilogue.style} className={navSelected === "Contact" ? selectedText : unselectedText}>Contact</p>
+                        <div className={navSelected === "Orders" ? selected : unselected}>
+                            <p style={epilogue.style} className={navSelected === "Orders" ? selectedText : unselectedText}>Orders</p>
+                        </div>
+                    </Anchor>
+
+                    <Anchor href="/" underline='never'>
+                        <div className={navSelected === "Brands" ? selected : unselected}>
+                            <p style={epilogue.style} className={navSelected === "Brands" ? selectedText : unselectedText}>Brands</p>
+                        </div>
+                    </Anchor>
+
+                    <Anchor href="/" underline='never'>
+                        <div className={navSelected === "FAQs" ? selected : unselected}>
+                            <p style={epilogue.style} className={navSelected === "FAQs" ? selectedText : unselectedText}>FAQs</p>
+                        </div>
+                    </Anchor>
+
+                    <Anchor href="/" underline='never'>
+                        <div className={navSelected === "Feedback" ? selected : unselected}>
+                            <p style={epilogue.style} className={navSelected === "Feedback" ? selectedText : unselectedText}>Feedback</p>
                         </div>
                     </Anchor>
                 </div>
 
                 <div className="flex flex-row items-center justify-end pt-20 pb-3 border-2 border-none -mt-16 w-[40rem]">
                     <div className='m-5 flex items-center justify-center w-6 h-6 rounded-full bg-black'>
-                        <p style={epilogue.style} className='p-0 m-0 font-normal text-white text-sm'>0</p>
                     </div>
-                    <p style={epilogue.style} className='font-semibold text-black text-xl'>My Cart</p>
+                    <p style={epilogue.style} className='font-semibold text-black text-xl'>Logout</p>
                 </div>
             </div>    
             <Divider className='w-full' color="#474747"/>
