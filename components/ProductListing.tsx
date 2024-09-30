@@ -90,7 +90,7 @@ export default function ProductListing() {
                 <SimpleGrid cols={3} spacing="xl">
                 {groupedProducts && 
                     groupedProducts.map((product, productIndex) => 
-                        <Link key={productIndex} href={`/productListing/${product.model}`}>
+                        <Link key={productIndex} href={`/product-listing/${product.model}`}>
                             <Card key={productIndex} className="py-4">
                                 <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
                                     <h4 className="font-bold text-large">{product.model}</h4>
