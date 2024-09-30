@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Paradise Kicks Admin Dashboard",
+    title: "Paradise Kicks",
 };
 
 
-  export default function InventoryLayout({
+  export default function ProductLayout({
     children,
   }: Readonly<{
     children: React.ReactNode;

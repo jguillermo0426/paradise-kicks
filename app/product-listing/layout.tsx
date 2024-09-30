@@ -1,22 +1,21 @@
 import type { Metadata } from "next";
-import "../globals.css";
-import '@mantine/core/styles.css';
-import '@mantine/notifications/styles.css';
 
 export const metadata: Metadata = {
-  title: "Paradise Kicks Products"
+    title: "Paradise Kicks",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="en">
-      <body>
-        {children}
-      </body>
-    </html>
-  );
-}
+
+  export default function ListingLayout({
+    children,
+  }: Readonly<{
+    children: React.ReactNode;
+  }>) {
+    return (
+      <html lang="en">
+        <body>
+          {children}
+        </body>
+      </html>
+    );
+  }
+  
