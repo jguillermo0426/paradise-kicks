@@ -17,30 +17,20 @@ type CardTestProps = {
     cardProduct: CardProduct;
     onChange: (updatedProduct: CardProduct) => void;
     editable: boolean;
-    setHasErrors: Dispatch<SetStateAction<boolean>>;
 }
 
 
-export default function CardTest({cardProduct, onChange, editable, setHasErrors}: CardTestProps) {
-    const { modelId, colorId, model, brand, colorway, sizes } = cardProduct;
+export default function CardTest({cardProduct, onChange, editable}: CardTestProps) {
+    const { colorId, model, brand, colorway, sizes } = cardProduct;
 
     const [totalStock, setTotalStock] = useState(0);
     const [opened, { open, close }] = useDisclosure(false);
-    const [editedSizes, setEditedSizes] = useState({ modelId, colorId, model, brand, colorway, sizes });
+    const [editedSizes, setEditedSizes] = useState({ colorId, model, brand, colorway, sizes });
     const [same, setSame] = useState<boolean[]>([]);
     const [invalidStock, isInvalidStock] = useState<boolean[]>([]);
     const [invalidPrice, isInvalidPrice] = useState<boolean[]>([]);
-
     useEffect(() => {
-        const skuHasErrors = sizes.some((item, index) => same[index]); // Check if any SKU is a duplicate
-        const emptyFields = sizes.some((item) => !item.SKU || !item.size || item.price < 1 || item.stock < 1); // Check for empty fields
-        const emptyModel = !model || !brand || !colorway;
-
-        setHasErrors(skuHasErrors || emptyFields || emptyModel); // Set error state based on conditions
-    }, [sizes, model, brand, colorway]);
-
-    useEffect(() => {
-        setEditedSizes({ modelId, colorId, model, brand, colorway, sizes });
+        setEditedSizes({ colorId, model, brand, colorway, sizes });
     }, [cardProduct]);
 
     useEffect(() => {
@@ -178,8 +168,6 @@ export default function CardTest({cardProduct, onChange, editable, setHasErrors}
                                 withErrorStyles={invalidStock[key]}
                             />
                         </div>
-
-                        <ImageUpload/>
                     </div>
                 ))}
             </Modal>
@@ -192,7 +180,7 @@ export default function CardTest({cardProduct, onChange, editable, setHasErrors}
                             src={sizes[0].image_link}
                             h={100}
                             w={100}
-                            fallbackSrc="https://placehold.co/600x400?text=Placeholder"
+                            fallbackSrc="/placeholder.svg"
                             fit="cover"
                         />
                    </div>

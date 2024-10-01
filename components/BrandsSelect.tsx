@@ -10,7 +10,7 @@ export default function BrandSelect() {
                     h={30}
                     w="auto"
                     fit="contain"
-                    fallbackSrc="https://placehold.co/600x400?text=Placeholder"
+                    fallbackSrc="/placeholder.svg"
                 />
             </div>
 
@@ -20,7 +20,7 @@ export default function BrandSelect() {
                     h={30}
                     w="auto"
                     fit="contain"
-                    fallbackSrc="https://placehold.co/600x400?text=Placeholder"
+                    fallbackSrc="/placeholder.svg"
                 />
             </div>
 
@@ -30,7 +30,7 @@ export default function BrandSelect() {
                     h={30}
                     w="auto"
                     fit="contain"
-                    fallbackSrc="https://placehold.co/600x400?text=Placeholder"
+                    fallbackSrc="/placeholder.svg"
                 />
             </div>
 
@@ -40,7 +40,7 @@ export default function BrandSelect() {
                     h={40}
                     w="auto"
                     fit="contain"
-                    fallbackSrc="https://placehold.co/600x400?text=Placeholder"
+                    fallbackSrc="/placeholder.svg"
                 />
             </div>
 
@@ -50,7 +50,7 @@ export default function BrandSelect() {
                     h={30}
                     w="auto"
                     fit="contain"
-                    fallbackSrc="https://placehold.co/600x400?text=Placeholder"
+                    fallbackSrc="/placeholder.svg"
                 />
             </div>
         </div>

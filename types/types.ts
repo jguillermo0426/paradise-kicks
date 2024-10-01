@@ -6,9 +6,10 @@ export type Product = {
     Price: number;
     Size: string;
     Colorway: string;
-    image_link: string;
+    image_link?: string;
     available: boolean;
 };
+
 
 export type GroupedProduct = {
     id: number;
@@ -23,17 +24,24 @@ export type Colorway = {
     sizes: Size[];
 }
 
+export type GroupedColor = {
+    id: number;
+    colorway: string;
+    model: string;
+    brand: string;
+    sizes: Size[];
+}
+
 export type Size = {
     id: number;
     SKU: string;
     size: string;
     stock: number;
     price: number;
-    image_link: string;
+    image_link?: string;
 }
 
 export type CardProduct = {
-    modelId: number;
     model: string;
     brand: string;
     colorId: number;
