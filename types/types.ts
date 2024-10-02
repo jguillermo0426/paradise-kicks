@@ -24,11 +24,18 @@ export type Colorway = {
     sizes: Size[];
 }
 
-export type GroupedColor = {
+export type GroupedProduct2 = {
     id: number;
-    colorway: string;
     model: string;
     brand: string;
+    colorways: Colorway2[];
+}
+
+export type Colorway2 = {
+    id: number;
+    model: string;
+    brand: string;
+    colorway: string;
     sizes: Size[];
 }
 
@@ -42,6 +49,8 @@ export type Size = {
 }
 
 export type CardProduct = {
+    cardId: string;
+    modelId: number;
     model: string;
     brand: string;
     colorId: number;
