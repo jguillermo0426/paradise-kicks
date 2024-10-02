@@ -1,17 +1,17 @@
 'use client'
 
+import AdminHeader from "@/components/AdminHeader";
 import Footer from "@/components/Footer";
-import Header from "@/components/Header";
-import SetStatus from "@/components/SetStatus";
+import Orders from "@/components/Status/Orders";
 import { MantineProvider, Paper } from "@mantine/core"
 
 export default function Inventory() {
 
     return(
         <MantineProvider>
-            <Header navSelected="None"/>
+            <AdminHeader navSelected="None"/>
             <Paper shadow="xl">
-                <SetStatus/>
+                <Orders/>
             </Paper>
             <Footer/>
         </MantineProvider>

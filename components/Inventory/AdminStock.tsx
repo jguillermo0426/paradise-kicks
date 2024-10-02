@@ -1,21 +1,18 @@
 'use client'
-import { useForm } from '@mantine/form';
-import { TextInput, Button, NumberInput, FileButton, Tooltip, FloatingIndicator, Tabs } from '@mantine/core';
-import { useEffect, useState } from 'react';
-import { CardProduct, GroupedProduct, Product } from '@/types/types';
+import { FloatingIndicator, Tabs } from '@mantine/core';
+import { useState } from 'react';
 import { Notifications, showNotification } from '@mantine/notifications';
-import Papa from 'papaparse';
-import InventoryCard from '@/components/InventoryCard';
-import SearchBar from './SearchBar';
+import SearchBar from '../SearchBar';
 import { Epilogue } from 'next/font/google';
-import classes from './css/tabs.module.css';
-import BrandSelect from './BrandsSelect';
+import classes from '../css/tabs.module.css';
+import BrandSelect from '../BrandsSelect';
 import AddItem from './AddItem';
 import EditItems from './EditItems';
+import DeleteItems from './DeleteItems';
 
 const epilogue = Epilogue({
-  subsets: ['latin'],
-  display: 'swap',
+    subsets: ['latin'],
+    display: 'swap',
 })
 
 
@@ -28,26 +25,26 @@ export default function AdminStock() {
         controlsRefs[val] = node;
         setControlsRefs(controlsRefs);
     };
-    
+
     const handleNotification = () => {
         showNotification({
-          title: 'Successfully submitted!',
-          message: 'The products have been successfully submitted.',
+            title: 'Successfully submitted!',
+            message: 'The products have been successfully submitted.',
         });
-      };
+    };
 
-    return ( 
-        <div className="relative z-50 mb-[18rem] bg-white overflow-hidden flex flex-col items-center justify-items-center min-h-screen p-8 pb-20 sm:p-20">            
+    return (
+        <div className="relative z-50 mb-[18rem] bg-white overflow-hidden flex flex-col items-center justify-items-center min-h-screen p-8 pb-20 sm:p-20">
             <div className='flex flex-row items-center justify-end w-full'>
-                <SearchBar/>
+                <SearchBar />
             </div>
 
             <div className='flex flex-row items-center justify-between w-full'>
 
-            {value == "1" && <p style={epilogue.style} className="text-[72px] font-bold">Add Item</p> }
-            {value == "2" && <p style={epilogue.style} className="text-[72px] font-bold">Edit Inventory</p> }
-            {value == "3" && <p style={epilogue.style} className="text-[72px] font-bold">Delete Item</p> }
-                
+                {value == "1" && <p style={epilogue.style} className="text-[72px] font-bold">Add Item</p>}
+                {value == "2" && <p style={epilogue.style} className="text-[72px] font-bold">Edit Inventory</p>}
+                {value == "3" && <p style={epilogue.style} className="text-[72px] font-bold">Delete Item</p>}
+
                 <div className='flex flex-row items-center justify-center w-[42rem] h-[6rem] rounded-xl bg-[#38bdba] pt-[1rem] -mr-[6rem] mt-[5rem]'>
 
                     <Tabs variant="none" value={value} onChange={setValue}>
@@ -69,24 +66,30 @@ export default function AdminStock() {
                             />
                         </Tabs.List>
                     </Tabs>
-                
+
                 </div>
             </div>
-            
-            {value == "1" && 
-                <AddItem onSuccess={handleNotification}/>
+
+            {value == "1" &&
+                <AddItem onSuccess={handleNotification} />
             }
-            
-            {value === "2" && 
+
+            {value === "2" &&
                 <>
-                    <BrandSelect/>
-                    <EditItems onSuccess={handleNotification}/>
+                    <BrandSelect />
+                    <EditItems onSuccess={handleNotification} />
                 </>
             }
 
-            
+            {value === "3" &&
+                <>
+                    <BrandSelect />
+                    <DeleteItems onSuccess={handleNotification} />
+                </>
+            }
+
             <Notifications></Notifications>
-            
+
         </div>
     );
 }

@@ -1,18 +1,15 @@
 'use client'
-import { CardProduct, GroupedProduct, Product } from '@/types/types';
-import { Dispatch, SetStateAction, useRef, useState } from 'react';
+import { Product } from '@/types/types';
+import { useRef, useState } from 'react';
 import { Epilogue } from 'next/font/google';
-import { TextInput, NumberInput, Button, FileButton, Tooltip, Image, ActionIcon, NumberInputHandlers, LoadingOverlay, Box } from '@mantine/core';
+import { NumberInput, Button, Image, ActionIcon, NumberInputHandlers, LoadingOverlay, Box } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { showNotification } from '@mantine/notifications';
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import Papa from 'papaparse';
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from '@/firebase/firebase';
-import InventoryCard from './InventoryCard';
-import InputField from './InputField';
-import styles from "./css/inputfield.module.css"
-import { useDisclosure } from '@mantine/hooks';
+import InputField from '../InputField';
+import styles from "../css/inputfield.module.css";
 
 const epilogue = Epilogue({
     subsets: ['latin'],

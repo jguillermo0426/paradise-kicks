@@ -1,16 +1,16 @@
 'use client'
 import { CardProduct } from '@/types/types';
-import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { useDisclosure } from '@mantine/hooks';
-import { Modal, TextInput, NumberInput, Button, Image, Divider } from '@mantine/core';
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
+import { Button, Divider, Image, Modal, NumberInput, TextInput } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import { Epilogue } from 'next/font/google';
-import InputField from './InputField';
-import ImageUpload from './ImageUpload';
+import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'react';
+import ImageUpload from '../ImageUpload';
+import InputField from '../InputField';
 
 const epilogue = Epilogue({
-  subsets: ['latin'],
-  display: 'swap',
+    subsets: ['latin'],
+    display: 'swap',
 })
 
 type CardTestProps = {
@@ -21,7 +21,7 @@ type CardTestProps = {
 }
 
 
-export default function CardTest({cardProduct, onChange, editable, setHasErrors}: CardTestProps) {
+export default function CardTest({ cardProduct, onChange, editable, setHasErrors }: CardTestProps) {
     const { cardId, modelId, colorId, model, brand, colorway, sizes } = cardProduct;
 
     const [totalStock, setTotalStock] = useState(0);
@@ -50,11 +50,11 @@ export default function CardTest({cardProduct, onChange, editable, setHasErrors}
         });
         setTotalStock(tempStock);
     }, [sizes]);
-    
+
     // handles changing the value of the field for numbers
     const handleChangeNumber = (e: string | number, index: number, toChange: string) => {
         const updatedSizes = [...editedSizes.sizes];
-        
+
         updatedSizes[index] = {
             ...updatedSizes[index],
             [toChange]: Number(e)
@@ -87,18 +87,18 @@ export default function CardTest({cardProduct, onChange, editable, setHasErrors}
             isInvalidPrice(priceErrArray);
         }
 
-        onChange({...editedSizes, sizes: updatedSizes})
+        onChange({ ...editedSizes, sizes: updatedSizes })
     }
 
     // handles changing the value of the field for strings
     const handleChangeString = (e: ChangeEvent<HTMLInputElement>, index: number, toChange: string) => {
         const updatedSizes = [...editedSizes.sizes];
-        
+
         updatedSizes[index] = {
             ...updatedSizes[index],
             [toChange]: e.target.value
-        }  
-           
+        }
+
         setEditedSizes({
             ...editedSizes,
             sizes: updatedSizes
@@ -112,28 +112,28 @@ export default function CardTest({cardProduct, onChange, editable, setHasErrors}
             setSame(skuErrorArray);
         }
 
-        onChange({...editedSizes, sizes: updatedSizes});
+        onChange({ ...editedSizes, sizes: updatedSizes });
     }
 
     const handleChangeCard = (e: ChangeEvent<HTMLInputElement>, toChange: string) => {
         const newValue = e.target.value;
-    
+
         // Create a new object based on editedSizes
         const updatedSizes = { ...editedSizes, [toChange]: newValue };
-    
+
         // Update local state first
         setEditedSizes(updatedSizes);
-        
+
         // Call onChange with the updated values
         onChange(updatedSizes);
     }
-    
 
-    return(
+
+    return (
         <>
-            <Modal 
-                opened={opened} 
-                onClose={close} 
+            <Modal
+                opened={opened}
+                onClose={close}
                 title={`Edit Inventory: ${model} - ${colorway}`}
                 centered
                 size="auto"
@@ -142,7 +142,7 @@ export default function CardTest({cardProduct, onChange, editable, setHasErrors}
                     <div className='flex flex-row' key={key}>
                         <div className='flex flex-col h-11 m-5'>
                             <p>SKU</p>
-                            <TextInput 
+                            <TextInput
                                 value={item.SKU}
                                 disabled={editable}
                                 onChange={(e) => handleChangeString(e, key, "SKU")}
@@ -153,7 +153,7 @@ export default function CardTest({cardProduct, onChange, editable, setHasErrors}
 
                         <div className='flex flex-col m-5'>
                             <p>Size</p>
-                            <TextInput 
+                            <TextInput
                                 value={item.size}
                                 onChange={(e) => handleChangeString(e, key, "size")}
                             />
@@ -161,7 +161,7 @@ export default function CardTest({cardProduct, onChange, editable, setHasErrors}
 
                         <div className='flex flex-col m-5'>
                             <p>Price</p>
-                            <NumberInput 
+                            <NumberInput
                                 value={item.price}
                                 onChange={(e) => handleChangeNumber(e, key, "price")}
                                 error={invalidPrice[key] ? "Price is not a valid number" : ""}
@@ -171,7 +171,7 @@ export default function CardTest({cardProduct, onChange, editable, setHasErrors}
 
                         <div className='flex flex-col m-5'>
                             <p>Stock</p>
-                            <NumberInput 
+                            <NumberInput
                                 value={item.stock}
                                 onChange={(e) => handleChangeNumber(e, key, "stock")}
                                 error={invalidStock[key] ? "Stock is not a valid number" : ""}
@@ -179,15 +179,15 @@ export default function CardTest({cardProduct, onChange, editable, setHasErrors}
                             />
                         </div>
 
-                        <ImageUpload/>
+                        <ImageUpload />
                     </div>
                 ))}
             </Modal>
 
             <div className='w-[19rem] h-[31rem] border-solid border-2 rounded-lg border-black mx-10 my-10 px-5 py-12'>
                 <div className='flex flex-row w-full'>
-                   <div className='w-[100px] h-[100px] mr-5'>
-                    <Image
+                    <div className='w-[100px] h-[100px] mr-5'>
+                        <Image
                             radius="md"
                             src={sizes[0].image_link}
                             h={100}
@@ -195,13 +195,13 @@ export default function CardTest({cardProduct, onChange, editable, setHasErrors}
                             fallbackSrc="https://placehold.co/600x400?text=Placeholder"
                             fit="cover"
                         />
-                   </div>
+                    </div>
 
                     <div className='flex flex-col w-[100px]'>
                         <p style={epilogue.style} className="font-semibold text-[16px]">Total Stock</p>
                         <p style={epilogue.style} className="font-normal text-[14]">{totalStock}</p>
 
-                        <Divider size="sm" className='w-full my-3'/>
+                        <Divider size="sm" className='w-full my-3' />
 
                         <div className='flex flex-row items-start justify-start'>
                             <PencilSquareIcon className="h-5 w-5 text-[#38bdba] mr-3" />
@@ -211,30 +211,30 @@ export default function CardTest({cardProduct, onChange, editable, setHasErrors}
                 </div>
 
                 <p style={epilogue.style} className="font-semibold text-[16px] mt-5">Model</p>
-                <InputField 
+                <InputField
                     itemValue={editedSizes.model}
                     onChange={(e) => handleChangeCard(e, "model")}
                     className="font-normal text-[14px]"
                 />
 
                 <p style={epilogue.style} className="font-semibold text-[16px] mt-5">Brand</p>
-                <InputField 
+                <InputField
                     itemValue={editedSizes.brand}
                     onChange={(e) => handleChangeCard(e, "brand")}
                     className="font-normal text-[14px]"
                 />
 
                 <p style={epilogue.style} className="font-semibold text-[16px] mt-5">Colorway:</p>
-                <InputField 
+                <InputField
                     itemValue={editedSizes.colorway}
                     onChange={(e) => handleChangeCard(e, "colorway")}
                     className="font-normal text-[14px]"
                 />
 
                 <div className='w-full flex justify-center items-center my-5'>
-                    <Button 
+                    <Button
                         variant='outline'
-                        styles = {{
+                        styles={{
                             root: {
                                 border: "solid 2px #177F7D",
                                 color: "#177F7D",

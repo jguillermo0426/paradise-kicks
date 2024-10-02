@@ -1,9 +1,8 @@
-import { Product, GroupedProduct, CardProduct, GroupedProduct2 } from "@/types/types";
-import { Button, Pagination, Tooltip } from "@mantine/core";
-import { showNotification } from "@mantine/notifications";
+import { Product, CardProduct, GroupedProduct2 } from "@/types/types";
+import { Button, Pagination } from "@mantine/core";
 import { useState, useEffect } from "react";
 import InventoryCard from "./InventoryCard";
-import classes from './css/tabs.module.css';
+import classes from '../css/tabs.module.css';
 
 type editItemProps = {
     onSuccess: () => void
@@ -173,7 +172,7 @@ export default function EditItems({onSuccess}: editItemProps) {
     
     useEffect(() => {
         const getProduct = async() => {
-            const response = await fetch(`/api/product/get_product?page=${activePage}`, {
+            const response = await fetch(`/api/product/get_products?page=${activePage}`, {
                 method: "GET"
             })
     
@@ -226,17 +225,17 @@ export default function EditItems({onSuccess}: editItemProps) {
             />
             
             <Button className='mt-8'
-                    onClick={updateProducts}
-                    styles = {{
-                        root: {
-                            backgroundColor: "#38BDBA",
-                            color: "white",
-                            width: '10vw',
-                        }
-                    }}
-                >
-                    Save Edited Items
-                </Button>
+                onClick={updateProducts}
+                styles = {{
+                    root: {
+                        backgroundColor: "#38BDBA",
+                        color: "white",
+                        width: '10vw',
+                    }
+                }}
+            >
+                Save Edited Items
+            </Button>
         </div>
     );
 }
