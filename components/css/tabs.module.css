@@ -19,3 +19,8 @@
     height: 4.25rem;
     color: white;
   }
+
+  .pageRoot {
+    --pagination-active-bg: #38BDBA; /* Set your active background color */
+    --pagination-active-color: #ffffff; /* Set your active text color */
+}

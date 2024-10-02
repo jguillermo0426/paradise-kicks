@@ -3,6 +3,7 @@ import { Button, Pagination, Tooltip } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { useState, useEffect } from "react";
 import InventoryCard from "./InventoryCard";
+import classes from './css/tabs.module.css';
 
 type editItemProps = {
     onSuccess: () => void
@@ -16,7 +17,6 @@ export default function EditItems({onSuccess}: editItemProps) {
     const [hasErrorsEdit, setHasErrorsEdit] = useState<boolean>(false);
     const [totalPages, setTotalPages] = useState<number>(1);
     const [activePage, setPage] = useState(1);
-    const [paginatedProducts, setPaginatedProducts] = useState<GroupedProduct2[]>([]);
     
     const handleEditChange = (updatedProduct: CardProduct) => {
         const updatedGroupProducts = editProducts.map((product) => {
@@ -51,7 +51,7 @@ export default function EditItems({onSuccess}: editItemProps) {
             return product;
         });
     
-        setPaginatedProducts(updatedGroupProducts);
+        setEditProducts(updatedGroupProducts);
     };
     
     
@@ -86,13 +86,46 @@ export default function EditItems({onSuccess}: editItemProps) {
                 //setSuccessUpload(true);
                 setGroupedProducts([]);
                 setEditProducts(sortByModel(groupedProducts));
-                setPaginatedProducts(sortByModel(groupedProducts));
             }
         }
     }
 
+    const convertEditProducts = () => {
+        const products: Product[] = [];
+        editProducts.forEach((product) => {
+            const { model, brand, colorways } = product;
 
-    // groups the products based on their model, colorway, and size/stock/price
+            colorways.forEach((color) => {
+                const { colorway, sizes } = color;
+
+                sizes.forEach((shoeSize) => {
+                    const { SKU, size, stock, price, image_link } = shoeSize;
+
+                    const tempProduct: Product = {
+                        SKU: SKU,
+                        Model: model,
+                        Brand: brand,
+                        Stock: stock,
+                        Price: price,
+                        Size: size,
+                        Colorway: colorway,
+                        image_link: image_link,
+                        available: true
+                    };
+
+                    products.push(tempProduct);
+                });
+            });
+        });
+
+        setEditProductData(products);
+    }
+
+    useEffect(() => {
+        convertEditProducts();
+        //console.log(productData);
+    }, [editProducts]);
+
     const groupProducts = (products: Product[]) => {
         let modelId = 0;
         let colorwayId = 0;
@@ -137,86 +170,29 @@ export default function EditItems({onSuccess}: editItemProps) {
         return Object.values(grouped);      
     }
 
-    const convertEditProducts = () => {
-        const products: Product[] = [];
-        paginatedProducts.forEach((product) => {
-            const { model, brand, colorways } = product;
-
-            colorways.forEach((color) => {
-                const { colorway, sizes } = color;
-
-                sizes.forEach((shoeSize) => {
-                    const { SKU, size, stock, price, image_link } = shoeSize;
-
-                    const tempProduct: Product = {
-                        SKU: SKU,
-                        Model: model,
-                        Brand: brand,
-                        Stock: stock,
-                        Price: price,
-                        Size: size,
-                        Colorway: colorway,
-                        image_link: image_link,
-                        available: true
-                    };
-
-                    products.push(tempProduct);
-                });
-            });
-        });
-
-        setEditProductData(products);
-    }
-
-    useEffect(() => {
-        convertEditProducts();
-        //console.log(productData);
-    }, [paginatedProducts]);
-
-    useEffect(() => {
-        const paginateData = () => {
-            const limit = 12; // Number of items per page
-            const start = (activePage - 1) * limit;
-
-            let end = 0
-            if (activePage === Math.ceil(editProducts.length / limit)) {
-                end = start + limit;
-            } else {
-                end = start + limit - 1;
-            }
-           
-            // Calculate total pages based on editProducts length and limit
-            setTotalPages(Math.ceil(editProducts.length / limit));
-    
-            // Set paginated products based on current active page
-            setPaginatedProducts(editProducts.slice(start, end));
-        };
-    
-        paginateData();
-    }, [activePage, editProducts]); 
-
     
     useEffect(() => {
         const getProduct = async() => {
-            const response = await fetch('/api/product/get_product', {
+            const response = await fetch(`/api/product/get_product?page=${activePage}`, {
                 method: "GET"
             })
     
             const result = await response.json();
-            console.log(result.product);
-            if (result.product.length != 0) {
-                const products = groupProducts(result.product);
+            console.log(result);
+            if (result.products.length != 0) {
+                const products = groupProducts(result.products);
                 setEditProducts(sortByModel(products));
+                setTotalPages(Math.ceil(result.totalProducts/12));
             }
         }
         getProduct();
-    }, [groupedProducts]);
+    }, [groupedProducts, activePage]);
 
     return(
         <div className='w-full flex flex-col items-center justify-center'>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-                {paginatedProducts &&
-                    paginatedProducts.map((product, productIndex) =>
+                {editProducts &&
+                    editProducts.map((product, productIndex) =>
                     product.colorways.map((colorway, colorwayIndex) => (
                         <InventoryCard
                             key={`${productIndex}-${colorwayIndex}`} // Unique key using product and colorway index
@@ -237,7 +213,17 @@ export default function EditItems({onSuccess}: editItemProps) {
                 )}
             </div>
 
-            <Pagination value={activePage} total={totalPages} onChange={setPage} />
+            <Pagination 
+                value={activePage} 
+                total={totalPages} 
+                onChange={(page) => {{
+                    setPage(page);
+                    window.scrollTo(0,0);
+                }}} 
+                classNames={{
+                    root: classes.pageRoot
+                }}
+            />
             
             <Button className='mt-8'
                     onClick={updateProducts}
