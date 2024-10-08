@@ -1,5 +1,4 @@
 'use client'
-
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ProductDetails from "@/components/ProductDetails";
@@ -10,12 +9,11 @@ export default function ProductDetailsPage({
 }: {
     params: { productModel: string };
 }) {
-    const productModel = decodeURIComponent(params.productModel);
     return(
         <MantineProvider>
             <Header navSelected="Catalogue"/>
             <Paper shadow="xl">
-                <ProductDetails productModel={productModel}/>
+                <ProductDetails productModel={params.productModel}/>
             </Paper>
             <Footer/>
         </MantineProvider>
