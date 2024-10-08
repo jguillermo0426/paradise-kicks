@@ -6,7 +6,10 @@ export type Product = {
     Price: number;
     Size: string;
     Colorway: string;
+    image_link?: string;
+    available: boolean;
 };
+
 
 export type GroupedProduct = {
     id: number;
@@ -21,15 +24,32 @@ export type Colorway = {
     sizes: Size[];
 }
 
+export type GroupedProduct2 = {
+    id: number;
+    model: string;
+    brand: string;
+    colorways: Colorway2[];
+}
+
+export type Colorway2 = {
+    id: number;
+    model: string;
+    brand: string;
+    colorway: string;
+    sizes: Size[];
+}
+
 export type Size = {
     id: number;
     SKU: string;
     size: string;
     stock: number;
     price: number;
+    image_link?: string;
 }
 
 export type CardProduct = {
+    cardId: string;
     modelId: number;
     model: string;
     brand: string;
@@ -40,14 +60,28 @@ export type CardProduct = {
 
 
 export type Order = {
-    id: number;
+    id: string;
     time_ordered: Date;
     status: string;
     total_price: number;
     customer_name: string;
+    address: string;
+    contact_no: string;
+    email: string;
+    payment_method: string;
+    proof_link?: string;
 }
 
 export type ProductsOrdered = {
-    order_id: number;
-    product_sku: number;
+    orders: Order;
+    product: Product;
+}
+
+export type OrderHistory = {
+    history_id: number;
+    order_id: string;
+    updated_at: string;
+    order_status: {
+        status: string;
+    };
 }
