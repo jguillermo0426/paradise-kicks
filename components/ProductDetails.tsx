@@ -91,7 +91,7 @@ export default function ProductDetails({productModel}: ProductProps) {
     return (
         <MantineProvider>
             <div className='flex flex-col items-center m-4 relative z-50 mb-[18rem] bg-white overflow-hidden min-h-screen'>
-                <h4 className="font-bold text-large">{productModel}</h4>
+                <h4 className="font-bold text-large">{decodeURIComponent(productModel)}</h4>
                 <p className="font-bold">Colorways: </p>
                 {groupedProducts && 
                     groupedProducts.map((product) => 
