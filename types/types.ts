@@ -1,3 +1,5 @@
+import { NumberInputStylesNames } from "@mantine/core";
+
 export type Product = {
     SKU: string;
     Model: string;
@@ -69,17 +71,24 @@ export type Order = {
     contact_no: string;
     email: string;
     payment_method: string;
-    proof_link?: string;
+}
+
+export type PaymentTerms = {
+    id: number;
+    payment_term: string;
+    description?: string;
 }
 
 export type ProductsOrdered = {
-    orders: Order;
-    product: Product;
+    order: Order;
+    payment_terms: PaymentTerms;
+    products: Product[];
 }
 
 export type OrderHistory = {
     history_id: number;
     order_id: string;
+    product_id: string;
     updated_at: string;
     order_status: {
         status: string;

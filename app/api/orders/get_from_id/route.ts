@@ -2,21 +2,22 @@ import { createClient } from "@/utils/supabase/server";
 
 export async function POST(req: Request) {
     const supabase = createClient();
-    const id = await req.json();
+    const ids = await req.json();
     
-    const { data: order, error } = await supabase
-        .from('products_ordered')
+    const { data: orders, error } = await supabase
+        .from('orders')
         .select(`
-            orders!products_ordered_order_id_fkey (*),
-            product (*)
+            *,
+            products_ordered!products_ordered_order_id_fkey (*),
+            payment_terms (*)
         `)
-        .eq('order_id', id);
+        .in('id', ids);
 
     if (error) {
         console.error("Error fetching data: ", error);
     } else {
-        console.log("orders: ", order);
-        console.log(order);
-        return Response.json({order});
+        console.log("orders: ", orders);
+        console.log(orders);
+        return Response.json({orders});
     }
 }

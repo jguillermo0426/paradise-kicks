@@ -9,7 +9,7 @@ export default function Inventory() {
 
     return(
         <MantineProvider>
-            <AdminHeader navSelected="None"/>
+            <AdminHeader navSelected="Orders"/>
             <Paper shadow="xl">
                 <Orders/>
             </Paper>

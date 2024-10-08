@@ -76,14 +76,14 @@ export default function AdminStock() {
 
             {value === "2" &&
                 <>
-                    <BrandSelect />
+                    {/* <BrandSelect /> */}
                     <EditItems onSuccess={handleNotification} />
                 </>
             }
 
             {value === "3" &&
                 <>
-                    <BrandSelect />
+                    {/* <BrandSelect /> */}
                     <DeleteItems onSuccess={handleNotification} />
                 </>
             }
