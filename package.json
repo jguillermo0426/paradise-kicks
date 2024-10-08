@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroicons/react": "^2.1.5",
     "@mantine/core": "^7.13.0",
     "@mantine/dates": "^7.13.0",
     "@mantine/form": "^7.12.2",
@@ -18,18 +19,22 @@
     "@supabase/ssr": "^0.5.1",
     "@supabase/supabase-js": "^2.45.4",
     "dayjs": "^1.11.13",
+    "firebase": "^10.13.2",
+    "heroicons": "^2.1.5",
     "init": "^0.1.2",
     "next": "14.2.9",
     "papaparse": "^5.4.1",
     "react": "^18",
     "react-dom": "^18",
-    "supabase": "^1.192.5"
+    "supabase": "^1.192.5",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/papaparse": "^5.3.14",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/uuid": "^10.0.0",
     "eslint": "^8",
     "eslint-config-next": "14.2.9",
     "postcss": "^8",

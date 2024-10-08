@@ -14,7 +14,9 @@ export async function POST(req: Request) {
                 Stock: formData.Stock,
                 Price: formData.Price,
                 Size: formData.Size,
-                Colorway: formData.Colorway
+                Colorway: formData.Colorway,
+                image_link: formData.image_link,
+                available: true
             },
         ])
         .select()

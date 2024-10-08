@@ -1,45 +1,32 @@
 'use client'
-import { useForm } from '@mantine/form';
-import { SimpleGrid, MantineProvider, TextInput, Button, NumberInput, FileButton, Tooltip } from '@mantine/core';
+import { SimpleGrid, MantineProvider } from '@mantine/core';
 import { useEffect, useState } from 'react';
-import { CardProduct, GroupedProduct, Product, Colorway } from '@/types/types';
-import { Notifications, showNotification } from '@mantine/notifications';
-import Papa from 'papaparse';
-import CardTest from '@/components/CardTest';
+import { GroupedProduct, Product } from '@/types/types';
 import {Card, CardHeader, CardBody, Image} from "@nextui-org/react";
+import Link from 'next/link';
 
 
 
-export default function ProductDetails({ 
-    params,
-}: {
-    params: { productModel: string };
-}) {
-    const [product, setProduct] = useState<Product[]>([]);
+export default function ProductListing() {
     const [groupedProducts, setGroupedProducts] = useState<GroupedProduct[]>([]);
-    const productModel = decodeURIComponent(params.productModel);
-
 
     useEffect(() => {
-        const getModel = async() => {
-            const response = await fetch(`/api/product/get_model?model=${productModel}`, {
+        const getProducts = async() => {
+            const response = await fetch('api/product/get_product', {
                 method: "GET"
-            });
+            })
 
             const result = await response.json();
-            console.log(result.model);
-            if (result.model.length != 0) {
-                const product = groupProducts(result.model);
-                setGroupedProducts(product);
-                console.log(product);
-            }
-            else {
-                console.log(productModel + "not found")
+            console.log(result.product);
+            if (result.product.length != 0) {
+                const products = groupProducts(result.product);
+                setGroupedProducts(products);
+                console.log(products);
             }
         }
-        getModel();
+        getProducts();
     }, []);
-    
+
 
     // groups the products based on their model, colorway, and size/stock/price
     const groupProducts = (products: Product[]) => {
@@ -98,22 +85,32 @@ export default function ProductDetails({
 
     return (
         <MantineProvider>
-            <div className='flex flex-col items-center m-4'>
-                <h4 className="font-bold text-large">{productModel}</h4>
-                <p className="font-bold">Colorways: </p>
+            <div className='flex flex-col items-center m-4 relative z-50 mb-[18rem] bg-white overflow-hidden min-h-screen'>
+                <p>Products</p>
+                <SimpleGrid cols={3} spacing="xl">
                 {groupedProducts && 
                     groupedProducts.map((product, productIndex) => 
-                        product.colorways.map((colorway, colorwayIndex) => 
-                            <div className='flex flex-col justify-left'>
-                                <p className="font-bold" key={colorwayIndex}>{colorway.colorway}</p>
-                                <p>Available Sizes:</p>
-                                {colorway.sizes.map((size, sizeIndex) =>
-                                    <p key={sizeIndex}>{size.size} - {size.stock} stocks - P{size.price}</p>
+                        <Link key={productIndex} href={`/product-details/${product.model}`}>
+                            <Card key={productIndex} className="py-4">
+                                <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
+                                    <h4 className="font-bold text-large">{product.model}</h4>
+                                    <small className="text-default-500">{getTotalStocks(product)} stocks left</small>
+                                </CardHeader>
+                                <CardBody className="overflow-visible py-2">
+                                    <Image
+                                        alt="Card background"
+                                        className="object-cover rounded-xl"
+                                        src="https://static.nike.com/a/images/t_PDP_936_v1/f_auto,q_auto:eco/af53d53d-561f-450a-a483-70a7ceee380f/W+NIKE+DUNK+LOW.png"
+                                        width={270} />
+                                <p className="text-tiny font-bold">Colors: </p>
+                                {product.colorways.map((colorway, colorwayIndex) => 
+                                    <small key={colorwayIndex} className="text-default-500">{colorway.colorway}</small>
                                 )}
-                            </div>
-                        )
-                    )
-                }
+                                </CardBody>
+                            </Card>
+                        </Link>
+                )}
+                </SimpleGrid>
             </div>
         </MantineProvider>
     );

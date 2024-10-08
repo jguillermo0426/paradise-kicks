@@ -16,7 +16,9 @@ export async function POST(req: Request) {
             Stock: item.Stock,
             Price: item.Price,
             Size: item.Size,
-            Colorway: item.Colorway
+            Colorway: item.Colorway,
+            image_link: item.image_link,
+            available: true
         })
     })
     const { data } = await supabase
