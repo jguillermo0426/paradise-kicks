@@ -1,11 +1,12 @@
 'use client'
 
 import { Product } from "@/types/types";
-import { Button, Modal } from "@mantine/core";
+import { Button, Modal, Pagination } from "@mantine/core";
 import { useEffect, useState } from "react";
 import CardDelete from "./CardDelete";
 import { useDisclosure } from "@mantine/hooks";
 import { Epilogue } from 'next/font/google';
+import classes from '../css/tabs.module.css';
 
 const epilogue = Epilogue({
   subsets: ['latin'],
@@ -20,10 +21,12 @@ export default function DeleteItems({onSuccess}: deleteItemProps) {
     const [selectedItems, setSelectedItems] = useState<Product[]>([]);
     const [products, setProducts] = useState<Product[]>([]);
     const [opened, { open, close }] = useDisclosure(false);
+    const [totalPages, setTotalPages] = useState<number>(1);
+    const [activePage, setPage] = useState(1);
     const isChecked = (product: Product) => selectedItems.includes(product);
 
     const getItems = async() => {
-        const response = await fetch(`/api/product/get_product`, {
+        const response = await fetch(`/api/product/get_single_products?page=${activePage}`, {
             method: "GET"
         });
 
@@ -32,12 +35,14 @@ export default function DeleteItems({onSuccess}: deleteItemProps) {
 
         if (result.product.length != 0) {
             setProducts(result.product);
+            console.log(result.count);
+            setTotalPages(Math.ceil(result.count/12));
         }
     }
 
     useEffect(() => {
         getItems();
-    }, []);
+    }, [activePage]);
 
     const handleCheckboxChange = (product: Product) => {
         setSelectedItems(prevSelected => {
@@ -142,6 +147,18 @@ export default function DeleteItems({onSuccess}: deleteItemProps) {
                         />
                     ))}
                 </div>
+
+                <Pagination 
+                    value={activePage} 
+                    total={totalPages} 
+                    onChange={(page) => {{
+                        setPage(page);
+                        window.scrollTo(0,0);
+                    }}} 
+                    classNames={{
+                        root: classes.pageRoot
+                    }}
+                />
             </div>
         </>
     );

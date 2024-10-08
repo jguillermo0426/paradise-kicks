@@ -18,7 +18,8 @@ export async function POST(req: Request) {
                 Price: product.Price,
                 Stock: product.Stock,
                 Colorway: product.Colorway,
-                Size: product.Size
+                Size: product.Size,
+                image_link: product.image_link
             })
             .eq('SKU', product.SKU);      
         products.push(data as unknown as Product);  

@@ -3,6 +3,8 @@ import { Button, Pagination } from "@mantine/core";
 import { useState, useEffect } from "react";
 import InventoryCard from "./InventoryCard";
 import classes from '../css/tabs.module.css';
+import { storage } from "@/firebase/firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 type editItemProps = {
     onSuccess: () => void
@@ -18,26 +20,24 @@ export default function EditItems({onSuccess}: editItemProps) {
     const [activePage, setPage] = useState(1);
     
     const handleEditChange = (updatedProduct: CardProduct) => {
-        const updatedGroupProducts = editProducts.map((product) => {
-            // Check if any colorway matches the updatedProduct's cardId
+        const updatedGroupProducts = editProducts.map((product) => {   
             const updatedColorways = product.colorways.map((colorway) => {
-                // Create a cardId for the current colorway
+                
                 const currentCardId = `${product.id}-${colorway.id}`;
     
-                // If the current colorway matches the updatedProduct's cardId, update it
                 if (currentCardId === updatedProduct.cardId) {
                     return {
                         ...colorway,
                         colorway: updatedProduct.colorway,
                         model: updatedProduct.model,
                         brand: updatedProduct.brand,
-                        sizes: updatedProduct.sizes, // Update sizes directly from updatedProduct
+                        image_file: updatedProduct.image_file,
+                        sizes: updatedProduct.sizes, 
                     };
                 }
-                return colorway; // Return unchanged colorway
+                return colorway;
             });
     
-            // Return the updated product only if it matches the modelId
             if (product.id === updatedProduct.modelId) {
                 return {
                     ...product,
@@ -46,14 +46,11 @@ export default function EditItems({onSuccess}: editItemProps) {
                     colorways: updatedColorways,
                 };
             }
-            // If the product doesn't match, return it unchanged
             return product;
         });
     
         setEditProducts(updatedGroupProducts);
     };
-    
-    
     
     const sortByModel = (products: GroupedProduct2[]) => {
         return products.sort((a, b) => {
@@ -70,11 +67,11 @@ export default function EditItems({onSuccess}: editItemProps) {
 
     // edit Products
     const updateProducts = async () => {
-        //setSuccessUpload(false);
-        if (editProductData.length > 0) {
+        const productData = await convertEditProducts();
+        if (productData.length > 0) {
             const response = await fetch('/api/product/edit_product', {
                 method: "POST",
-                body: JSON.stringify(editProductData)
+                body: JSON.stringify(productData)
             });
 
             const result = await response.json();
@@ -89,17 +86,31 @@ export default function EditItems({onSuccess}: editItemProps) {
         }
     }
 
-    const convertEditProducts = () => {
+    const convertEditProducts = async () => { // Make this function async
         const products: Product[] = [];
-        editProducts.forEach((product) => {
+        for (const product of editProducts) {
             const { model, brand, colorways } = product;
-
-            colorways.forEach((color) => {
-                const { colorway, sizes } = color;
-
-                sizes.forEach((shoeSize) => {
-                    const { SKU, size, stock, price, image_link } = shoeSize;
-
+    
+            for (const color of colorways) {
+                const { colorway, sizes, image_file } = color;
+    
+                let image_link = "";
+                if (image_file) {
+                    const filename = `${colorway}-${model}`;
+                    const storageRef = ref(storage, `images/${filename}`);
+                    try {
+                        await uploadBytes(storageRef, image_file);
+                        image_link = await getDownloadURL(storageRef);
+                        console.log('File uploaded successfully! URL: ', image_link);
+                    } catch (error) {
+                        console.error("Error uploading file: ", error);
+                        alert('File upload failed.');
+                    }
+                }
+    
+                for (const shoeSize of sizes) {
+                    const { SKU, size, stock, price } = shoeSize;
+    
                     const tempProduct: Product = {
                         SKU: SKU,
                         Model: model,
@@ -108,22 +119,18 @@ export default function EditItems({onSuccess}: editItemProps) {
                         Price: price,
                         Size: size,
                         Colorway: colorway,
-                        image_link: image_link,
+                        image_link: image_link, // Use the image_link from the upload
                         available: true
                     };
-
+    
                     products.push(tempProduct);
-                });
-            });
-        });
-
-        setEditProductData(products);
+                }
+            }
+        }
+    
+        return products;
     }
-
-    useEffect(() => {
-        convertEditProducts();
-        //console.log(productData);
-    }, [editProducts]);
+    
 
     const groupProducts = (products: Product[]) => {
         let modelId = 0;
@@ -150,7 +157,7 @@ export default function EditItems({onSuccess}: editItemProps) {
             let colorwayGroup = grouped[Model].colorways.find(shoe => shoe.colorway === Colorway);
             // if the group of the colorways doesnt exist, create it
             if (!colorwayGroup) { 
-                colorwayGroup = { id: colorwayId, colorway: Colorway, sizes: [], model: Model, brand: Brand };
+                colorwayGroup = { id: colorwayId, image_link: image_link, colorway: Colorway, sizes: [], model: Model, brand: Brand };
                 grouped[Model].colorways.push(colorwayGroup);
                 colorwayId += 1;
             }
@@ -161,8 +168,7 @@ export default function EditItems({onSuccess}: editItemProps) {
                 SKU: SKU,
                 size: Size,
                 stock: Stock,
-                price: Price,
-                image_link: image_link
+                price: Price
             });
             sizeId += 1;
         });      
@@ -203,9 +209,10 @@ export default function EditItems({onSuccess}: editItemProps) {
                                 colorId: colorway.id,
                                 colorway: colorway.colorway,
                                 sizes: colorway.sizes,
+                                image_file: colorway.image_file,
+                                image_link: colorway.image_link
                             }}
                             onChange={handleEditChange}
-                            editable={true}
                             setHasErrors={setHasErrorsEdit}
                         />
                     ))

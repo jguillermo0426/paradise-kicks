@@ -38,6 +38,8 @@ export type Colorway2 = {
     model: string;
     brand: string;
     colorway: string;
+    image_link?: string;
+    image_file?: File;
     sizes: Size[];
 }
 
@@ -47,7 +49,6 @@ export type Size = {
     size: string;
     stock: number;
     price: number;
-    image_link?: string;
 }
 
 export type CardProduct = {
@@ -58,6 +59,8 @@ export type CardProduct = {
     colorId: number;
     colorway: string;
     sizes: Size[];
+    image_file?: File;
+    image_link?: string;
 }
 
 

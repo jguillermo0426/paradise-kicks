@@ -9,10 +9,12 @@ type InputFieldProps = {
     onChange?: ChangeEventHandler<HTMLInputElement>;
     className: string;
     placeholder?: string;
+    error?: React.ReactNode;
+    withErrorStyles?: boolean | undefined;
 }
 
 
-export default function InputField({ itemValue, onChange, className, placeholder } : InputFieldProps) {
+export default function InputField({ itemValue, onChange, className, placeholder, error, withErrorStyles } : InputFieldProps) {
     return(
         <main>
            <TextInput
@@ -24,6 +26,8 @@ export default function InputField({ itemValue, onChange, className, placeholder
                 value={itemValue}
                 onChange={onChange}
                 placeholder={placeholder}
+                error={error}
+                withErrorStyles={withErrorStyles}
             />
         </main>
     );
