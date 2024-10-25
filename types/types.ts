@@ -83,17 +83,31 @@ export type PaymentTerms = {
 }
 
 export type ProductsOrdered = {
-    order: Order;
+    id: string;
+    time_ordered: Date;
+    total_price: number;
+    customer_name: string;
+    address: string;
+    contact_no: string;
+    email: string;
+    courier: string;
+    payment_method: string;
     payment_terms: PaymentTerms;
-    products: Product[];
+    products_ordered: ProductQty[];
+    status_history: OrderHistory[];
+}
+
+export type ProductQty = {
+    product_id: Product;
+    quantity: number;
 }
 
 export type OrderHistory = {
     history_id: number;
     order_id: string;
-    product_id: string;
-    updated_at: string;
+    updated_at: Date;
     order_status: {
+        id: number;
         status: string;
     };
 }

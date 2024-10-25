@@ -149,7 +149,7 @@ export default function CardTest({ cardProduct, onChange, setHasErrors }: CardTe
             console.log('no file uploaded');
         }
     };
-    
+    const handlersRefs = sizes.map(() => useRef<NumberInputHandlers>(null));
 
     return (
         <>
@@ -160,8 +160,7 @@ export default function CardTest({ cardProduct, onChange, setHasErrors }: CardTe
                 radius={20}
                 size="auto"
             >
-                {sizes.map((item, key) => {
-                    const handlersRef = useRef<NumberInputHandlers>(null); // Move this inside the map
+                {sizes.map((item, key) => { 
                     return (
                         <div className='flex flex-col items-start justify-center p-8' key={key}>
                             <div className='flex flex-row items-center justify-between w-full'>
@@ -183,7 +182,7 @@ export default function CardTest({ cardProduct, onChange, setHasErrors }: CardTe
                                         style={epilogue.style}
                                         size={40}
                                         variant="default"
-                                        onClick={() => handlersRef.current?.decrement()}
+                                        onClick={() => handlersRefs[key].current?.decrement()}
                                         className="font-bold text-[20px]"
                                     >
                                         -
@@ -196,7 +195,7 @@ export default function CardTest({ cardProduct, onChange, setHasErrors }: CardTe
                                         hideControls
                                         style={epilogue.style}
                                         className="font-bold text-[20px]"
-                                        handlersRef={handlersRef} // Assign individual ref
+                                        handlersRef={handlersRefs[key]} // Assign individual ref
                                         value={item.stock}
                                         step={1}
                                         min={0}
@@ -219,7 +218,7 @@ export default function CardTest({ cardProduct, onChange, setHasErrors }: CardTe
                                         size={40}
                                         variant="default"
                                         className="font-bold text-[20px]"
-                                        onClick={() => handlersRef.current?.increment()}
+                                        onClick={() => handlersRefs[key].current?.increment()}
                                     >
                                         +
                                     </ActionIcon>

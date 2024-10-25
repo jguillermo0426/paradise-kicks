@@ -8,8 +8,9 @@ export async function POST(req: Request) {
         .from('orders')
         .select(`
             *,
-            products_ordered!products_ordered_order_id_fkey (*),
-            payment_terms (*)
+            products_ordered!products_ordered_order_id_fkey (quantity, product_id(*)),
+            payment_terms (*),
+            status_history(*, order_status!status_history_status_id_fkey(*))
         `)
         .in('id', ids);
 
