@@ -39,3 +39,10 @@ body {
   font-weight: 650;
   font-style: normal;
 }
+
+@font-face {
+  font-family: "EpilogueMedium";
+  src: url(../app/fonts/Epilogue-VariableFont_wght.ttf) format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
