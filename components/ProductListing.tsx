@@ -112,13 +112,13 @@ export default function ProductListing() {
 
     return (
         <MantineProvider>
-            <div className="flex flex-col items-center m-20 relative z-50 mb-[18rem] bg-white overflow-hidden min-h-screen">
-                <div className="flex flex-col items-start justify-start w-[1500px]">
+            <div className="flex flex-col items-center m-20 relative z-50 mb-[18rem] bg-white overflow-x-hidden min-h-screen">
+                <div className="flex flex-col items-start w-full">
                     <div className="w-full flex flex-row items-end justify-start ml-4">
                         <p className="text-[64px]" style={{ fontFamily: "EpilogueBold", letterSpacing: "-3px", marginRight: "10px" }}>Catalogue</p> 
                         <p className="text-[16px]" style={{ fontFamily: "EpilogueBold", letterSpacing: "-1px", marginRight: "auto", paddingBottom: "23px" }}>All items</p> 
                     </div>
-                    <div className="w-full flex flex-wrap items-center justify-start">
+                    <div className="w-full flex flex-wrap items-start justify-start">
                     {groupedProducts && 
                         groupedProducts.map((product, productIndex) => 
                             <Link key={productIndex} href={`/product-details/${product.model}`}>
