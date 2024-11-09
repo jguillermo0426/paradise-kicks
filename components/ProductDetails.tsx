@@ -221,108 +221,150 @@ export default function ProductDetails({productModel}: ProductProps) {
         <MantineProvider>
             <div className='flex flex-col items-center m-4 relative z-50 mb-[18rem] bg-white overflow-hidden min-h-screen'>
                 {loading ? (
-                    <div className="flex flex-row justify-center w-full mx-8 my-10 p-6">
-                        <div className="flex flex-col items-center w-[55%] max-w-[724px] mx-8">
-                            <Skeleton height={764} radius="xl" />
-                        </div>
-                        <div className="flex flex-col w-[45%] justify-start ml-6 mx-4">
-                            <Skeleton height={20} width={250} radius="md" mb={8} />
-                            <Skeleton height={60} width={250} radius="lg" mb={8} />
-                            <Skeleton height={20} width={150} radius="md" mb={40} />
+                    <><div className="ml-[55px] mt-10" style={{ marginRight: "auto" }}>
+                        <Button
+                            component="a"
+                            href="/product-listing"
+                            variant="filled"
+                            fullWidth
+                            color="black"
+                            radius="md"
+                            styles={{
+                                root: {
+                                    height: "46px",
+                                    width: "207px"
+                                },
+                                label: {
+                                    fontFamily: "Epilogue",
+                                    fontWeight: 700,
+                                    fontSize: "20px",
+                                    color: "#EDEDED"
+                                }
+                            }}
+                        >
+                            Return
+                        </Button>
+                    </div><div className="flex flex-row justify-center w-full mx-8 my-4 p-6">
+                            <div className="flex flex-col items-center w-[55%] max-w-[724px] mx-8">
+                                <Skeleton height={764} radius="xl" />
+                            </div>
+                            <div className="flex flex-col w-[45%] justify-start ml-6 mx-4">
+                                <Skeleton height={20} width={250} radius="md" mb={8} />
+                                <Skeleton height={60} width={250} radius="lg" mb={8} />
+                                <Skeleton height={20} width={150} radius="md" mb={40} />
 
-                            <Skeleton height={20} width={400} radius="md" mb={8} />
-                            <Skeleton height={20} width={400} radius="md" mb={8} />
-                            <Skeleton height={20} width={400} radius="md" mb={8} />
-                        </div>
-                    </div> 
+                                <Skeleton height={20} width={400} radius="md" mb={8} />
+                                <Skeleton height={20} width={400} radius="md" mb={8} />
+                                <Skeleton height={20} width={400} radius="md" mb={8} />
+                            </div>
+                        </div></> 
                 ) : (
                     groupedProducts && 
                         groupedProducts.map((product, productIndex) => 
-                            <div key={productIndex} className="flex flex-row justify-center w-full mx-8 my-10 p-6">
-
+                            <>
+                            <div className="ml-[55px] mt-10" style={{ marginRight: "auto" }}>
+                                <Button
+                                component="a"
+                                href="/product-listing"
+                                variant="filled"
+                                fullWidth
+                                color="black"
+                                radius="md"
+                                styles={{
+                                    root: {
+                                        height: "46px",
+                                        width: "207px"
+                                    },
+                                    label: {
+                                        fontFamily: "Epilogue",
+                                        fontWeight: 700,
+                                        fontSize: "20px",
+                                        color: "#EDEDED"
+                                    }
+                                }}
+                                >
+                                    Return
+                                </Button>
+                            </div>
+                            <div key={productIndex} className="flex flex-row justify-center w-full mx-8 my-2 p-6">
                                 {/* PRODUCT PICTURES */}
                                 <div className="flex flex-col items-center w-[55%] max-w-[724px] mx-8">
-                                    <Carousel 
-                                        withIndicators 
+                                    <Carousel
+                                        withIndicators
                                         height={764}
                                         loop
                                     >
-                                        {product.colorways.map((colorway, colorwayIndex) => 
-                                            <Carousel.Slide key={colorwayIndex}>
-                                                <Image
+                                        {product.colorways.map((colorway, colorwayIndex) => <Carousel.Slide key={colorwayIndex}>
+                                            <Image
                                                 alt="Card background"
                                                 className="object-cover rounded-xl"
                                                 src={colorway.image_link
                                                     ? colorway.image_link
-                                                    : "https://static.nike.com/a/images/t_PDP_936_v1/f_auto,q_auto:eco/af53d53d-561f-450a-a483-70a7ceee380f/W+NIKE+DUNK+LOW.png"
-                                                }
+                                                    : "https://static.nike.com/a/images/t_PDP_936_v1/f_auto,q_auto:eco/af53d53d-561f-450a-a483-70a7ceee380f/W+NIKE+DUNK+LOW.png"}
                                                 width={724}
-                                                height={764}
-                                                />
-                                                <p>Hello</p>
-                                            </Carousel.Slide>
+                                                height={764} />
+                                            <p>Hello</p>
+                                        </Carousel.Slide>
                                         )}
                                     </Carousel>
                                 </div>
 
                                 {/* PRODUCT DETAILS */}
                                 <div className="flex flex-col w-[45%] justify-start mx-4">
-                                    <p className="text-[20px] text-[#474747]" style={{ fontFamily: "Epilogue", marginBottom: "8px"}}>
+                                    <p className="text-[20px] text-[#474747]" style={{ fontFamily: "Epilogue", marginBottom: "8px" }}>
                                         {selectedColorway === ''
                                             ? getTotalStocks(product)
-                                            : stock
-                                        } stocks left
+                                            : stock} stocks left
                                     </p>
                                     <p className="text-[72px]" style={{ fontFamily: "EpilogueBold", letterSpacing: "-3px", lineHeight: "1.00" }}>{product.model}</p>
                                     <p className="text-[24px]" style={{ fontFamily: "EpilogueMedium" }}>
-                                        {selectedColorway === "" && SKU === "" 
-                                            ? `${startingPriceDisplay(product)}` 
+                                        {selectedColorway === "" && SKU === ""
+                                            ? `${startingPriceDisplay(product)}`
                                             : selectedColorway !== "" && SKU === ""
-                                            ? `${getColorwayPriceRange(product)}` 
-                                            : `₱${price.toString()}` 
-                                        }
+                                                ? `${getColorwayPriceRange(product)}`
+                                                : `₱${price.toString()}`}
                                     </p>
-                                    
+
                                     <Divider my="md" />
-                                    <p className="text-[20px]" style={{ fontFamily: "Epilogue", letterSpacing: "-1px" }}>Color</p>   
+                                    <p className="text-[20px]" style={{ fontFamily: "Epilogue", letterSpacing: "-1px" }}>Color</p>
                                     <div className="w-full flex flex-wrap items-center justify-start mb-8">
-                                        {product.colorways.map((colorway, colorwayIndex) =>
-                                            <Button
-                                            key={colorwayIndex}
-                                            onClick={() => handleColorwayChange(product, colorway.colorway)}
-                                            className="h-[58px] px-4 mr-2 mb-2 rounded-md"
-                                            style={colorway.colorway === selectedColorway ? buttonStyles.selected : buttonStyles.unselected}
-                                            styles={{
-                                                root: {
-                                                    backgroundColor: "white",
-                                                    height: "58px"
-                                                },
-                                                label: {
-                                                    fontFamily: "Epilogue",
-                                                    fontWeight: 100,
-                                                    color: "black"
-                                                }
-                                            }}
-                                            >
-                                                <p className="text-[14px]" style={{ fontFamily: "Epilogue" }}>{colorway.colorway}</p>
-                                            </Button>
+                                        {product.colorways.map((colorway, colorwayIndex) => 
+                                        <Button
+                                        key={colorwayIndex}
+                                        variant="default"
+                                        onClick={() => handleColorwayChange(product, colorway.colorway)}
+                                        style={colorway.colorway === selectedColorway ? buttonStyles.selected : buttonStyles.unselected}
+                                        styles={{
+                                            root: {
+                                                height: "58px",
+                                                width: "150px"
+                                            },
+                                            label: {
+                                                fontFamily: "Epilogue",
+                                                fontWeight: 100,
+                                                color: "black"
+                                            }
+                                        }}
+                                        >
+                                            <p className="text-[14px]" style={{ fontFamily: "Epilogue" }}>{colorway.colorway}</p>
+                                        </Button>
                                         )}
                                     </div>
 
-                                    <p className="text-[20px]" style={{ fontFamily: "Epilogue", letterSpacing: "-1px" }}>Size</p>                          
+                                    <p className="text-[20px]" style={{ fontFamily: "Epilogue", letterSpacing: "-1px" }}>Size</p>
                                     <div className="w-full flex flex-wrap items-center justify-start mb-8">
-                                    {selectedColorway === "" ? (
-                                        product.colorways.map((colorway) =>
-                                            colorway.sizes.map((size, sizeIndex) => (
-                                                <Button 
-                                                key={sizeIndex} 
-                                                onClick={() => handleSizeChange(product, size.SKU)} 
-                                                className="w-[111px] h-[58px] flex flex-col items-center justify-center mr-2 mb-2 rounded-md" 
+                                        {selectedColorway === "" ? (
+                                            product.colorways.map((colorway) => colorway.sizes.map((size, sizeIndex) => (
+                                                <Button
+                                                key={sizeIndex}
+                                                variant="default"
+                                                onClick={() => handleSizeChange(product, size.SKU)}
                                                 style={size.SKU === SKU ? buttonStyles.selected : buttonStyles.unselected}
                                                 styles={{
                                                     root: {
                                                         backgroundColor: "white",
-                                                        height: "58px"
+                                                        height: "58px",
+                                                        width: "130px"
                                                     },
                                                     label: {
                                                         fontFamily: "Epilogue",
@@ -334,36 +376,35 @@ export default function ProductDetails({productModel}: ProductProps) {
                                                     <p className="text-[16px]" style={{ fontFamily: "Epilogue" }}>{size.size}</p>
                                                 </Button>
                                             ))
-                                        )
-                                    ) : (
-                                        product.colorways
-                                            .filter(colorway => colorway.colorway === selectedColorway) 
-                                            .map((colorway) =>
-                                                colorway.sizes.map((size, sizeIndex) => (
+                                            )
+                                        ) : (
+                                            product.colorways
+                                                .filter(colorway => colorway.colorway === selectedColorway)
+                                                .map((colorway) => colorway.sizes.map((size, sizeIndex) => (
                                                     <Button
-                                                    key={sizeIndex}
-                                                    onClick={() => handleSizeChange(product, size.SKU)}
-                                                    className="w-[111px] h-[58px] flex flex-col items-center justify-center mr-2 mb-2 rounded-md"
-                                                    style={size.SKU === SKU ? buttonStyles.selected : buttonStyles.unselected}
-                                                    styles={{
-                                                        root: {
-                                                            backgroundColor: "white",
-                                                            height: "58px"
-                                                        },
-                                                        label: {
-                                                            fontFamily: "Epilogue",
-                                                            fontWeight: 100,
-                                                            color: "black"
-                                                        }
-                                                    }}
+                                                        key={sizeIndex}
+                                                        onClick={() => handleSizeChange(product, size.SKU)}
+                                                        className="w-[111px] h-[58px] flex flex-col items-center justify-center mr-2 mb-2 rounded-md"
+                                                        style={size.SKU === SKU ? buttonStyles.selected : buttonStyles.unselected}
+                                                        styles={{
+                                                            root: {
+                                                                backgroundColor: "white",
+                                                                height: "58px",
+                                                                width: "130px"
+                                                            },
+                                                            label: {
+                                                                fontFamily: "Epilogue",
+                                                                fontWeight: 100,
+                                                                color: "black"
+                                                            }
+                                                        }}
                                                     >
                                                         <p className="text-[14px]" style={{ fontFamily: "Epilogue" }}>{size.size}</p>
                                                     </Button>
-                
+
                                                 ))
-                                            )
-                                        )
-                                    }
+                                                )
+                                        )}
                                     </div>
 
                                     <p className="text-[20px]" style={{ fontFamily: "Epilogue", letterSpacing: "-1px" }}>Quantity</p>
@@ -371,64 +412,63 @@ export default function ProductDetails({productModel}: ProductProps) {
                                         {SKU === ""
                                             ? (
                                                 <>
-                                                <Tooltip label="Please select a colorway and size first." position="bottom">
-                                                    <ActionIcon variant="filled" color="#474747" className={classes.button} size={43} aria-label="minus" disabled>
-                                                        <svg width="10" height="2" viewBox="0 0 24 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M24 1C24 1.26522 23.8946 1.51957 23.7071 1.70711C23.5196 1.89464 23.2652 2 23 2H1C0.734784 2 0.48043 1.89464 0.292893 1.70711C0.105357 1.51957 0 1.26522 0 1C0 0.734784 0.105357 0.48043 0.292893 0.292893C0.48043 0.105357 0.734784 0 1 0H23C23.2652 0 23.5196 0.105357 23.7071 0.292893C23.8946 0.48043 24 0.734784 24 1Z" fill="gray"/>
-                                                        </svg>
-                                                    </ActionIcon>
-                                                </Tooltip>
+                                                    <Tooltip label="Please select a colorway and size first." position="bottom">
+                                                        <ActionIcon variant="filled" color="#474747" className={classes.button} size={43} aria-label="minus" disabled>
+                                                            <svg width="10" height="2" viewBox="0 0 24 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M24 1C24 1.26522 23.8946 1.51957 23.7071 1.70711C23.5196 1.89464 23.2652 2 23 2H1C0.734784 2 0.48043 1.89464 0.292893 1.70711C0.105357 1.51957 0 1.26522 0 1C0 0.734784 0.105357 0.48043 0.292893 0.292893C0.48043 0.105357 0.734784 0 1 0H23C23.2652 0 23.5196 0.105357 23.7071 0.292893C23.8946 0.48043 24 0.734784 24 1Z" fill="gray" />
+                                                            </svg>
+                                                        </ActionIcon>
+                                                    </Tooltip>
 
-                                                <p className="text-[24px]" style={{ fontFamily: "Epilogue", fontWeight: 700, color: "#D1D1D1", marginBottom: "-5px" }}>{quantity}</p>
-                                                
-                                                <Tooltip label="Please select a colorway and size first." position="bottom">
-                                                    <ActionIcon variant="filled" color="#474747" className={classes.button} size={43} aria-label="add" disabled>
-                                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M24 12C24 12.2652 23.8946 12.5196 23.7071 12.7071C23.5196 12.8946 23.2652 13 23 13H13V23C13 23.2652 12.8946 23.5196 12.7071 23.7071C12.5196 23.8946 12.2652 24 12 24C11.7348 24 11.4804 23.8946 11.2929 23.7071C11.1054 23.5196 11 23.2652 11 23V13H1C0.734784 13 0.48043 12.8946 0.292893 12.7071C0.105357 12.5196 0 12.2652 0 12C0 11.7348 0.105357 11.4804 0.292893 11.2929C0.48043 11.1054 0.734784 11 1 11H11V1C11 0.734784 11.1054 0.48043 11.2929 0.292893C11.4804 0.105357 11.7348 0 12 0C12.2652 0 12.5196 0.105357 12.7071 0.292893C12.8946 0.48043 13 0.734784 13 1V11H23C23.2652 11 23.5196 11.1054 23.7071 11.2929C23.8946 11.4804 24 11.7348 24 12Z" fill="gray"/>
-                                                        </svg>
-                                                    </ActionIcon>
-                                                </Tooltip>
+                                                    <p className="text-[24px]" style={{ fontFamily: "Epilogue", fontWeight: 700, color: "#D1D1D1", marginBottom: "-5px" }}>{quantity}</p>
+
+                                                    <Tooltip label="Please select a colorway and size first." position="bottom">
+                                                        <ActionIcon variant="filled" color="#474747" className={classes.button} size={43} aria-label="add" disabled>
+                                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M24 12C24 12.2652 23.8946 12.5196 23.7071 12.7071C23.5196 12.8946 23.2652 13 23 13H13V23C13 23.2652 12.8946 23.5196 12.7071 23.7071C12.5196 23.8946 12.2652 24 12 24C11.7348 24 11.4804 23.8946 11.2929 23.7071C11.1054 23.5196 11 23.2652 11 23V13H1C0.734784 13 0.48043 12.8946 0.292893 12.7071C0.105357 12.5196 0 12.2652 0 12C0 11.7348 0.105357 11.4804 0.292893 11.2929C0.48043 11.1054 0.734784 11 1 11H11V1C11 0.734784 11.1054 0.48043 11.2929 0.292893C11.4804 0.105357 11.7348 0 12 0C12.2652 0 12.5196 0.105357 12.7071 0.292893C12.8946 0.48043 13 0.734784 13 1V11H23C23.2652 11 23.5196 11.1054 23.7071 11.2929C23.8946 11.4804 24 11.7348 24 12Z" fill="gray" />
+                                                            </svg>
+                                                        </ActionIcon>
+                                                    </Tooltip>
                                                 </>
                                             )
                                             : (
                                                 <>
-                                                <ActionIcon onClick={() => decreaseQuantity()} variant="filled" color="#474747" size={43} aria-label="minus">
-                                                    <svg width="10" height="2" viewBox="0 0 24 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M24 1C24 1.26522 23.8946 1.51957 23.7071 1.70711C23.5196 1.89464 23.2652 2 23 2H1C0.734784 2 0.48043 1.89464 0.292893 1.70711C0.105357 1.51957 0 1.26522 0 1C0 0.734784 0.105357 0.48043 0.292893 0.292893C0.48043 0.105357 0.734784 0 1 0H23C23.2652 0 23.5196 0.105357 23.7071 0.292893C23.8946 0.48043 24 0.734784 24 1Z" fill="white"/>
-                                                    </svg>
-                                                </ActionIcon>
+                                                    <ActionIcon onClick={() => decreaseQuantity()} variant="filled" color="#474747" size={43} aria-label="minus">
+                                                        <svg width="10" height="2" viewBox="0 0 24 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M24 1C24 1.26522 23.8946 1.51957 23.7071 1.70711C23.5196 1.89464 23.2652 2 23 2H1C0.734784 2 0.48043 1.89464 0.292893 1.70711C0.105357 1.51957 0 1.26522 0 1C0 0.734784 0.105357 0.48043 0.292893 0.292893C0.48043 0.105357 0.734784 0 1 0H23C23.2652 0 23.5196 0.105357 23.7071 0.292893C23.8946 0.48043 24 0.734784 24 1Z" fill="white" />
+                                                        </svg>
+                                                    </ActionIcon>
 
-                                                <p className="text-[24px]" style={{ fontFamily: "Epilogue", fontWeight: 700, color: "#D1D1D1", marginBottom: "-5px" }}>{quantity}</p>
-                                                
-                                                <ActionIcon onClick={() => increaseQuantity()} variant="filled" color="#474747" size={43} aria-label="add">
-                                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M24 12C24 12.2652 23.8946 12.5196 23.7071 12.7071C23.5196 12.8946 23.2652 13 23 13H13V23C13 23.2652 12.8946 23.5196 12.7071 23.7071C12.5196 23.8946 12.2652 24 12 24C11.7348 24 11.4804 23.8946 11.2929 23.7071C11.1054 23.5196 11 23.2652 11 23V13H1C0.734784 13 0.48043 12.8946 0.292893 12.7071C0.105357 12.5196 0 12.2652 0 12C0 11.7348 0.105357 11.4804 0.292893 11.2929C0.48043 11.1054 0.734784 11 1 11H11V1C11 0.734784 11.1054 0.48043 11.2929 0.292893C11.4804 0.105357 11.7348 0 12 0C12.2652 0 12.5196 0.105357 12.7071 0.292893C12.8946 0.48043 13 0.734784 13 1V11H23C23.2652 11 23.5196 11.1054 23.7071 11.2929C23.8946 11.4804 24 11.7348 24 12Z" fill="white"/>
-                                                    </svg>
-                                                </ActionIcon>
+                                                    <p className="text-[24px]" style={{ fontFamily: "Epilogue", fontWeight: 700, color: "#D1D1D1", marginBottom: "-5px" }}>{quantity}</p>
+
+                                                    <ActionIcon onClick={() => increaseQuantity()} variant="filled" color="#474747" size={43} aria-label="add">
+                                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M24 12C24 12.2652 23.8946 12.5196 23.7071 12.7071C23.5196 12.8946 23.2652 13 23 13H13V23C13 23.2652 12.8946 23.5196 12.7071 23.7071C12.5196 23.8946 12.2652 24 12 24C11.7348 24 11.4804 23.8946 11.2929 23.7071C11.1054 23.5196 11 23.2652 11 23V13H1C0.734784 13 0.48043 12.8946 0.292893 12.7071C0.105357 12.5196 0 12.2652 0 12C0 11.7348 0.105357 11.4804 0.292893 11.2929C0.48043 11.1054 0.734784 11 1 11H11V1C11 0.734784 11.1054 0.48043 11.2929 0.292893C11.4804 0.105357 11.7348 0 12 0C12.2652 0 12.5196 0.105357 12.7071 0.292893C12.8946 0.48043 13 0.734784 13 1V11H23C23.2652 11 23.5196 11.1054 23.7071 11.2929C23.8946 11.4804 24 11.7348 24 12Z" fill="white" />
+                                                        </svg>
+                                                    </ActionIcon>
                                                 </>
-                                            )
-                                        }
-                                    </div>  
+                                            )}
+                                    </div>
 
-                                    <Button 
-                                    variant="filled" 
-                                    fullWidth 
-                                    color="black"
-                                    styles={{
-                                        root: {
-                                            height: "78px"
-                                        },
-                                        label: {
-                                            fontFamily: "Epilogue",
-                                            fontWeight: 700,
-                                            fontSize: "24px"
-                                        }
-                                    }}
+                                    <Button
+                                        variant="filled"
+                                        fullWidth
+                                        color="black"
+                                        styles={{
+                                            root: {
+                                                height: "78px"
+                                            },
+                                            label: {
+                                                fontFamily: "Epilogue",
+                                                fontWeight: 700,
+                                                fontSize: "24px"
+                                            }
+                                        }}
                                     >
                                         Add to Cart
                                     </Button>
                                 </div>
-                            </div>
+                            </div></>
                         )
                     )
                 }
