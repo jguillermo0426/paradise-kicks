@@ -20,7 +20,7 @@ export async function POST(req: Request) {
 
         const statusId = statusData.id;
 
-        if (statusId != order.status_history[historyCount - 1].order_status.id) {
+        if (statusId != order.status_history[historyCount - 1].order_status.id + 1) {
             const { data: updatedStatus, error: insertError } = await supabase
                 .from('status_history')
                 .insert([

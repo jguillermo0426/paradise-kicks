@@ -8,15 +8,17 @@ type ModelColor = {
 export async function GET(req: Request) {
     const url = new URL(req.url);
     const page = parseInt(url.searchParams.get('page') || '1');
+    const search_term = url.searchParams.get('search') || '';
     const limit_count = 12;
     const limit_offset = (page - 1) * limit_count;
 
     const supabase = createClient();
-
+    console.log("search: " + search_term);
     const { data: uniqueCombinations, error: uniqueError } = await supabase
         .rpc('get_unique_products', {
             limit_count,
-            limit_offset
+            limit_offset,
+            search_term
         });
 
     if (uniqueError) {

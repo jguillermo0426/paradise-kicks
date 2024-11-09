@@ -1,15 +1,15 @@
 'use client'
 import { useForm } from '@mantine/form';
-import { TextInput, Button, NumberInput, FileButton, Tooltip, FloatingIndicator, Tabs, Image, Select } from '@mantine/core';
-import { useEffect, useState } from 'react';
+import { TextInput, Button, NumberInput, FileButton, Tooltip, FloatingIndicator, Tabs, Image, Select, Pagination } from '@mantine/core';
+import { useCallback, useEffect, useState } from 'react';
 import { CardProduct, GroupedProduct, OrderHistory, Product, ProductsOrdered } from '@/types/types';
 import { Notifications, showNotification } from '@mantine/notifications';
-import Papa from 'papaparse';
 import SearchBar from '../SearchBar';
 import { Epilogue } from 'next/font/google';
 import styles from '../css/searchbar.module.css';
 import { ChevronDownIcon } from "@heroicons/react/24/outline"
 import StatusCard from './StatusCard';
+import classes from '../css/tabs.module.css';
 
 const epilogue = Epilogue({
     subsets: ['latin'],
@@ -48,7 +48,9 @@ export default function AdminStock() {
         controlsRefs[val] = node;
         setControlsRefs(controlsRefs);
     };
-
+    const [activePage, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState<number>(1);
+    const [searchValue, setSearchValue] = useState<string>('');
     const [pending, setPending] = useState(0);
     const [toShip, setToShip] = useState(0);
     const [inTransit, setInTransit] = useState(0);
@@ -60,9 +62,13 @@ export default function AdminStock() {
         });
     };
 
+    const handleSearchChange = useCallback((newSearchValue: string) => {
+        setSearchValue(newSearchValue);
+    }, []);
+
     useEffect(() => {
         const getOrder = async () => {
-            const response = await fetch('/api/orders/get_orders', {
+            const response = await fetch(`/api/orders/get_orders?page=${activePage}&order_id=${searchValue}`, {
                 method: "GET"
             })
 
@@ -72,11 +78,11 @@ export default function AdminStock() {
             setOrderIds(orders as string[]);
         }
         getOrder();
-    }, []);
+    }, [activePage, searchValue]);
 
     useEffect(() => {
         const selectId = async () => {
-            const response = await fetch('/api/orders/get_from_id', {
+            const response = await fetch(`/api/orders/get_from_id`, {
                 method: "POST",
                 body: JSON.stringify(orderIds)
             })
@@ -106,11 +112,11 @@ export default function AdminStock() {
     const confirmStatus = async () => {
         const response = await fetch('/api/orders/change_status', {
             method: "POST",
-            body: JSON.stringify({orderProducts})
+            body: JSON.stringify({ orderProducts })
         })
 
         const result = await response.json()
-        
+
         if (result) {
             handleNotification();
         }
@@ -125,7 +131,7 @@ export default function AdminStock() {
         if (orderProducts && selectedStatus != "All") {
             orderProducts.forEach(order => {
                 const historyCount = order.status_history.length;
-                if (selectedStatus ===  order.status_history[historyCount - 1].order_status.status) {
+                if (selectedStatus === order.status_history[historyCount - 1].order_status.status) {
                     tempArr.push(order);
                 }
             });
@@ -133,9 +139,9 @@ export default function AdminStock() {
         } else if (orderProducts && selectedStatus == "All") {
             setSortedProducts(orderProducts);
         }
-       
+
     }, [selectedStatus, orderProducts])
-    
+
     useEffect(() => {
         let tempPending = 0;
         let tempToShip = 0;
@@ -160,7 +166,16 @@ export default function AdminStock() {
     return (
         <div className="relative z-50 mb-[18rem] bg-white overflow-hidden flex flex-col items-center justify-items-center min-h-screen p-8 pb-20 sm:p-20">
             <div className='flex flex-row items-center justify-end w-full'>
-                <SearchBar />
+                <TextInput
+                    classNames={{
+                        wrapper: styles.inputWrapper,
+                        input: styles.input,
+                    }}
+                    className="mx-4"
+                    value={searchValue}
+                    onChange={(event) => handleSearchChange(event.currentTarget.value)}
+                    placeholder="Search"
+                />
             </div>
 
             <div className='flex flex-row items-center justify-between w-full'>
@@ -245,6 +260,19 @@ export default function AdminStock() {
             >
                 Save Order Status
             </Button>
+
+            <Pagination 
+                    value={activePage} 
+                    total={totalPages} 
+                    onChange={(page) => {{
+                        setPage(page);
+                        window.scrollTo(0,0);
+                    }}} 
+                    className='my-5'
+                    classNames={{
+                        root: classes.pageRoot
+                    }}
+                />
             <Notifications></Notifications>
 
         </div>

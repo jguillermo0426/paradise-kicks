@@ -14,19 +14,42 @@ const epilogue = Epilogue({
 })
 
 type deleteItemProps = {
-    onSuccess: () => void
+    onSuccess: () => void;
+    searchValue: string;
 }
 
-export default function DeleteItems({onSuccess}: deleteItemProps) {
+export default function DeleteItems({onSuccess, searchValue}: deleteItemProps) {
     const [selectedItems, setSelectedItems] = useState<Product[]>([]);
     const [products, setProducts] = useState<Product[]>([]);
+    const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
     const [opened, { open, close }] = useDisclosure(false);
     const [totalPages, setTotalPages] = useState<number>(1);
     const [activePage, setPage] = useState(1);
     const isChecked = (product: Product) => selectedItems.includes(product);
 
+    useEffect(() => {
+        const filterProducts = () => {
+            var productsArray: Product[] = [];
+
+            if (searchValue) {
+                products.forEach((product) => {
+                    if (product.SKU.toLowerCase().includes(searchValue.toLowerCase())) {
+                        productsArray.push(product);
+                    }
+                })
+            } 
+            else {
+                productsArray = products;
+            }
+
+            setFilteredProducts(productsArray);
+        };  
+
+        filterProducts();
+    }, [searchValue, products]);
+
     const getItems = async() => {
-        const response = await fetch(`/api/product/get_single_products?page=${activePage}`, {
+        const response = await fetch(`/api/product/get_single_products?page=${activePage}&search=${searchValue}`, {
             method: "GET"
         });
 
@@ -42,7 +65,7 @@ export default function DeleteItems({onSuccess}: deleteItemProps) {
 
     useEffect(() => {
         getItems();
-    }, [activePage]);
+    }, [activePage, searchValue]);
 
     const handleCheckboxChange = (product: Product) => {
         setSelectedItems(prevSelected => {
@@ -138,7 +161,7 @@ export default function DeleteItems({onSuccess}: deleteItemProps) {
                 </div>
 
                 <div className="w-full flex flex-col items-start justify-start">
-                    {products.map((item) => (
+                    {filteredProducts.map((item) => (
                         <CardDelete
                             key={item.SKU} 
                             item={item}

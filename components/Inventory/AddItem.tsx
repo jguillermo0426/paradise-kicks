@@ -52,7 +52,7 @@ export default function AddItem({ onSuccess }: addItemProps) {
     const addProduct = async (values: Product) => {
         setVisibleSingle(true);
         console.log('Submitting form with values:', values);
-        const response = await fetch('/api/product/add_product', {
+        const response = await fetch(' product/add_product', {
             method: "POST",
             body: JSON.stringify(values)
         })

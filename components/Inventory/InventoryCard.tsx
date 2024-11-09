@@ -1,14 +1,13 @@
 'use client'
-import { CardProduct } from '@/types/types';
+import { CardProduct, Size } from '@/types/types';
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { ActionIcon, Button, Divider, Image, Modal, NumberInput, NumberInputHandlers, TextInput } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Epilogue } from 'next/font/google';
-import { ChangeEvent, Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
-import styles from "../css/inputfield.module.css";
+import { ChangeEvent, Dispatch, MutableRefObject, SetStateAction, useEffect, useRef, useState } from 'react';
+
 import InputField from '../InputField';
-import { storage } from '@/firebase/firebase';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import StockInput from './StockInput';
 
 const epilogue = Epilogue({
     subsets: ['latin'],
@@ -18,11 +17,10 @@ const epilogue = Epilogue({
 type CardTestProps = {
     cardProduct: CardProduct;
     onChange: (updatedProduct: CardProduct) => void;
-    setHasErrors: Dispatch<SetStateAction<boolean>>;
 }
 
 
-export default function CardTest({ cardProduct, onChange, setHasErrors }: CardTestProps) {
+export default function CardTest({ cardProduct, onChange }: CardTestProps) {
     const { cardId, modelId, colorId, model, brand, colorway, sizes, image_link, image_file } = cardProduct;
 
     const [totalStock, setTotalStock] = useState(0);
@@ -36,14 +34,6 @@ export default function CardTest({ cardProduct, onChange, setHasErrors }: CardTe
     const [file, setFile] = useState<File>();
 
     useEffect(() => {
-        const skuHasErrors = sizes.some((item, index) => same[index]); // Check if any SKU is a duplicate
-        const emptyFields = sizes.some((item) => !item.SKU || !item.size || item.price < 1 || item.stock < 1); // Check for empty fields
-        const emptyModel = !model || !brand || !colorway;
-
-        setHasErrors(skuHasErrors || emptyFields || emptyModel); // Set error state based on conditions
-    }, [sizes, model, brand, colorway]);
-
-    useEffect(() => {
         setEditedSizes({ cardId, modelId, colorId, model, brand, colorway, sizes, image_link, image_file });
     }, [cardProduct]);
 
@@ -55,7 +45,15 @@ export default function CardTest({ cardProduct, onChange, setHasErrors }: CardTe
         setTotalStock(tempStock);
     }, [sizes]);
 
-    // handles changing the value of the field for numbers
+    const handleStockChange = (item: Size) => {
+        const updatedSizes = [...editedSizes.sizes, item];
+
+        setEditedSizes({
+            ...editedSizes,
+            sizes: updatedSizes
+        });
+    }
+
     const handleChangeNumber = (e: string | number, index: number, toChange: string) => {
         const updatedSizes = [...editedSizes.sizes];
 
@@ -149,7 +147,6 @@ export default function CardTest({ cardProduct, onChange, setHasErrors }: CardTe
             console.log('no file uploaded');
         }
     };
-    const handlersRefs = sizes.map(() => useRef<NumberInputHandlers>(null));
 
     return (
         <>
@@ -160,69 +157,13 @@ export default function CardTest({ cardProduct, onChange, setHasErrors }: CardTe
                 radius={20}
                 size="auto"
             >
-                {sizes.map((item, key) => { 
+                {sizes.map((item, index) => { 
                     return (
-                        <div className='flex flex-col items-start justify-center p-8' key={key}>
+                        <div className='flex flex-col items-start justify-center p-8' key={index}>
                             <div className='flex flex-row items-center justify-between w-full'>
                                 <p style={epilogue.style} className='font-semibold text-[32px]'>{item.SKU}</p>
 
-                                <div className='flex flex-row items-center justify-start'>
-                                    <p style={epilogue.style} className="font-semibold text-[16px] mx-2">Stock</p>
-                                    <ActionIcon
-                                        styles={{
-                                            root: {
-                                                borderTopRightRadius: "0",
-                                                borderBottomRightRadius: "0",
-                                                textAlign: "center",
-                                                backgroundColor: "#38bdba",
-                                                border: "1px solid #38bdba",
-                                                color: "white"
-                                            }
-                                        }}
-                                        style={epilogue.style}
-                                        size={40}
-                                        variant="default"
-                                        onClick={() => handlersRefs[key].current?.decrement()}
-                                        className="font-bold text-[20px]"
-                                    >
-                                        -
-                                    </ActionIcon>
-                                    <NumberInput
-                                        classNames={{
-                                            wrapper: styles.numberWrapper,
-                                            input: styles.numberInput,
-                                        }}
-                                        hideControls
-                                        style={epilogue.style}
-                                        className="font-bold text-[20px]"
-                                        handlersRef={handlersRefs[key]} // Assign individual ref
-                                        value={item.stock}
-                                        step={1}
-                                        min={0}
-                                        onChange={(e) => handleChangeNumber(e, key, "stock")} // Fix stock reference
-                                        error={invalidStock[key] ? "Stock is not a valid number" : ""}
-                                        withErrorStyles={invalidStock[key]}
-                                    />
-                                    <ActionIcon
-                                        styles={{
-                                            root: {
-                                                borderTopLeftRadius: "0",
-                                                borderBottomLeftRadius: "0",
-                                                textAlign: "center",
-                                                backgroundColor: "#38bdba",
-                                                border: "1px solid #38bdba",
-                                                color: "white"
-                                            }
-                                        }}
-                                        style={epilogue.style}
-                                        size={40}
-                                        variant="default"
-                                        className="font-bold text-[20px]"
-                                        onClick={() => handlersRefs[key].current?.increment()}
-                                    >
-                                        +
-                                    </ActionIcon>
-                                </div>
+                                <StockInput item={item} handleChangeNumber={handleChangeNumber} index={index} invalidStock={invalidStock} />
                             </div>
 
                             <div className='flex flex-row items-center'>
@@ -230,18 +171,19 @@ export default function CardTest({ cardProduct, onChange, setHasErrors }: CardTe
                                     <p style={epilogue.style} className="font-semibold text-[16px]">Size</p>
                                     <InputField
                                         itemValue={item.size}
-                                        onChange={(e) => handleChangeString(e, key, "size")}
+                                        onChange={(e) => handleChangeString(e, index, "size")}
                                         className="font-normal text-[14px] w-[17vw]"
                                     />
                                 </div>
                                 <div className='flex flex-col'>
                                     <p style={epilogue.style} className="font-semibold text-[16px]">Price</p>
-                                    <InputField
-                                        itemValue={item.price}
-                                        onChange={(e) => handleChangeNumber(e.target.value, key, "price")}
+                                    <NumberInput
+                                        hideControls
+                                        value={item.price}
+                                        onChange={(e) => handleChangeNumber(e, index, "price")}
                                         className="font-normal text-[14px] w-[17vw]"
-                                        error={invalidPrice[key] ? "Price is not a valid number" : ""}
-                                        withErrorStyles={invalidPrice[key]}
+                                        error={invalidPrice[index] ? "Price is not a valid number" : ""}
+                                        withErrorStyles={invalidPrice[index]}
                                     />
                                 </div>
                             </div>
