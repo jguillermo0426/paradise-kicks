@@ -221,7 +221,7 @@ export default function ProductDetails({productModel}: ProductProps) {
         <MantineProvider>
             <div className='flex flex-col items-center m-4 relative z-50 mb-[18rem] bg-white overflow-hidden min-h-screen'>
                 {loading ? (
-                    <div className="flex flex-row justify-center w-full mx-8 my-10">
+                    <div className="flex flex-row justify-center w-full mx-8 my-10 p-6">
                         <div className="flex flex-col items-center w-[55%] max-w-[724px] mx-8">
                             <Skeleton height={764} radius="xl" />
                         </div>
@@ -238,7 +238,7 @@ export default function ProductDetails({productModel}: ProductProps) {
                 ) : (
                     groupedProducts && 
                         groupedProducts.map((product, productIndex) => 
-                            <div key={productIndex} className="flex flex-row justify-center w-full mx-8 my-10">
+                            <div key={productIndex} className="flex flex-row justify-center w-full mx-8 my-10 p-6">
 
                                 {/* PRODUCT PICTURES */}
                                 <div className="flex flex-col items-center w-[55%] max-w-[724px] mx-8">
