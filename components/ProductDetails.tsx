@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 import { GroupedProduct2, Product } from '@/types/types';
 import { Image } from "@nextui-org/react";
 import classes from './css/actionicon.module.css';
+import '@mantine/notifications/styles.css';
+import { notifications, Notifications } from '@mantine/notifications';
 
 type ProductProps = {
     productModel: string;
@@ -208,6 +210,11 @@ export default function ProductDetails({productModel}: ProductProps) {
         }
         else if (quantity === stock) {
             setMaximumReached(true);
+            notifications.show({
+                message: "You have reached the maximum quantity for this item.",
+                color: "red"
+            });
+            setMaximumReached(false);
         }
     }
 
@@ -215,12 +222,14 @@ export default function ProductDetails({productModel}: ProductProps) {
         if (quantity > 0) {
             let newQuantity = quantity - 1;
             setQuantity(newQuantity);
+            setMaximumReached(false);
         }  
     }
 
     const maximumFalse = () => {
         setMaximumReached(false);
     }
+
 
     return (
         <MantineProvider>
@@ -363,8 +372,12 @@ export default function ProductDetails({productModel}: ProductProps) {
                                                 <Button
                                                 key={sizeIndex}
                                                 onClick={() => handleSizeChange(product, size.SKU)}
+                                                disabled={size.stock === 0}
                                                 className="mr-2 mb-2"
-                                                style={size.SKU === SKU ? buttonStyles.selected : buttonStyles.unselected}
+                                                style={{
+                                                    ... (size.stock === 0 ? { opacity: 0.5 } : {}), // Apply opacity when stock is 0
+                                                    ... (size.SKU === SKU ? buttonStyles.selected : buttonStyles.unselected)
+                                                }}
                                                 styles={{
                                                     root: {
                                                         backgroundColor: "white",
@@ -391,7 +404,11 @@ export default function ProductDetails({productModel}: ProductProps) {
                                                         key={sizeIndex}
                                                         onClick={() => handleSizeChange(product, size.SKU)}
                                                         className="mr-2 mb-2"
-                                                        style={size.SKU === SKU ? buttonStyles.selected : buttonStyles.unselected}
+                                                        disabled={size.stock === 0}
+                                                        style={{
+                                                            ... (size.stock === 0 ? { opacity: 0.5 } : {}), 
+                                                            ... (size.SKU === SKU ? buttonStyles.selected : buttonStyles.unselected)
+                                                        }}
                                                         styles={{
                                                             root: {
                                                                 backgroundColor: "white",
@@ -457,16 +474,13 @@ export default function ProductDetails({productModel}: ProductProps) {
                                                 </>
                                             )}
                                     </div>
-                                    
-                                    {maximumReached &&
-                                        <Notification onClose={(() => maximumFalse())} className="mb-6" color="red">
-                                            You have reached the maximum quantity for this item.
-                                        </Notification>
-                                    }
+
                                     {/* ADD TO CART */}
+                                    <Notifications />
                                     <Button
                                         variant="filled"
                                         fullWidth
+                                        radius="md"
                                         color="black"
                                         styles={{
                                             root: {
