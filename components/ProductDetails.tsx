@@ -21,7 +21,6 @@ export default function ProductDetails({productModel}: ProductProps) {
     const [loading, setLoading] = useState(true);
     const [selectedColorway, setSelectedColorway] = useState<string>('');
     const [quantity, setQuantity] = useState(0);
-    const [maximumReached, setMaximumReached] = useState(false);
 
     const buttonStyles = {
         selected:{
@@ -202,19 +201,15 @@ export default function ProductDetails({productModel}: ProductProps) {
         let newQuantity = quantity + 1;
         if (newQuantity < stock) {
             setQuantity(newQuantity);
-            setMaximumReached(false);
         }
         else if (newQuantity === stock) {
             setQuantity(newQuantity);
-            setMaximumReached(true);
         }
         else if (quantity === stock) {
-            setMaximumReached(true);
             notifications.show({
                 message: "You have reached the maximum quantity for this item.",
                 color: "red"
             });
-            setMaximumReached(false);
         }
     }
 
@@ -222,12 +217,7 @@ export default function ProductDetails({productModel}: ProductProps) {
         if (quantity > 0) {
             let newQuantity = quantity - 1;
             setQuantity(newQuantity);
-            setMaximumReached(false);
         }  
-    }
-
-    const maximumFalse = () => {
-        setMaximumReached(false);
     }
 
 
