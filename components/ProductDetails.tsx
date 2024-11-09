@@ -1,5 +1,5 @@
 'use client'
-import { MantineProvider, Skeleton, Divider, Button, ActionIcon, Tooltip } from '@mantine/core';
+import { MantineProvider, Skeleton, Divider, Button, ActionIcon, Tooltip, Notification } from '@mantine/core';
 import '@mantine/carousel/styles.css';
 import { Carousel } from '@mantine/carousel';
 import { useEffect, useState } from 'react';
@@ -13,16 +13,13 @@ type ProductProps = {
 
 export default function ProductDetails({productModel}: ProductProps) {
     const [groupedProducts, setGroupedProducts] = useState<GroupedProduct2[]>([]);
-    const [size, setSize] = useState<string>('');
     const [price, setPrice] = useState<number>(0);
-    const [product, setProduct] = useState<Product>();
     const [SKU, setSKU] = useState<string>('');
     const [stock, setStock] = useState<number>(0);
     const [loading, setLoading] = useState(true);
     const [selectedColorway, setSelectedColorway] = useState<string>('');
-    const [image, setImage] = useState<string>('');
-    const [activeSlide, setActiveSlide] = useState(0);
     const [quantity, setQuantity] = useState(0);
+    const [maximumReached, setMaximumReached] = useState(false);
 
     const buttonStyles = {
         selected:{
@@ -141,21 +138,15 @@ export default function ProductDetails({productModel}: ProductProps) {
     
         setSKU('');
         setSelectedColorway(colorway); 
-
-        let colorwayIndex = -1;
     
         product.colorways.forEach((colorwayItem, index) => {
             if (colorwayItem.colorway === colorway) { 
-                colorwayIndex = index
                 colorwayItem.sizes.forEach((size) => {
                     colorStock += size.stock;
                 });
             }
         }); 
         setStock(colorStock); 
-        if (colorwayIndex != -1) {
-            setActiveSlide(colorwayIndex);
-        }
     };
      
     const handleSizeChange = (product: GroupedProduct2, sku: string) => {
@@ -207,7 +198,17 @@ export default function ProductDetails({productModel}: ProductProps) {
 
     const increaseQuantity = () => {
         let newQuantity = quantity + 1;
-        setQuantity(newQuantity);
+        if (newQuantity < stock) {
+            setQuantity(newQuantity);
+            setMaximumReached(false);
+        }
+        else if (newQuantity === stock) {
+            setQuantity(newQuantity);
+            setMaximumReached(true);
+        }
+        else if (quantity === stock) {
+            setMaximumReached(true);
+        }
     }
 
     const decreaseQuantity = () => {
@@ -215,6 +216,10 @@ export default function ProductDetails({productModel}: ProductProps) {
             let newQuantity = quantity - 1;
             setQuantity(newQuantity);
         }  
+    }
+
+    const maximumFalse = () => {
+        setMaximumReached(false);
     }
 
     return (
@@ -357,8 +362,8 @@ export default function ProductDetails({productModel}: ProductProps) {
                                             product.colorways.map((colorway) => colorway.sizes.map((size, sizeIndex) => (
                                                 <Button
                                                 key={sizeIndex}
-                                                variant="default"
                                                 onClick={() => handleSizeChange(product, size.SKU)}
+                                                className="mr-2 mb-2"
                                                 style={size.SKU === SKU ? buttonStyles.selected : buttonStyles.unselected}
                                                 styles={{
                                                     root: {
@@ -369,11 +374,12 @@ export default function ProductDetails({productModel}: ProductProps) {
                                                     label: {
                                                         fontFamily: "Epilogue",
                                                         fontWeight: 100,
+                                                        fontSize: "14px",
                                                         color: "black"
                                                     }
                                                 }}
                                                 >
-                                                    <p className="text-[16px]" style={{ fontFamily: "Epilogue" }}>{size.size}</p>
+                                                    {size.size}
                                                 </Button>
                                             ))
                                             )
@@ -384,7 +390,7 @@ export default function ProductDetails({productModel}: ProductProps) {
                                                     <Button
                                                         key={sizeIndex}
                                                         onClick={() => handleSizeChange(product, size.SKU)}
-                                                        className="w-[111px] h-[58px] flex flex-col items-center justify-center mr-2 mb-2 rounded-md"
+                                                        className="mr-2 mb-2"
                                                         style={size.SKU === SKU ? buttonStyles.selected : buttonStyles.unselected}
                                                         styles={{
                                                             root: {
@@ -395,20 +401,22 @@ export default function ProductDetails({productModel}: ProductProps) {
                                                             label: {
                                                                 fontFamily: "Epilogue",
                                                                 fontWeight: 100,
+                                                                fontSize: "14px",
                                                                 color: "black"
                                                             }
                                                         }}
                                                     >
-                                                        <p className="text-[14px]" style={{ fontFamily: "Epilogue" }}>{size.size}</p>
+                                                        {size.size}
                                                     </Button>
 
                                                 ))
                                                 )
                                         )}
                                     </div>
-
+                                    
+                                    {/*QUANTITY */}
                                     <p className="text-[20px]" style={{ fontFamily: "Epilogue", letterSpacing: "-1px" }}>Quantity</p>
-                                    <div className="flex flex-row items-center justify-between w-[131px] h-[43px] bg-[#1C1C1C] rounded-md mb-4">
+                                    <div className="flex flex-row items-center justify-between w-[131px] h-[43px] bg-[#1C1C1C] rounded-md mb-6">
                                         {SKU === ""
                                             ? (
                                                 <>
@@ -449,7 +457,13 @@ export default function ProductDetails({productModel}: ProductProps) {
                                                 </>
                                             )}
                                     </div>
-
+                                    
+                                    {maximumReached &&
+                                        <Notification onClose={(() => maximumFalse())} className="mb-6" color="red">
+                                            You have reached the maximum quantity for this item.
+                                        </Notification>
+                                    }
+                                    {/* ADD TO CART */}
                                     <Button
                                         variant="filled"
                                         fullWidth
