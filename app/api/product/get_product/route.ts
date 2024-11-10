@@ -4,7 +4,7 @@ export async function GET(req: Request) {
     const url = new URL(req.url);
     const page = parseInt(url.searchParams.get('page') || '1');
     const search_term = url.searchParams.get('search') || '';
-    const limit_count = 12;
+    const limit_count = 4;
     const limit_offset = (page - 1) * limit_count;
 
     const supabase = createClient();

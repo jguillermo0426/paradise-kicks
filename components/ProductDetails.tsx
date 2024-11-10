@@ -23,6 +23,7 @@ export default function ProductDetails({ productModel }: ProductProps) {
     const [selectedColorway, setSelectedColorway] = useState<string>('');
     const [quantity, setQuantity] = useState(0);
     const emblaRef = useRef<EmblaCarouselType>();
+    const [uniqueSizes, setUniqueSizes] = useState<string[]>([]);
 
     const buttonStyles = {
         selected: {
@@ -33,7 +34,7 @@ export default function ProductDetails({ productModel }: ProductProps) {
         }
     };
 
-    useEffect(() => {
+    /*useEffect(() => {
         const getModel = async () => {
             const response = await fetch(`/api/product/get_model?model=${productModel}`, {
                 method: "GET"
@@ -43,7 +44,9 @@ export default function ProductDetails({ productModel }: ProductProps) {
             console.log(result.model);
             if (result.model.length != 0) {
                 const product = groupProducts(result.model);
+                const sizes = result.sizes;
                 setGroupedProducts(product);
+                setUniqueSizes(sizes);
                 setLoading(false);
                 console.log(product);
             }
@@ -52,7 +55,31 @@ export default function ProductDetails({ productModel }: ProductProps) {
             }
         }
         getModel();
-    }, []);
+    }, []);*/
+
+    useEffect(() => {
+        const getModel = async () => {
+            const response = await fetch(`/api/product/get_model?model=${productModel}`, {
+                method: "GET"
+            });
+    
+            const result = await response.json();
+            console.log(result.model);
+            if (result.model.length !== 0) {
+                const product = groupProducts(result.model);
+                // Extract the 'size' property from each object in the sizes array
+                const sizes = result.sizes.map((item: { size: string }) => item.size);
+                setGroupedProducts(product);
+                setUniqueSizes(sizes); // Now it's an array of strings
+                setLoading(false);
+                console.log(product);
+            } else {
+                console.log(`${productModel} not found`);
+            }
+        };
+        getModel();
+    }, [productModel]); // Add productModel as a dependency
+    
 
 
     // groups the products based on their model, colorway, and size/stock/price
@@ -329,7 +356,7 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                             ? getTotalStocks(product)
                                             : stock} stocks left
                                     </p>
-                                    <p className="text-[72px]" style={{ fontFamily: "EpilogueBold", letterSpacing: "-3px", lineHeight: "1.00" }}>{product.model}</p>
+                                    <p className="text-[72px]" style={{ fontFamily: "EpilogueBold", letterSpacing: "-3px", lineHeight: "1.00" }}>{product.brand} {product.model}</p>
                                     <p className="text-[24px]" style={{ fontFamily: "EpilogueMedium" }}>
                                         {selectedColorway === "" && SKU === ""
                                             ? `${startingPriceDisplay(product)}`
@@ -338,6 +365,7 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                                 : `₱${price.toString()}`}
                                     </p>
 
+                                    {/* COLORWAYS */}
                                     <Divider my="md" />
                                     <p className="text-[20px]" style={{ fontFamily: "Epilogue", letterSpacing: "-1px" }}>Color</p>
                                     <div className="w-full flex flex-wrap items-center justify-start mb-8">
@@ -365,24 +393,20 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                         )}
                                     </div>
 
+                                    {/* SIZES */}
                                     <p className="text-[20px]" style={{ fontFamily: "Epilogue", letterSpacing: "-1px" }}>Size</p>
                                     <div className="w-full flex flex-wrap items-center justify-start mb-8">
                                         {selectedColorway === "" ? (
-                                            product.colorways.map((colorway) => colorway.sizes.map((size, sizeIndex) => (
+                                            uniqueSizes.map((size, sizeIndex) => (
                                                 <Button
                                                     key={sizeIndex}
                                                     className='mr-2 mb-2'
-                                                    onClick={() => handleSizeChange(product, size.SKU)}
-                                                    disabled={size.stock === 0}
-                                                    style={{
-                                                        ... (size.stock === 0 ? { opacity: 0.5 } : {}), // Apply opacity when stock is 0
-                                                        ... (size.SKU === SKU ? buttonStyles.selected : buttonStyles.unselected)
-                                                    }}
+                                                    style={buttonStyles.unselected}
                                                     styles={{
                                                         root: {
                                                             backgroundColor: "white",
                                                             height: "58px",
-                                                            width: "fit-content"
+                                                            width: "150px"
                                                         },
                                                         label: {
                                                             fontFamily: "Epilogue",
@@ -392,10 +416,9 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                                         }
                                                     }}
                                                 >
-                                                    {size.size}
+                                                    {size}
                                                 </Button>
                                             ))
-                                            )
                                         ) : (
                                             product.colorways
                                                 .filter(colorway => colorway.colorway === selectedColorway)
@@ -413,7 +436,7 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                                             root: {
                                                                 backgroundColor: "white",
                                                                 height: "58px",
-                                                                width: "fit-content"
+                                                                width: "150px"
                                                             },
                                                             label: {
                                                                 fontFamily: "Epilogue",

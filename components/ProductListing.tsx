@@ -24,6 +24,8 @@ export default function ProductListing({ searchParams } : { searchParams : strin
     brandLogoMap.set("Nike", "/nike.png");
     brandLogoMap.set("Adidas", "/adidas.png");
     brandLogoMap.set("New Balance", "/new balance.png");
+    brandLogoMap.set("On", "/on.png");
+    brandLogoMap.set("Puma", "/puma.png");
 
     useEffect(() => {
         if (!query) {
@@ -34,23 +36,6 @@ export default function ProductListing({ searchParams } : { searchParams : strin
         }
         console.log(searchValue);
     }, [query, router]);
-
-    /*useEffect(() => {
-        const getProducts = async() => {
-            const response = await fetch('api/product/get_product', {
-                method: "GET"
-            })
-
-            const result = await response.json();
-            console.log(result.product);
-            if (result.product.length != 0) {
-                const products = groupProducts(result.product);
-                setGroupedProducts(products);
-                console.log(products);
-            }
-        }
-        getProducts();
-    }, []);*/
 
     useEffect(() => {
         const getProducts = async() => {
@@ -63,30 +48,16 @@ export default function ProductListing({ searchParams } : { searchParams : strin
             if (result.products.length != 0) {
                 const products = groupProducts(result.products);
                 setGroupedProducts(products);
-                setTotalPages(Math.ceil(result.totalProducts / 12));
+                setTotalPages(Math.ceil(result.totalProducts / 4));
             }
             
         };
         getProducts();
     }, [activePage, query]);
 
-     // Fetch products on page change
-     /*useEffect(() => {
-        const getProduct = async () => {
-            const response = await fetch(`/api/product/get_products?page=${activePage}&search=`, {
-                method: "GET"
-            });
-            const result = await response.json();
-            console.log(result.products);
-            if (result.products.length !== 0) {
-                const products = groupProducts(result.products);
-                setGroupedProducts(products);
-                setTotalPages(Math.ceil(result.totalProducts / 4));
-            }
-        };
-
-        getProduct();
-    }, [activePage]);  // This effect runs only when the activePage changes*/
+    useEffect(() => {
+        setPage(1);
+    }, [query]);
 
     const groupProducts = (products: Product[]) => {
         let modelId = 0;
@@ -180,7 +151,11 @@ export default function ProductListing({ searchParams } : { searchParams : strin
     useEffect(() => {
         if (groupedProducts.length > 0) {
             if (sortFilter === "Alphabetical") {
-                setSortedProducts([...groupedProducts].sort((a, b) => a.model.localeCompare(b.model)));
+                setSortedProducts([...groupedProducts].sort((a, b) => {
+                    const brandModelA = `${a.brand} ${a.model}`.toLowerCase();
+                    const brandModelB = `${b.brand} ${b.model}`.toLowerCase();
+                    return brandModelA.localeCompare(brandModelB);
+                }));
             } else if (sortFilter === "Price: Lowest to Highest") {
                 setSortedProducts([...groupedProducts].sort((a, b) => {
                     return getLowestPrice(a) - getLowestPrice(b);
@@ -192,7 +167,12 @@ export default function ProductListing({ searchParams } : { searchParams : strin
             }
         }
     }, [groupedProducts, sortFilter]);
-    
+
+    const getImageLink = (groupedProduct: GroupedProduct2) => {
+        const colorwayWithImage = groupedProduct.colorways.find((colorway) => colorway.image_link);
+        return colorwayWithImage ? colorwayWithImage.image_link : "";
+    };    
+
 
     return (
         <MantineProvider>
@@ -266,12 +246,9 @@ export default function ProductListing({ searchParams } : { searchParams : strin
                                     <CardBody className="flex flex-col justify-between h-full">
                                         <div className="flex flex-col items-center">
                                             <Image
-                                                alt="Card background"
+                                                alt="Shoe Image"
                                                 className="object-cover rounded-xl"
-                                                src={product.colorways[0].image_link
-                                                    ? product.colorways[0].image_link
-                                                    : "https://static.nike.com/a/images/t_PDP_936_v1/f_auto,q_auto:eco/af53d53d-561f-450a-a483-70a7ceee380f/W+NIKE+DUNK+LOW.png"
-                                                }
+                                                src={getImageLink(product) || "https://static.nike.com/a/images/t_PDP_936_v1/f_auto,q_auto:eco/af53d53d-561f-450a-a483-70a7ceee380f/W+NIKE+DUNK+LOW.png"}
                                                 height={250}
                                                 width={250} />
                                         </div>
@@ -283,10 +260,8 @@ export default function ProductListing({ searchParams } : { searchParams : strin
                                                         : " color"
                                                     } 
                                                 </small>
-                                                {/*product.colorways.map((colorway, colorwayIndex) => 
-                                                    <small key={colorwayIndex} className="text-default-500">{colorway.colorway}</small>
-                                                )*/}
-                                                <p className="text-[16px]" style={{ fontFamily: "EpilogueSemiBold", letterSpacing: "-0.5px" }}>{product.model}</p>  
+
+                                                <p className="text-[16px]" style={{ fontFamily: "EpilogueSemiBold", letterSpacing: "-0.5px" }}>{product.brand} {product.model}</p>  
                                                 <p className="text-[14px]" style={{ fontFamily: "Epilogue", letterSpacing: "-0.5px"  }}>&#8369; {getLowestPrice(product).toFixed(2)}</p>
                                             </div>
 
