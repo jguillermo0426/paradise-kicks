@@ -1,5 +1,5 @@
 'use client'
-import { MantineProvider, Skeleton, Divider, Button, ActionIcon, Tooltip } from '@mantine/core';
+import { MantineProvider, Skeleton, Divider, Button, ActionIcon, Tooltip, Notification } from '@mantine/core';
 import '@mantine/carousel/styles.css';
 import { Carousel } from '@mantine/carousel';
 import { useEffect, useRef, useState } from 'react';
@@ -7,6 +7,8 @@ import { GroupedProduct2, Product } from '@/types/types';
 import { Image } from "@nextui-org/react";
 import classes from './css/actionicon.module.css';
 import { EmblaCarouselType } from 'embla-carousel-react';
+import '@mantine/notifications/styles.css';
+import { notifications, Notifications } from '@mantine/notifications';
 
 type ProductProps = {
     productModel: string;
@@ -14,15 +16,11 @@ type ProductProps = {
 
 export default function ProductDetails({ productModel }: ProductProps) {
     const [groupedProducts, setGroupedProducts] = useState<GroupedProduct2[]>([]);
-    const [size, setSize] = useState<string>('');
     const [price, setPrice] = useState<number>(0);
-    const [product, setProduct] = useState<Product>();
     const [SKU, setSKU] = useState<string>('');
     const [stock, setStock] = useState<number>(0);
     const [loading, setLoading] = useState(true);
     const [selectedColorway, setSelectedColorway] = useState<string>('');
-    const [image, setImage] = useState<string>('');
-    const [activeSlide, setActiveSlide] = useState(0);
     const [quantity, setQuantity] = useState(0);
     const emblaRef = useRef<EmblaCarouselType>();
 
@@ -211,7 +209,18 @@ export default function ProductDetails({ productModel }: ProductProps) {
 
     const increaseQuantity = () => {
         let newQuantity = quantity + 1;
-        setQuantity(newQuantity);
+        if (newQuantity < stock) {
+            setQuantity(newQuantity);
+        }
+        else if (newQuantity === stock) {
+            setQuantity(newQuantity);
+        }
+        else if (quantity === stock) {
+            notifications.show({
+                message: "You have reached the maximum quantity for this item.",
+                color: "red"
+            });
+        }
     }
 
     const decreaseQuantity = () => {
@@ -220,6 +229,7 @@ export default function ProductDetails({ productModel }: ProductProps) {
             setQuantity(newQuantity);
         }
     }
+
 
     return (
         <MantineProvider>
@@ -363,10 +373,13 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                             product.colorways.map((colorway) => colorway.sizes.map((size, sizeIndex) => (
                                                 <Button
                                                     key={sizeIndex}
-                                                    variant="default"
-                                                    className='my-4 mr-5'
+                                                    className='mr-2 mb-2'
                                                     onClick={() => handleSizeChange(product, size.SKU)}
-                                                    style={size.SKU === SKU ? buttonStyles.selected : buttonStyles.unselected}
+                                                    disabled={size.stock === 0}
+                                                    style={{
+                                                        ... (size.stock === 0 ? { opacity: 0.5 } : {}), // Apply opacity when stock is 0
+                                                        ... (size.SKU === SKU ? buttonStyles.selected : buttonStyles.unselected)
+                                                    }}
                                                     styles={{
                                                         root: {
                                                             backgroundColor: "white",
@@ -376,11 +389,12 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                                         label: {
                                                             fontFamily: "Epilogue",
                                                             fontWeight: 100,
+                                                            fontSize: "14px",
                                                             color: "black"
                                                         }
                                                     }}
                                                 >
-                                                    <p className="text-[16px]" style={{ fontFamily: "Epilogue" }}>{size.size}</p>
+                                                    {size.size}
                                                 </Button>
                                             ))
                                             )
@@ -391,8 +405,12 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                                     <Button
                                                         key={sizeIndex}
                                                         onClick={() => handleSizeChange(product, size.SKU)}
-                                                        className="w-[111px] h-[58px] flex flex-col items-center justify-center mr-2 mb-2 rounded-md"
-                                                        style={size.SKU === SKU ? buttonStyles.selected : buttonStyles.unselected}
+                                                        className="mr-2 mb-2"
+                                                        disabled={size.stock === 0}
+                                                        style={{
+                                                            ... (size.stock === 0 ? { opacity: 0.5 } : {}),
+                                                            ... (size.SKU === SKU ? buttonStyles.selected : buttonStyles.unselected)
+                                                        }}
                                                         styles={{
                                                             root: {
                                                                 backgroundColor: "white",
@@ -402,11 +420,12 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                                             label: {
                                                                 fontFamily: "Epilogue",
                                                                 fontWeight: 100,
+                                                                fontSize: "14px",
                                                                 color: "black"
                                                             }
                                                         }}
                                                     >
-                                                        <p className="text-[14px]" style={{ fontFamily: "Epilogue" }}>{size.size}</p>
+                                                        {size.size}
                                                     </Button>
 
                                                 ))
@@ -414,8 +433,9 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                         )}
                                     </div>
 
+                                    {/*QUANTITY */}
                                     <p className="text-[20px]" style={{ fontFamily: "Epilogue", letterSpacing: "-1px" }}>Quantity</p>
-                                    <div className="flex flex-row items-center justify-between w-[131px] h-[43px] bg-[#1C1C1C] rounded-md mb-4">
+                                    <div className="flex flex-row items-center justify-between w-[131px] h-[43px] bg-[#1C1C1C] rounded-md mb-6">
                                         {SKU === ""
                                             ? (
                                                 <>
@@ -457,9 +477,12 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                             )}
                                     </div>
 
+                                    {/* ADD TO CART */}
+                                    <Notifications />
                                     <Button
                                         variant="filled"
                                         fullWidth
+                                        radius="md"
                                         color="black"
                                         styles={{
                                             root: {
