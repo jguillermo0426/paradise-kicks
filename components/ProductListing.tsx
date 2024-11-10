@@ -59,11 +59,11 @@ export default function ProductListing({ searchParams } : { searchParams : strin
             });
 
             const result = await response.json();
-            console.log(result.product);
-            if (result.product.length != 0) {
-                const products = groupProducts(result.product);
+            console.log(result.products);
+            if (result.products.length != 0) {
+                const products = groupProducts(result.products);
                 setGroupedProducts(products);
-                setTotalPages(Math.ceil(products.length / 4));
+                setTotalPages(Math.ceil(result.totalProducts / 4));
             }
             
         };

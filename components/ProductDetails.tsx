@@ -313,9 +313,7 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                             <Image
                                                 alt="Card background"
                                                 className="object-cover rounded-xl"
-                                                src={colorway.image_link
-                                                    ? colorway.image_link
-                                                    : "https://static.nike.com/a/images/t_PDP_936_v1/f_auto,q_auto:eco/af53d53d-561f-450a-a483-70a7ceee380f/W+NIKE+DUNK+LOW.png"}
+                                                src={colorway.image_link || "https://static.nike.com/a/images/t_PDP_936_v1/f_auto,q_auto:eco/af53d53d-561f-450a-a483-70a7ceee380f/W+NIKE+DUNK+LOW.png"}
                                                 width={724}
                                                 height={764} />
                                             <p>Hello</p>
