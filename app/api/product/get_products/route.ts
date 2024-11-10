@@ -58,13 +58,16 @@ export async function GET(req: Request) {
     }
 
     // Define the count query to get the total unique combinations
-    const countQuery = `
-        SELECT COUNT(*) AS total_unique_combinations
-        FROM (
-            SELECT DISTINCT "Model", "Colorway"
-            FROM product
-        ) AS unique_combinations;
-    `;
+    var countQueryBase =  `
+    SELECT COUNT(*) AS total_unique_combinations
+    FROM (
+        SELECT DISTINCT "Model", "Colorway"
+        FROM product `;
+
+    if (search_term) {
+        countQueryBase += `  WHERE (${modelColorwayConditions}) AND "available" = true `;
+    }
+    const countQuery = countQueryBase + `) AS unique_combinations; `;
 
     // Execute the count query using the new Supabase RPC function for counts
     const { data: countData, error: countError } = await supabase

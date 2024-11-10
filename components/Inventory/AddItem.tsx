@@ -80,6 +80,7 @@ export default function AddItem({ onSuccess }: addItemProps) {
             Papa.parse<Product>(csvFile, {
                 skipEmptyLines: true,
                 header: true,
+                transform: (value) => value.trim(),
                 complete: function (results) {
                     console.log("Finished:", results.data);
                     const products: Product[] = results.data;
