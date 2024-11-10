@@ -226,7 +226,7 @@ export default function EditItems({ onSuccess, searchValue }: editItemProps) {
 
     return (
         <div className='w-full flex flex-col items-center justify-center'>
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
                 {filteredProducts &&
                     filteredProducts.map((product, productIndex) =>
                         product.colorways.map((colorway, colorwayIndex) => (
