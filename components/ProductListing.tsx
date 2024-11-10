@@ -1,27 +1,41 @@
 'use client'
-import { MantineProvider, Select, TextInput, Popover, Button } from '@mantine/core';
+import { MantineProvider, Select, TextInput, Popover, Button, Pagination } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import { GroupedProduct2, Product } from '@/types/types';
 import { Card, CardBody, Image } from "@nextui-org/react";
 import Link from 'next/link';
 import React from 'react';
+import classes from "./css/tabs.module.css";
+import { useRouter } from "next/navigation";
+import { useDebounce } from "use-debounce";
 
 
-
-export default function ProductListing() {
+export default function ProductListing({ searchParams } : { searchParams : string }) {
     const [groupedProducts, setGroupedProducts] = useState<GroupedProduct2[]>([]);
     const brandLogoMap: Map<string, string> = new Map();
+    const [totalPages, setTotalPages] = useState<number>(1);
+    const [activePage, setPage] = useState(1);
+    const [sortFilter, setSortFilter] = useState<string>("Alphabetical");
+    const [sortedProducts, setSortedProducts] = useState<GroupedProduct2[]>([]);
+    const [searchValue, setSearchValue] = useState("");
+    const [query] = useDebounce(searchValue, 500);
+    const router = useRouter();
+
     brandLogoMap.set("Nike", "/nike.png");
     brandLogoMap.set("Adidas", "/adidas.png");
     brandLogoMap.set("New Balance", "/new balance.png");
 
-    const sorting = [
-        {label: "A-Z", key: "A-Z" },
-        {label: "Price: Highest to Lowest", key: "Price: Highest to Lowest" },
-        {label: "Price: Lowest to HighestHighest to Lowest", key: "Price: Lowest to Highest" }
-    ]
-
     useEffect(() => {
+        if (!query) {
+            router.push("/product-listing");
+        }
+        else {
+            router.push(`/product-listing?search=${query}`);
+        }
+        console.log(searchValue);
+    }, [query, router]);
+
+    /*useEffect(() => {
         const getProducts = async() => {
             const response = await fetch('api/product/get_product', {
                 method: "GET"
@@ -36,7 +50,43 @@ export default function ProductListing() {
             }
         }
         getProducts();
-    }, []);
+    }, []);*/
+
+    useEffect(() => {
+        const getProducts = async() => {
+            const response = await fetch(`api/product/get_product?page=${activePage}&search=${query}`, {
+                method: "GET"
+            });
+
+            const result = await response.json();
+            console.log(result.product);
+            if (result.product.length != 0) {
+                const products = groupProducts(result.product);
+                setGroupedProducts(products);
+                setTotalPages(Math.ceil(products.length / 4));
+            }
+            
+        };
+        getProducts();
+    }, [activePage, query]);
+
+     // Fetch products on page change
+     /*useEffect(() => {
+        const getProduct = async () => {
+            const response = await fetch(`/api/product/get_products?page=${activePage}&search=`, {
+                method: "GET"
+            });
+            const result = await response.json();
+            console.log(result.products);
+            if (result.products.length !== 0) {
+                const products = groupProducts(result.products);
+                setGroupedProducts(products);
+                setTotalPages(Math.ceil(result.totalProducts / 4));
+            }
+        };
+
+        getProduct();
+    }, [activePage]);  // This effect runs only when the activePage changes*/
 
     const groupProducts = (products: Product[]) => {
         let modelId = 0;
@@ -104,8 +154,6 @@ export default function ProductListing() {
         return totalColors;
     }
 
-    const animals = ["dog", "cat"]
-
     const getLowestPrice = (groupedProduct: GroupedProduct2) => {
         let lowestPrice = groupedProduct.colorways[0].sizes[0].price;
         groupedProduct.colorways.forEach((colorway) => {
@@ -118,6 +166,33 @@ export default function ProductListing() {
 
         return lowestPrice;
     }
+
+    const handleSortChange = (value: string | null) => {
+        if (value != null) {
+            setSortFilter(value);
+        }
+        else {
+            setSortFilter("Alphabetical");
+        }
+        
+    }
+
+    useEffect(() => {
+        if (groupedProducts.length > 0) {
+            if (sortFilter === "Alphabetical") {
+                setSortedProducts([...groupedProducts].sort((a, b) => a.model.localeCompare(b.model)));
+            } else if (sortFilter === "Price: Lowest to Highest") {
+                setSortedProducts([...groupedProducts].sort((a, b) => {
+                    return getLowestPrice(a) - getLowestPrice(b);
+                }));
+            } else if (sortFilter === "Price: Highest to Lowest") {
+                setSortedProducts([...groupedProducts].sort((a, b) => {
+                    return getLowestPrice(b) - getLowestPrice(a);
+                }));
+            }
+        }
+    }, [groupedProducts, sortFilter]);
+    
 
     return (
         <MantineProvider>
@@ -153,6 +228,8 @@ export default function ProductListing() {
                                     <Select
                                     placeholder="Select filter"
                                     data={['Alphabetical', 'Price: Lowest to Highest', 'Price: Highest to Lowest']}
+                                    value={sortFilter}
+                                    onChange={handleSortChange}
                                     comboboxProps={{ withinPortal: false }}
                                     styles={{
                                         input: {
@@ -168,6 +245,8 @@ export default function ProductListing() {
 
                             <TextInput
                                 placeholder="Search"
+                                value={searchValue}
+                                onChange={e => setSearchValue(e.target.value)}
                                 styles={{
                                     input: {
                                         fontFamily: "Epilogue",
@@ -179,9 +258,9 @@ export default function ProductListing() {
                         </div>       
                     </div>
                     
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-20 justify-start">
-                    {groupedProducts && 
-                        groupedProducts.map((product, productIndex) => 
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-16 justify-start">
+                    {sortedProducts && 
+                        sortedProducts.map((product, productIndex) => 
                             <Link key={productIndex} href={`/product-details/${product.model}`}>
                                 <Card key={productIndex} className="max-w-[300px] h-[450px] flex flex-col items-center border-[1px] border-black rounded-2xl p-8">
                                     <CardBody className="flex flex-col justify-between h-full">
@@ -225,7 +304,18 @@ export default function ProductListing() {
                     )}
                     </div>
                 </div>
-                
+                <Pagination
+                value={activePage}
+                total={totalPages}
+                className="mb-12"
+                onChange={(page) => {
+                    setPage(page);
+                    window.scrollTo(0, 0);
+                }}
+                classNames={{
+                    root: classes.pageRoot
+                }}
+            />
             </div>
         </MantineProvider>
     );
