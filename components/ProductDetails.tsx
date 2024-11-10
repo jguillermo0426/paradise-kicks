@@ -2,10 +2,11 @@
 import { MantineProvider, Skeleton, Divider, Button, ActionIcon, Tooltip, Notification } from '@mantine/core';
 import '@mantine/carousel/styles.css';
 import { Carousel } from '@mantine/carousel';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { GroupedProduct2, Product } from '@/types/types';
 import { Image } from "@nextui-org/react";
 import classes from './css/actionicon.module.css';
+import { EmblaCarouselType } from 'embla-carousel-react';
 import '@mantine/notifications/styles.css';
 import { notifications, Notifications } from '@mantine/notifications';
 
@@ -13,7 +14,7 @@ type ProductProps = {
     productModel: string;
 }
 
-export default function ProductDetails({productModel}: ProductProps) {
+export default function ProductDetails({ productModel }: ProductProps) {
     const [groupedProducts, setGroupedProducts] = useState<GroupedProduct2[]>([]);
     const [price, setPrice] = useState<number>(0);
     const [SKU, setSKU] = useState<string>('');
@@ -21,18 +22,19 @@ export default function ProductDetails({productModel}: ProductProps) {
     const [loading, setLoading] = useState(true);
     const [selectedColorway, setSelectedColorway] = useState<string>('');
     const [quantity, setQuantity] = useState(0);
+    const emblaRef = useRef<EmblaCarouselType>();
 
     const buttonStyles = {
-        selected:{
-          border: "2px solid black"
+        selected: {
+            border: "2px solid black"
         },
-        unselected:{
+        unselected: {
             border: "1px solid gray",
         }
     };
 
     useEffect(() => {
-        const getModel = async() => {
+        const getModel = async () => {
             const response = await fetch(`/api/product/get_model?model=${productModel}`, {
                 method: "GET"
             });
@@ -51,7 +53,7 @@ export default function ProductDetails({productModel}: ProductProps) {
         }
         getModel();
     }, []);
-    
+
 
     // groups the products based on their model, colorway, and size/stock/price
     const groupProducts = (products: Product[]) => {
@@ -70,15 +72,15 @@ export default function ProductDetails({productModel}: ProductProps) {
                     model: Model,
                     brand: Brand,
                     colorways: []
-                };   
-                
+                };
+
                 modelId += 1;
             };
-            
+
             // find the shoe of the same brand with matching colorway
             let colorwayGroup = grouped[Model].colorways.find(shoe => shoe.colorway === Colorway);
             // if the group of the colorways doesnt exist, create it
-            if (!colorwayGroup) { 
+            if (!colorwayGroup) {
                 colorwayGroup = { id: colorwayId, image_link: image_link, colorway: Colorway, sizes: [], model: Model, brand: Brand };
                 grouped[Model].colorways.push(colorwayGroup);
                 colorwayId += 1;
@@ -93,8 +95,8 @@ export default function ProductDetails({productModel}: ProductProps) {
                 price: Price
             });
             sizeId += 1;
-        });      
-        return Object.values(grouped);      
+        });
+        return Object.values(grouped);
     }
 
     const getTotalStocks = (groupedProduct: GroupedProduct2) => {
@@ -111,7 +113,7 @@ export default function ProductDetails({productModel}: ProductProps) {
     const getLowestPrice = (groupedProduct: GroupedProduct2) => {
         let lowestPrice = groupedProduct.colorways[0].sizes[0].price;
         groupedProduct.colorways.forEach((colorway) => {
-            for(let i = 0; i < colorway.sizes.length; i++) {
+            for (let i = 0; i < colorway.sizes.length; i++) {
                 if (lowestPrice > colorway.sizes[i].price) {
                     lowestPrice = colorway.sizes[i].price
                 }
@@ -124,7 +126,7 @@ export default function ProductDetails({productModel}: ProductProps) {
     const getHighestPrice = (groupedProduct: GroupedProduct2) => {
         let highestPrice = groupedProduct.colorways[0].sizes[0].price;
         groupedProduct.colorways.forEach((colorway) => {
-            for(let i = 0; i < colorway.sizes.length; i++) {
+            for (let i = 0; i < colorway.sizes.length; i++) {
                 if (highestPrice < colorway.sizes[i].price) {
                     highestPrice = colorway.sizes[i].price
                 }
@@ -136,20 +138,28 @@ export default function ProductDetails({productModel}: ProductProps) {
 
     const handleColorwayChange = (product: GroupedProduct2, colorway: string) => {
         let colorStock = 0;
-    
+
         setSKU('');
-        setSelectedColorway(colorway); 
-    
+        setSelectedColorway(colorway);
+
+        let colorwayIndex = -1;
+
         product.colorways.forEach((colorwayItem, index) => {
-            if (colorwayItem.colorway === colorway) { 
+            if (colorwayItem.colorway === colorway) {
+                colorwayIndex = index
                 colorwayItem.sizes.forEach((size) => {
                     colorStock += size.stock;
                 });
             }
-        }); 
-        setStock(colorStock); 
+        });
+        setStock(colorStock);
+        if (colorwayIndex != -1) {
+            if (emblaRef.current) {
+                emblaRef.current.scrollTo(colorwayIndex);
+            }
+        }
     };
-     
+
     const handleSizeChange = (product: GroupedProduct2, sku: string) => {
         product.colorways.forEach((colorway) => {
             if (colorway.colorway === selectedColorway) {
@@ -163,15 +173,15 @@ export default function ProductDetails({productModel}: ProductProps) {
             }
         });
     };
-    
+
     const startingPriceDisplay = (product: GroupedProduct2) => {
         let lowestPrice = getLowestPrice(product);
         let highestPrice = getHighestPrice(product);
 
-        if(lowestPrice === highestPrice){
+        if (lowestPrice === highestPrice) {
             return `₱${lowestPrice.toString()}`;
         }
-        else{
+        else {
             return `₱${lowestPrice.toString()} - ₱${highestPrice.toString()}`;
         }
     }
@@ -191,7 +201,7 @@ export default function ProductDetails({productModel}: ProductProps) {
                 });
             }
         });
-    
+
         return lowestPrice === highestPrice
             ? `₱${lowestPrice}`
             : `₱${lowestPrice} - ₱${highestPrice}`;
@@ -217,7 +227,7 @@ export default function ProductDetails({productModel}: ProductProps) {
         if (quantity > 0) {
             let newQuantity = quantity - 1;
             setQuantity(newQuantity);
-        }  
+        }
     }
 
 
@@ -261,31 +271,31 @@ export default function ProductDetails({productModel}: ProductProps) {
                                 <Skeleton height={20} width={400} radius="md" mb={8} />
                                 <Skeleton height={20} width={400} radius="md" mb={8} />
                             </div>
-                        </div></> 
+                        </div></>
                 ) : (
-                    groupedProducts && 
-                        groupedProducts.map((product, productIndex) => 
-                            <>
+                    groupedProducts &&
+                    groupedProducts.map((product, productIndex) =>
+                        <>
                             <div className="ml-[55px] mt-10" style={{ marginRight: "auto" }}>
                                 <Button
-                                component="a"
-                                href="/product-listing"
-                                variant="filled"
-                                fullWidth
-                                color="black"
-                                radius="md"
-                                styles={{
-                                    root: {
-                                        height: "46px",
-                                        width: "207px"
-                                    },
-                                    label: {
-                                        fontFamily: "Epilogue",
-                                        fontWeight: 700,
-                                        fontSize: "20px",
-                                        color: "#EDEDED"
-                                    }
-                                }}
+                                    component="a"
+                                    href="/product-listing"
+                                    variant="filled"
+                                    fullWidth
+                                    color="black"
+                                    radius="md"
+                                    styles={{
+                                        root: {
+                                            height: "46px",
+                                            width: "207px"
+                                        },
+                                        label: {
+                                            fontFamily: "Epilogue",
+                                            fontWeight: 700,
+                                            fontSize: "20px",
+                                            color: "#EDEDED"
+                                        }
+                                    }}
                                 >
                                     Return
                                 </Button>
@@ -297,6 +307,7 @@ export default function ProductDetails({productModel}: ProductProps) {
                                         withIndicators
                                         height={764}
                                         loop
+                                        getEmblaApi={(embla) => { emblaRef.current = embla; }}
                                     >
                                         {product.colorways.map((colorway, colorwayIndex) => <Carousel.Slide key={colorwayIndex}>
                                             <Image
@@ -332,26 +343,27 @@ export default function ProductDetails({productModel}: ProductProps) {
                                     <Divider my="md" />
                                     <p className="text-[20px]" style={{ fontFamily: "Epilogue", letterSpacing: "-1px" }}>Color</p>
                                     <div className="w-full flex flex-wrap items-center justify-start mb-8">
-                                        {product.colorways.map((colorway, colorwayIndex) => 
-                                        <Button
-                                        key={colorwayIndex}
-                                        variant="default"
-                                        onClick={() => handleColorwayChange(product, colorway.colorway)}
-                                        style={colorway.colorway === selectedColorway ? buttonStyles.selected : buttonStyles.unselected}
-                                        styles={{
-                                            root: {
-                                                height: "58px",
-                                                width: "150px"
-                                            },
-                                            label: {
-                                                fontFamily: "Epilogue",
-                                                fontWeight: 100,
-                                                color: "black"
-                                            }
-                                        }}
-                                        >
-                                            <p className="text-[14px]" style={{ fontFamily: "Epilogue" }}>{colorway.colorway}</p>
-                                        </Button>
+                                        {product.colorways.map((colorway, colorwayIndex) =>
+                                            <Button
+                                                key={colorwayIndex}
+                                                variant="default"
+                                                className='my-4 mr-5'
+                                                onClick={() => handleColorwayChange(product, colorway.colorway)}
+                                                style={colorway.colorway === selectedColorway ? buttonStyles.selected : buttonStyles.unselected}
+                                                styles={{
+                                                    root: {
+                                                        height: "58px",
+                                                        width: "fit-content"
+                                                    },
+                                                    label: {
+                                                        fontFamily: "Epilogue",
+                                                        fontWeight: 100,
+                                                        color: "black"
+                                                    }
+                                                }}
+                                            >
+                                                <p className="text-[14px]" style={{ fontFamily: "Epilogue" }}>{colorway.colorway}</p>
+                                            </Button>
                                         )}
                                     </div>
 
@@ -360,27 +372,27 @@ export default function ProductDetails({productModel}: ProductProps) {
                                         {selectedColorway === "" ? (
                                             product.colorways.map((colorway) => colorway.sizes.map((size, sizeIndex) => (
                                                 <Button
-                                                key={sizeIndex}
-                                                onClick={() => handleSizeChange(product, size.SKU)}
-                                                disabled={size.stock === 0}
-                                                className="mr-2 mb-2"
-                                                style={{
-                                                    ... (size.stock === 0 ? { opacity: 0.5 } : {}), // Apply opacity when stock is 0
-                                                    ... (size.SKU === SKU ? buttonStyles.selected : buttonStyles.unselected)
-                                                }}
-                                                styles={{
-                                                    root: {
-                                                        backgroundColor: "white",
-                                                        height: "58px",
-                                                        width: "130px"
-                                                    },
-                                                    label: {
-                                                        fontFamily: "Epilogue",
-                                                        fontWeight: 100,
-                                                        fontSize: "14px",
-                                                        color: "black"
-                                                    }
-                                                }}
+                                                    key={sizeIndex}
+                                                    className='mr-2 mb-2'
+                                                    onClick={() => handleSizeChange(product, size.SKU)}
+                                                    disabled={size.stock === 0}
+                                                    style={{
+                                                        ... (size.stock === 0 ? { opacity: 0.5 } : {}), // Apply opacity when stock is 0
+                                                        ... (size.SKU === SKU ? buttonStyles.selected : buttonStyles.unselected)
+                                                    }}
+                                                    styles={{
+                                                        root: {
+                                                            backgroundColor: "white",
+                                                            height: "58px",
+                                                            width: "fit-content"
+                                                        },
+                                                        label: {
+                                                            fontFamily: "Epilogue",
+                                                            fontWeight: 100,
+                                                            fontSize: "14px",
+                                                            color: "black"
+                                                        }
+                                                    }}
                                                 >
                                                     {size.size}
                                                 </Button>
@@ -396,14 +408,14 @@ export default function ProductDetails({productModel}: ProductProps) {
                                                         className="mr-2 mb-2"
                                                         disabled={size.stock === 0}
                                                         style={{
-                                                            ... (size.stock === 0 ? { opacity: 0.5 } : {}), 
+                                                            ... (size.stock === 0 ? { opacity: 0.5 } : {}),
                                                             ... (size.SKU === SKU ? buttonStyles.selected : buttonStyles.unselected)
                                                         }}
                                                         styles={{
                                                             root: {
                                                                 backgroundColor: "white",
                                                                 height: "58px",
-                                                                width: "130px"
+                                                                width: "fit-content"
                                                             },
                                                             label: {
                                                                 fontFamily: "Epilogue",
@@ -420,7 +432,7 @@ export default function ProductDetails({productModel}: ProductProps) {
                                                 )
                                         )}
                                     </div>
-                                    
+
                                     {/*QUANTITY */}
                                     <p className="text-[20px]" style={{ fontFamily: "Epilogue", letterSpacing: "-1px" }}>Quantity</p>
                                     <div className="flex flex-row items-center justify-between w-[131px] h-[43px] bg-[#1C1C1C] rounded-md mb-6">
@@ -487,8 +499,8 @@ export default function ProductDetails({productModel}: ProductProps) {
                                     </Button>
                                 </div>
                             </div></>
-                        )
                     )
+                )
                 }
             </div>
         </MantineProvider>
