@@ -9,6 +9,7 @@ import classes from './css/actionicon.module.css';
 import { EmblaCarouselType } from 'embla-carousel-react';
 import '@mantine/notifications/styles.css';
 import { notifications, Notifications } from '@mantine/notifications';
+import { useCart } from '@/utils/useCart';
 
 type ProductProps = {
     productModel: string;
@@ -25,6 +26,8 @@ export default function ProductDetails({ productModel }: ProductProps) {
     const emblaRef = useRef<EmblaCarouselType>();
     const [uniqueSizes, setUniqueSizes] = useState<string[]>([]);
 
+    const { cart, addToCart, itemExists, removeFromCart, getItemFromCart, updateItemQuantity, clearCart } = useCart();
+
     const buttonStyles = {
         selected: {
             border: "2px solid black"
@@ -34,28 +37,54 @@ export default function ProductDetails({ productModel }: ProductProps) {
         }
     };
 
-    /*useEffect(() => {
-        const getModel = async () => {
-            const response = await fetch(`/api/product/get_model?model=${productModel}`, {
-                method: "GET"
-            });
+    const addCart = () => {
+        const newCartItem = {
+            sku: SKU,
+            quantity: quantity
+        };
 
-            const result = await response.json();
-            console.log(result.model);
-            if (result.model.length != 0) {
-                const product = groupProducts(result.model);
-                const sizes = result.sizes;
-                setGroupedProducts(product);
-                setUniqueSizes(sizes);
-                setLoading(false);
-                console.log(product);
+        const itemInCart = getItemFromCart(SKU);
+
+        if (itemInCart && quantity > 0) {
+            // if item exists in cart, update quantity if it doesn't exceed stock
+            const updatedQuantity = itemInCart.quantity + quantity;
+            if (updatedQuantity <= stock) {
+                updateItemQuantity(newCartItem.sku, quantity);
+                console.log('quantity updated in cart', SKU, updateItemQuantity);
+                setQuantity(0);     // reset displayed quantity after adding to cart
+            } else {
+                notifications.show({
+                    message: "You have reached the maximum quantity for this item.",
+                    color: "red"
+                });
             }
-            else {
-                console.log(productModel + "not found")
+        } 
+        else {
+            // add new item to the cart if quantity is greater than 0
+            if (quantity > 0 && quantity <= stock) {
+                addToCart(newCartItem);
+                console.log("Added item to cart:", SKU, quantity);
+                setQuantity(0);     // reset displayed quantity after adding to cart
+            } else if (quantity > stock) {
+                notifications.show({
+                    message: "You have reached the maximum quantity for this item.",
+                    color: "red"
+                });
+            } else {
+                notifications.show({
+                    message: "Please select a color, size, and quantity.",
+                    color: "red"
+                });
             }
         }
-        getModel();
-    }, []);*/
+    }
+
+    useEffect(() => {
+        const item = getItemFromCart(SKU);
+        if (item) {
+            setQuantity(quantity);
+        }
+      }, [cart]);
 
     useEffect(() => {
         const getModel = async () => {
@@ -80,7 +109,6 @@ export default function ProductDetails({ productModel }: ProductProps) {
         getModel();
     }, [productModel]); // Add productModel as a dependency
     
-
 
     // groups the products based on their model, colorway, and size/stock/price
     const groupProducts = (products: Product[]) => {
@@ -236,19 +264,34 @@ export default function ProductDetails({ productModel }: ProductProps) {
 
     const increaseQuantity = () => {
         let newQuantity = quantity + 1;
-        if (newQuantity < stock) {
-            setQuantity(newQuantity);
-        }
-        else if (newQuantity === stock) {
-            setQuantity(newQuantity);
-        }
-        else if (quantity === stock) {
-            notifications.show({
-                message: "You have reached the maximum quantity for this item.",
-                color: "red"
-            });
-        }
-    }
+        let itemInCart = cart.find(item => item.sku === SKU);
+        let itemQuantity = 0;
+        let newItemQuantity = 0;
+
+        if (itemInCart) {
+            itemQuantity = itemInCart.quantity;
+            newItemQuantity = itemQuantity + newQuantity;
+
+            if (newItemQuantity <= stock) {
+                setQuantity(newQuantity); 
+            } else {
+                notifications.show({
+                    message: "You have reached the maximum quantity for this item.",
+                    color: "red"
+                });
+            }
+        } else {
+            // check if the quantity increase would exceed the stock
+            if (newQuantity <= stock) {
+                setQuantity(newQuantity); 
+            } else {
+                notifications.show({
+                    message: "You have reached the maximum quantity for this item.",
+                    color: "red"
+                });
+            }  
+        }  
+    };
 
     const decreaseQuantity = () => {
         if (quantity > 0) {
@@ -501,6 +544,7 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                     {/* ADD TO CART */}
                                     <Notifications />
                                     <Button
+                                        onClick={() => addCart()}
                                         variant="filled"
                                         fullWidth
                                         radius="md"

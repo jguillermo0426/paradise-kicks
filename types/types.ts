@@ -97,3 +97,8 @@ export type OrderHistory = {
         status: string;
     };
 }
+
+export type itemOrder = {
+    sku: string;
+    quantity: number;
+}
