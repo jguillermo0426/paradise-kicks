@@ -206,6 +206,10 @@ export default function EditItems({ onSuccess, searchValue }: editItemProps) {
         return Object.values(grouped);
     }
 
+    useEffect(() => {
+        setPage(1);
+    }, [debouncedSearchValue]);
+
     // Fetch products on page change
     useEffect(() => {
         const getProduct = async () => {

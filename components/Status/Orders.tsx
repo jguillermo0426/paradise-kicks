@@ -127,6 +127,10 @@ export default function AdminStock() {
     }
 
     useEffect(() => {
+        setPage(1);
+    }, [searchValue]);
+
+    useEffect(() => {
         const tempArr: ProductsOrdered[] = [];
         if (orderProducts && selectedStatus != "All") {
             orderProducts.forEach(order => {
