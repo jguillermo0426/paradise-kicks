@@ -63,7 +63,7 @@ export default function ProductListing({ searchParams } : { searchParams : strin
             if (result.products.length != 0) {
                 const products = groupProducts(result.products);
                 setGroupedProducts(products);
-                setTotalPages(Math.ceil(result.totalProducts / 4));
+                setTotalPages(Math.ceil(result.totalProducts / 12));
             }
             
         };

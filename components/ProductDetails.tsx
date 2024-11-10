@@ -345,7 +345,7 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                             <Button
                                                 key={colorwayIndex}
                                                 variant="default"
-                                                className='my-4 mr-5'
+                                                className='my-4 mr-2'
                                                 onClick={() => handleColorwayChange(product, colorway.colorway)}
                                                 style={colorway.colorway === selectedColorway ? buttonStyles.selected : buttonStyles.unselected}
                                                 styles={{
