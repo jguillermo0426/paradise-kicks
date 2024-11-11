@@ -51,7 +51,7 @@ export default function Header({ navSelected }: SelectedProps) {
                         </div>
                     </Anchor>
 
-                    <Anchor href="/" underline='never'>
+                    <Anchor href="/admin-dashboard/brands" underline='never'>
                         <div className={navSelected === "Brands" ? selected : unselected}>
                             <p style={epilogue.style} className={navSelected === "Brands" ? selectedText : unselectedText}>Brands</p>
                         </div>

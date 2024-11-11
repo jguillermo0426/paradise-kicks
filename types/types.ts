@@ -111,3 +111,9 @@ export type OrderHistory = {
         status: string;
     };
 }
+
+export type BrandsType = {
+    id: number;
+    brand_name: string;
+    brand_image: string;
+}
