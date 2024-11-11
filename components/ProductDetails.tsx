@@ -18,7 +18,7 @@ type ProductProps = {
 export default function ProductDetails({ productModel }: ProductProps) {
     const [groupedProducts, setGroupedProducts] = useState<GroupedProduct2[]>([]);
     const [price, setPrice] = useState<number>(0);
-    const [SKU, setSKU] = useState<string>('');
+    const [selectedSKU, setSelectedSKU] = useState<string>('');
     const [stock, setStock] = useState<number>(0);
     const [loading, setLoading] = useState(true);
     const [selectedColorway, setSelectedColorway] = useState<string>('');
@@ -27,6 +27,18 @@ export default function ProductDetails({ productModel }: ProductProps) {
     const [uniqueSizes, setUniqueSizes] = useState<string[]>([]);
 
     const { cart, addToCart, itemExists, removeFromCart, getItemFromCart, updateItemQuantity, clearCart } = useCart();
+
+    const props ={
+        SKU: "",
+        Model: "",
+        Brand: "",
+        Stock: 0,
+        Price: 0,
+        Size: "",
+        Colorway: "",
+        image_link: "",
+        available: true,
+    };
 
     const buttonStyles = {
         selected: {
@@ -39,18 +51,19 @@ export default function ProductDetails({ productModel }: ProductProps) {
 
     const addCart = () => {
         const newCartItem = {
-            sku: SKU,
+            sku: selectedSKU,
+            product: props,
             quantity: quantity
         };
 
-        const itemInCart = getItemFromCart(SKU);
+        const itemInCart = getItemFromCart(selectedSKU);
 
         if (itemInCart && quantity > 0) {
             // if item exists in cart, update quantity if it doesn't exceed stock
             const updatedQuantity = itemInCart.quantity + quantity;
             if (updatedQuantity <= stock) {
                 updateItemQuantity(newCartItem.sku, quantity);
-                console.log('quantity updated in cart', SKU, updateItemQuantity);
+                console.log('quantity updated in cart', selectedSKU, updateItemQuantity);
                 setQuantity(0);     // reset displayed quantity after adding to cart
             } else {
                 notifications.show({
@@ -63,7 +76,7 @@ export default function ProductDetails({ productModel }: ProductProps) {
             // add new item to the cart if quantity is greater than 0
             if (quantity > 0 && quantity <= stock) {
                 addToCart(newCartItem);
-                console.log("Added item to cart:", SKU, quantity);
+                console.log("Added item to cart:", selectedSKU, quantity);
                 setQuantity(0);     // reset displayed quantity after adding to cart
             } else if (quantity > stock) {
                 notifications.show({
@@ -80,7 +93,7 @@ export default function ProductDetails({ productModel }: ProductProps) {
     }
 
     useEffect(() => {
-        const item = getItemFromCart(SKU);
+        const item = getItemFromCart(selectedSKU);
         if (item) {
             setQuantity(quantity);
         }
@@ -96,10 +109,9 @@ export default function ProductDetails({ productModel }: ProductProps) {
             console.log(result.model);
             if (result.model.length !== 0) {
                 const product = groupProducts(result.model);
-                // Extract the 'size' property from each object in the sizes array
                 const sizes = result.sizes.map((item: { size: string }) => item.size);
                 setGroupedProducts(product);
-                setUniqueSizes(sizes); // Now it's an array of strings
+                setUniqueSizes(sizes); 
                 setLoading(false);
                 console.log(product);
             } else {
@@ -107,7 +119,7 @@ export default function ProductDetails({ productModel }: ProductProps) {
             }
         };
         getModel();
-    }, [productModel]); // Add productModel as a dependency
+    }, [productModel]); 
     
 
     // groups the products based on their model, colorway, and size/stock/price
@@ -194,8 +206,9 @@ export default function ProductDetails({ productModel }: ProductProps) {
     const handleColorwayChange = (product: GroupedProduct2, colorway: string) => {
         let colorStock = 0;
 
-        setSKU('');
+        setSelectedSKU('');
         setSelectedColorway(colorway);
+        setQuantity(0);
 
         let colorwayIndex = -1;
 
@@ -216,12 +229,13 @@ export default function ProductDetails({ productModel }: ProductProps) {
     };
 
     const handleSizeChange = (product: GroupedProduct2, sku: string) => {
+        setQuantity(0)
         product.colorways.forEach((colorway) => {
             if (colorway.colorway === selectedColorway) {
                 colorway.sizes.forEach((size) => {
                     if (sku === size.SKU) {
                         setPrice(size.price);
-                        setSKU(sku);
+                        setSelectedSKU(sku);
                         setStock(size.stock);
                     }
                 });
@@ -264,7 +278,7 @@ export default function ProductDetails({ productModel }: ProductProps) {
 
     const increaseQuantity = () => {
         let newQuantity = quantity + 1;
-        let itemInCart = cart.find(item => item.sku === SKU);
+        let itemInCart = cart.find(item => item.sku === selectedSKU);
         let itemQuantity = 0;
         let newItemQuantity = 0;
 
@@ -401,9 +415,9 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                     </p>
                                     <p className="text-[72px]" style={{ fontFamily: "EpilogueBold", letterSpacing: "-3px", lineHeight: "1.00" }}>{product.brand} {product.model}</p>
                                     <p className="text-[24px]" style={{ fontFamily: "EpilogueMedium" }}>
-                                        {selectedColorway === "" && SKU === ""
+                                        {selectedColorway === "" && selectedSKU === ""
                                             ? `${startingPriceDisplay(product)}`
-                                            : selectedColorway !== "" && SKU === ""
+                                            : selectedColorway !== "" && selectedSKU === ""
                                                 ? `${getColorwayPriceRange(product)}`
                                                 : `₱${price.toString()}`}
                                     </p>
@@ -473,7 +487,7 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                                         disabled={size.stock === 0}
                                                         style={{
                                                             ... (size.stock === 0 ? { opacity: 0.5 } : {}),
-                                                            ... (size.SKU === SKU ? buttonStyles.selected : buttonStyles.unselected)
+                                                            ... (size.SKU === selectedSKU ? buttonStyles.selected : buttonStyles.unselected)
                                                         }}
                                                         styles={{
                                                             root: {
@@ -500,7 +514,7 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                     {/*QUANTITY */}
                                     <p className="text-[20px]" style={{ fontFamily: "Epilogue", letterSpacing: "-1px" }}>Quantity</p>
                                     <div className="flex flex-row items-center justify-between w-[131px] h-[43px] bg-[#1C1C1C] rounded-md mb-6">
-                                        {SKU === ""
+                                        {selectedSKU === ""
                                             ? (
                                                 <>
                                                     <Tooltip label="Please select a colorway and size first." position="bottom">

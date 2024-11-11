@@ -8,6 +8,7 @@ import React from 'react';
 import classes from "./css/tabs.module.css";
 import { useRouter } from "next/navigation";
 import { useDebounce } from "use-debounce";
+import { useCart } from '@/utils/useCart';
 
 
 export default function ProductListing({ searchParams }: { searchParams: string }) {

@@ -100,5 +100,6 @@ export type OrderHistory = {
 
 export type itemOrder = {
     sku: string;
+    product: Product;
     quantity: number;
 }
