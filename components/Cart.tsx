@@ -8,6 +8,7 @@ import { useCart } from '@/utils/useCart';
 import '@mantine/notifications/styles.css';
 import { notifications, Notifications } from '@mantine/notifications';
 import { useRouter } from "next/navigation"; 
+import { Link } from '@nextui-org/react';
 
 
 export default function Cart() {
@@ -217,25 +218,27 @@ export default function Cart() {
                                         src="/gcash.png"
                                     />
                                 </div>
-                                <Button
-                                    className="mt-auto"
-                                    variant="filled"
-                                    fullWidth
-                                    radius="md"
-                                    color="black"
-                                    styles={{
-                                        root: {
-                                            height: "78px"
-                                        },
-                                        label: {
-                                            fontFamily: "EpilogueBold",
-                                            fontSize: "24px",
-                                            color: "#EDEDED"
-                                        }
-                                    }}
-                                >
-                                    Proceed to Checkout
-                                </Button>
+                                <Link href="/checkout" className='w-full'>
+                                    <Button
+                                        className="mt-auto"
+                                        variant="filled"
+                                        fullWidth
+                                        radius="md"
+                                        color="black"
+                                        styles={{
+                                            root: {
+                                                height: "78px"
+                                            },
+                                            label: {
+                                                fontFamily: "EpilogueBold",
+                                                fontSize: "24px",
+                                                color: "#EDEDED"
+                                            }
+                                        }}
+                                    >
+                                        Proceed to Checkout
+                                    </Button>
+                                </Link>
                                     
                             </div> 
                         </div>
