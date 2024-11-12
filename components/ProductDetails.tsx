@@ -580,7 +580,7 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                                             },
                                                             label: {
                                                                 fontFamily: "Epilogue",
-                                                                fontWeight: 100,
+                                                                fontWeight: 400,
                                                                 fontSize: "14px",
                                                                 color: "black"
                                                             }
