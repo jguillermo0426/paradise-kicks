@@ -121,6 +121,7 @@ export type BrandsType = {
     id: number;
     brand_name: string;
     brand_image: string;
+}
   
 export type itemOrder = {
     sku: string;
