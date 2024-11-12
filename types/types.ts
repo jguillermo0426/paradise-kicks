@@ -100,12 +100,17 @@ export type ProductsOrdered = {
 export type ProductQty = {
     product_id: Product;
     quantity: number;
+    order: Order;
+    payment_terms: PaymentTerms;
+    products: Product[];
 }
 
 export type OrderHistory = {
     history_id: number;
     order_id: string;
     updated_at: Date;
+    product_id: string;
+    updated_at: string;
     order_status: {
         id: number;
         status: string;
@@ -116,4 +121,9 @@ export type BrandsType = {
     id: number;
     brand_name: string;
     brand_image: string;
+  
+export type itemOrder = {
+    sku: string;
+    product: Product;
+    quantity: number;
 }
