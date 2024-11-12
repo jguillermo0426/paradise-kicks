@@ -1,12 +1,13 @@
 'use client'
-import { CardProduct } from '@/types/types';
+import { CardProduct, Size } from '@/types/types';
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
-import { Button, Divider, Image, Modal, NumberInput, TextInput } from '@mantine/core';
+import { ActionIcon, Button, Divider, Image, Modal, NumberInput, NumberInputHandlers, TextInput } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Epilogue } from 'next/font/google';
-import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'react';
-import ImageUpload from '../ImageUpload';
+import { ChangeEvent, Dispatch, MutableRefObject, SetStateAction, useEffect, useRef, useState } from 'react';
+
 import InputField from '../InputField';
+import StockInput from './StockInput';
 
 const epilogue = Epilogue({
     subsets: ['latin'],
@@ -16,31 +17,24 @@ const epilogue = Epilogue({
 type CardTestProps = {
     cardProduct: CardProduct;
     onChange: (updatedProduct: CardProduct) => void;
-    editable: boolean;
-    setHasErrors: Dispatch<SetStateAction<boolean>>;
 }
 
 
-export default function CardTest({ cardProduct, onChange, editable, setHasErrors }: CardTestProps) {
-    const { cardId, modelId, colorId, model, brand, colorway, sizes } = cardProduct;
+export default function CardTest({ cardProduct, onChange }: CardTestProps) {
+    const { cardId, modelId, colorId, model, brand, colorway, sizes, image_link, image_file } = cardProduct;
 
     const [totalStock, setTotalStock] = useState(0);
     const [opened, { open, close }] = useDisclosure(false);
-    const [editedSizes, setEditedSizes] = useState({ cardId, modelId, colorId, model, brand, colorway, sizes });
+    const [editedSizes, setEditedSizes] = useState({ cardId, modelId, colorId, model, brand, colorway, sizes, image_link, image_file });
     const [same, setSame] = useState<boolean[]>([]);
     const [invalidStock, isInvalidStock] = useState<boolean[]>([]);
     const [invalidPrice, isInvalidPrice] = useState<boolean[]>([]);
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
+    const [previewURL, setPreviewURL] = useState<string | null>(null);
+    const [file, setFile] = useState<File>();
 
     useEffect(() => {
-        const skuHasErrors = sizes.some((item, index) => same[index]); // Check if any SKU is a duplicate
-        const emptyFields = sizes.some((item) => !item.SKU || !item.size || item.price < 1 || item.stock < 1); // Check for empty fields
-        const emptyModel = !model || !brand || !colorway;
-
-        setHasErrors(skuHasErrors || emptyFields || emptyModel); // Set error state based on conditions
-    }, [sizes, model, brand, colorway]);
-
-    useEffect(() => {
-        setEditedSizes({ cardId, modelId, colorId, model, brand, colorway, sizes });
+        setEditedSizes({ cardId, modelId, colorId, model, brand, colorway, sizes, image_link, image_file });
     }, [cardProduct]);
 
     useEffect(() => {
@@ -51,7 +45,15 @@ export default function CardTest({ cardProduct, onChange, editable, setHasErrors
         setTotalStock(tempStock);
     }, [sizes]);
 
-    // handles changing the value of the field for numbers
+    const handleStockChange = (item: Size) => {
+        const updatedSizes = [...editedSizes.sizes, item];
+
+        setEditedSizes({
+            ...editedSizes,
+            sizes: updatedSizes
+        });
+    }
+
     const handleChangeNumber = (e: string | number, index: number, toChange: string) => {
         const updatedSizes = [...editedSizes.sizes];
 
@@ -128,60 +130,68 @@ export default function CardTest({ cardProduct, onChange, editable, setHasErrors
         onChange(updatedSizes);
     }
 
+    const handleClick = () => {
+        if (fileInputRef.current) {
+            fileInputRef.current.click(); // Trigger the file input when the label is clicked
+        }
+    };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files.length > 0) {
+            setFile(e.target.files[0]);
+            setPreviewURL(URL.createObjectURL(e.target.files[0]));
+            const updatedSizes = { ...editedSizes, image_file: e.target.files[0] };
+            onChange(updatedSizes)
+        } else {
+            setFile(undefined);
+            console.log('no file uploaded');
+        }
+    };
 
     return (
         <>
             <Modal
                 opened={opened}
                 onClose={close}
-                title={`Edit Inventory: ${model} - ${colorway}`}
                 centered
+                radius={20}
                 size="auto"
             >
-                {sizes.map((item, key) => (
-                    <div className='flex flex-row' key={key}>
-                        <div className='flex flex-col h-11 m-5'>
-                            <p>SKU</p>
-                            <TextInput
-                                value={item.SKU}
-                                disabled={editable}
-                                onChange={(e) => handleChangeString(e, key, "SKU")}
-                                error={same[key] ? "SKU must be unique" : ""}
-                                withErrorStyles={same[key]}
-                            />
-                        </div>
+                {sizes.map((item, index) => { 
+                    return (
+                        <div className='flex flex-col items-start justify-center p-8' key={index}>
+                            <div className='flex flex-row items-center justify-between w-full'>
+                                <p style={epilogue.style} className='font-semibold text-[32px]'>{item.SKU}</p>
 
-                        <div className='flex flex-col m-5'>
-                            <p>Size</p>
-                            <TextInput
-                                value={item.size}
-                                onChange={(e) => handleChangeString(e, key, "size")}
-                            />
-                        </div>
+                                <StockInput item={item} handleChangeNumber={handleChangeNumber} index={index} invalidStock={invalidStock} />
+                            </div>
 
-                        <div className='flex flex-col m-5'>
-                            <p>Price</p>
-                            <NumberInput
-                                value={item.price}
-                                onChange={(e) => handleChangeNumber(e, key, "price")}
-                                error={invalidPrice[key] ? "Price is not a valid number" : ""}
-                                withErrorStyles={invalidPrice[key]}
-                            />
-                        </div>
+                            <div className='flex flex-row items-center'>
+                                <div className='flex flex-col mr-6'>
+                                    <p style={epilogue.style} className="font-semibold text-[16px]">Size</p>
+                                    <InputField
+                                        itemValue={item.size}
+                                        onChange={(e) => handleChangeString(e, index, "size")}
+                                        className="font-normal text-[14px] w-[17vw]"
+                                    />
+                                </div>
+                                <div className='flex flex-col'>
+                                    <p style={epilogue.style} className="font-semibold text-[16px]">Price</p>
+                                    <NumberInput
+                                        hideControls
+                                        value={item.price}
+                                        onChange={(e) => handleChangeNumber(e, index, "price")}
+                                        className="font-normal text-[14px] w-[17vw]"
+                                        error={invalidPrice[index] ? "Price is not a valid number" : ""}
+                                        withErrorStyles={invalidPrice[index]}
+                                    />
+                                </div>
+                            </div>
 
-                        <div className='flex flex-col m-5'>
-                            <p>Stock</p>
-                            <NumberInput
-                                value={item.stock}
-                                onChange={(e) => handleChangeNumber(e, key, "stock")}
-                                error={invalidStock[key] ? "Stock is not a valid number" : ""}
-                                withErrorStyles={invalidStock[key]}
-                            />
+                            <Divider orientation='horizontal' className='w-full mt-8 border-[#B1B1B1]' color="black" />
                         </div>
-
-                        <ImageUpload />
-                    </div>
-                ))}
+                    );
+                })}
             </Modal>
 
             <div className='w-[19rem] h-[31rem] border-solid border-2 rounded-lg border-black mx-10 my-10 px-5 py-12'>
@@ -189,7 +199,7 @@ export default function CardTest({ cardProduct, onChange, editable, setHasErrors
                     <div className='w-[100px] h-[100px] mr-5'>
                         <Image
                             radius="md"
-                            src={sizes[0].image_link}
+                            src={previewURL ? previewURL : image_link}
                             h={100}
                             w={100}
                             fallbackSrc="https://placehold.co/600x400?text=Placeholder"
@@ -203,9 +213,20 @@ export default function CardTest({ cardProduct, onChange, editable, setHasErrors
 
                         <Divider size="sm" className='w-full my-3' />
 
-                        <div className='flex flex-row items-start justify-start'>
-                            <PencilSquareIcon className="h-5 w-5 text-[#38bdba] mr-3" />
-                            <p className='text-[#38bdba] text-sm'>Edit Image</p>
+                        <div onClick={handleClick} className='hover:cursor-pointer flex flex-row items-start justify-start'>
+                            <PencilSquareIcon className="h-5 w-5 text-[#38bdba] mr-2" />
+                            <label
+                                className='text-[#38bdba] text-sm cursor-pointer'
+                            >
+                                Edit Image
+                            </label>
+                            <input
+                                type="file"
+                                ref={fileInputRef}
+                                onChange={handleFileChange}
+                                className="hidden" // Hide the default file input
+                                accept="image/*" // Optional: limit to image files
+                            />
                         </div>
                     </div>
                 </div>

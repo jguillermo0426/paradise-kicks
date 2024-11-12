@@ -20,7 +20,7 @@ export default function CardDelete({ item, isChecked, handleCheckboxChange }: De
 
     return (
         <div
-            className={`w-full h-[19vh] rounded-lg my-5 p-10 flex flex-row items-center justify-between`}
+            className={`w-full h-auto rounded-lg my-5 p-10 flex flex-row items-center justify-between`}
             style={{
                 backgroundColor: isChecked ? "#99DDDC" : "#EDEDED",
                 border: isChecked ? "1px solid #38BDBA" : "none",
