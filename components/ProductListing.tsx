@@ -102,7 +102,7 @@ export default function ProductListing({ searchParams }: { searchParams: string 
                     setSortedProducts(sorted2);
                 }
 
-                setTotalPages(Math.ceil(result.totalProducts / 4));
+                setTotalPages(Math.ceil(result.totalProducts / 12));
                 setLoading(false);
             }
 

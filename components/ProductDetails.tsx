@@ -25,20 +25,10 @@ export default function ProductDetails({ productModel }: ProductProps) {
     const [quantity, setQuantity] = useState(0);
     const emblaRef = useRef<EmblaCarouselType>();
     const [uniqueSizes, setUniqueSizes] = useState<string[]>([]);
+    const [addCartItem, setAddCartItem] = useState<Product>();
+    const [addedSKU, setAddedSKU] = useState<string>('');
 
     const { cart, addToCart, itemExists, removeFromCart, getItemFromCart, updateItemQuantity, clearCart } = useCart();
-
-    const props ={
-        SKU: "",
-        Model: "",
-        Brand: "",
-        Stock: 0,
-        Price: 0,
-        Size: "",
-        Colorway: "",
-        image_link: "",
-        available: true,
-    };
 
     const buttonStyles = {
         selected: {
@@ -49,14 +39,45 @@ export default function ProductDetails({ productModel }: ProductProps) {
         }
     };
 
-    const addCart = () => {
+    const addCart = async (sku: string) => {
+        let productDetails: Product | null = null;
+
+        try {
+            const response = await fetch(`/api/product/get_item?sku=${sku}`);
+            const result = await response.json();
+            
+            if (result.item) {
+                productDetails = {
+                    SKU: result.item.SKU,
+                    Model: result.item.Model,
+                    Brand: result.item.Brand,
+                    Stock: result.item.Stock,
+                    Price: result.item.Price,
+                    Size: result.item.Size,
+                    Colorway: result.item.Colorway,
+                    image_link: result.item.image_link,
+                    available: result.item.available,
+                };
+            }
+        } catch (error) {
+            console.log("Error fetching product details:", error);
+        }
+
+        if (!productDetails) {
+            notifications.show({
+                message: "The selected item could not be added to the cart.",
+                color: "red",
+            });
+            return;
+        }
+        
         const newCartItem = {
             sku: selectedSKU,
-            product: props,
+            product: productDetails,
             quantity: quantity
         };
 
-        const itemInCart = getItemFromCart(selectedSKU);
+        const itemInCart = getItemFromCart(sku);
 
         if (itemInCart && quantity > 0) {
             // if item exists in cart, update quantity if it doesn't exceed stock
@@ -65,6 +86,10 @@ export default function ProductDetails({ productModel }: ProductProps) {
                 updateItemQuantity(newCartItem.sku, quantity);
                 console.log('quantity updated in cart', selectedSKU, updateItemQuantity);
                 setQuantity(0);     // reset displayed quantity after adding to cart
+                notifications.show({
+                    message: "This item has been added to your cart!",
+                    color: "green",
+                });
             } else {
                 notifications.show({
                     message: "You have reached the maximum quantity for this item.",
@@ -78,6 +103,10 @@ export default function ProductDetails({ productModel }: ProductProps) {
                 addToCart(newCartItem);
                 console.log("Added item to cart:", selectedSKU, quantity);
                 setQuantity(0);     // reset displayed quantity after adding to cart
+                notifications.show({
+                    message: "This item has been added to your cart!",
+                    color: "green",
+                });
             } else if (quantity > stock) {
                 notifications.show({
                     message: "You have reached the maximum quantity for this item.",
@@ -120,6 +149,60 @@ export default function ProductDetails({ productModel }: ProductProps) {
         };
         getModel();
     }, [productModel]); 
+
+    // get details of item added to cart
+    /*useEffect(() => {
+        const getItem = async () => {
+            let props: Product = {
+                SKU: "",
+                Model: "",
+                Brand: "",
+                Stock: 0,
+                Price: 0,
+                Size: "",
+                Colorway: "",
+                image_link: "",
+                available: true,
+            };
+
+            const response = await fetch(`/api/product/get_item?sku=${addedSKU}`, {
+                method: "GET"
+            });
+            const result = await response.json();
+
+            if (result.item) {
+                props = {
+                    SKU: result.item.SKU,
+                    Model: result.item.Model,
+                    Brand: result.item.Brand,
+                    Stock: result.item.Stock,
+                    Price: result.item.Price,
+                    Size: result.item.Size,
+                    Colorway: result.item.Colorway,
+                    image_link: result.item.image_link,
+                    available: result.item.available,
+                }
+                setAddCartItem(props as Product)
+                console.log(result.item);
+            } else {
+                props = {
+                    SKU: "",
+                    Model: "",
+                    Brand: "",
+                    Stock: 0,
+                    Price: 0,
+                    Size: "",
+                    Colorway: "",
+                    image_link: "",
+                    available: false
+                }
+                console.log("Item not found");
+            }
+            setAddCartItem(props);
+        };
+
+        getItem();
+    }, [addedSKU]);*/
     
 
     // groups the products based on their model, colorway, and size/stock/price
@@ -558,7 +641,7 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                     {/* ADD TO CART */}
                                     <Notifications />
                                     <Button
-                                        onClick={() => addCart()}
+                                        onClick={() => addCart(selectedSKU)}
                                         variant="filled"
                                         fullWidth
                                         radius="md"

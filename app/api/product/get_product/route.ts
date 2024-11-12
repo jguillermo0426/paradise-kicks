@@ -7,7 +7,7 @@ export async function GET(req: Request) {
     const sort_order = url.searchParams.get('sort') || '';
 
     console.log("filter: " + sort_order);
-    const limit_count = 4;
+    const limit_count = 12;
     const limit_offset = (page - 1) * limit_count;
 
     const supabase = createClient();

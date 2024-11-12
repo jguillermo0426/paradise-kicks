@@ -16,7 +16,23 @@ export async function GET(req: Request) {
 
     const item = productItem?.[0]
 
+    if (item.image_link === '') {
+        const { data: image, error } = await supabase
+        .from('product')
+        .select('image_link')
+        .eq('Colorway', item.Colorway)
+        .limit(1);
+
+        if (error) {
+            console.error("Error fetching image:", error);
+        } else {
+            console.log("image fetched!");
+            item.image_link = image[0]?.image_link || '';
+        }
+    }
+
     console.log("SKU: ", skuQuery);
     console.log("Item: ", item);
+    console.log("Image: ", item.image_link);
     return Response.json({ item });
 }
