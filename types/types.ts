@@ -95,6 +95,7 @@ export type ProductsOrdered = {
     payment_terms: PaymentTerms;
     products_ordered: ProductQty[];
     status_history: OrderHistory[];
+    notes?: string;
 }
 
 export type ProductQty = {

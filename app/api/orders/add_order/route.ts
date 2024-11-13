@@ -1,25 +1,24 @@
 import { createClient } from "@/utils/supabase/server";
-import ShortUniqueId from 'short-unique-id';
 import { itemOrder } from "@/types/types";
 
 export async function POST(req: Request) {
     const supabase = createClient();
     const formData = await req.json();
 
-    const uid = new ShortUniqueId({ length: 10 });
-    const generatedId = uid.rnd();
+   
     const cartItems: itemOrder[] = formData.cartItems;
 
     const { data, error } = await supabase
         .from('orders')
         .insert([
             {
-                id: "O-" + generatedId,
+                id: formData.id,
                 time_ordered: new Date(),
                 firstname: formData.firstname,
                 lastname: formData.lastname,
+                customer_name: formData.firstname + " " + formData.lastname,
                 total_price: formData.total_price,
-                address: `${formData.street} ${formData.zipcode} ${formData.city} ${formData.province}`,
+                address: `${formData.street} ${formData.city}, ${formData.province} ${formData.zipcode}`,
                 contact_no: formData.phone,
                 email: formData.email,
                 payment_method: formData.paymentMethod,
@@ -52,7 +51,7 @@ export async function POST(req: Request) {
             .from('products_ordered')
             .insert([
                 {
-                    order_id: "O-" + generatedId,
+                    order_id: formData.id,
                     product_id: item.sku,
                     quantity: item.quantity
                 },
@@ -72,7 +71,7 @@ export async function POST(req: Request) {
         .from('status_history')
         .insert([
             {
-                order_id: "O-" + generatedId,
+                order_id: formData.id,
                 status_id: 1,
                 updated_at: new Date()
             },

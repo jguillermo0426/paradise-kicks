@@ -8,6 +8,8 @@ import { useForm } from "@mantine/form";
 import styles from "../css/button.module.css"
 import select from "../css/select.module.css"
 import { itemOrder } from "@/types/types";
+import ShortUniqueId from 'short-unique-id';
+import { useRouter } from 'next/navigation';
 
 const epilogue = Epilogue({
     subsets: ['latin'],
@@ -39,6 +41,8 @@ export default function Checkout() {
     const [cartItems, setCartItems] = useState<itemOrder[]>();
     const [totalPrice, setTotalPrice] = useState<number>();
 
+    const router = useRouter();
+
     const getTotalPrice = () => {
         let totalPrice = 0;
 
@@ -60,6 +64,7 @@ export default function Checkout() {
     const form = useForm({
         mode: 'uncontrolled',
         initialValues: {
+            id: "",
             firstname: '',
             lastname: '',
             email: '',
@@ -93,6 +98,10 @@ export default function Checkout() {
             console.log('Validation failed:', form.errors);
         } else {
             console.log('Form values:', form.getValues());
+            const uid = new ShortUniqueId({ length: 10 });
+            const generatedId = uid.rnd();
+
+            form.setFieldValue("id", "O-" + generatedId);
             const response = await fetch('api/orders/add_order', {
                 method: "POST",
                 body: JSON.stringify(form.getValues())
@@ -100,6 +109,7 @@ export default function Checkout() {
 
             const result = await response.json();
             console.log(result);
+            router.push(`/orderslip/O-${generatedId}`);
         }
     }
 
