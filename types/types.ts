@@ -109,7 +109,6 @@ export type OrderHistory = {
     history_id: number;
     order_id: string;
     updated_at: Date;
-    product_id: string;
     order_status: {
         id: number;
         status: string;

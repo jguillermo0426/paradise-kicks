@@ -24,7 +24,9 @@
     "@supabase/supabase-js": "^2.45.4",
     "@tabler/icons-react": "^3.21.0",
     "dayjs": "^1.11.13",
+    "dom-to-image": "^2.6.0",
     "embla-carousel-react": "^7.1.0",
+    "file-saver": "^2.0.5",
     "firebase": "^10.13.2",
     "heroicons": "^2.1.5",
     "init": "^0.1.2",
@@ -33,6 +35,7 @@
     "papaparse": "^5.4.1",
     "react": "^18",
     "react-dom": "^18",
+    "short-unique-id": "^5.2.0",
     "supabase": "^1.192.5",
     "use-debounce": "^10.0.4",
     "uuid": "^10.0.0"

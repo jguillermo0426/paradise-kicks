@@ -7,6 +7,7 @@ import { Epilogue } from 'next/font/google';
 import { useForm } from "@mantine/form";
 import styles from "../css/button.module.css"
 import select from "../css/select.module.css"
+import { itemOrder } from "@/types/types";
 
 const epilogue = Epilogue({
     subsets: ['latin'],
@@ -35,14 +36,72 @@ export default function Checkout() {
     const [paymentImage, setPaymentImage] = useState<string>("/BDO.png");
     const [term, setTerm] = useState<string>("Full Payment");
     const [qr, setQr] = useState<string>("/bdo qr.jpg");
+    const [cartItems, setCartItems] = useState<itemOrder[]>();
+    const [totalPrice, setTotalPrice] = useState<number>();
 
+    const getTotalPrice = () => {
+        let totalPrice = 0;
+
+        cart.map((item) => {
+            totalPrice += (item.product.Price * item.quantity);
+        })
+
+        return totalPrice;
+    }
+
+    useEffect(() => {
+        setTotalPrice(getTotalPrice());
+        setCartItems(cart);
+
+        form.setFieldValue("total_price", getTotalPrice());
+        form.setFieldValue("cartItems", cart);
+    }, [cart])
+    
     const form = useForm({
         mode: 'uncontrolled',
         initialValues: {
-            name: '',
+            firstname: '',
+            lastname: '',
             email: '',
+            phone: "",
+            street: "",
+            city: "",
+            province: "",
+            zipcode: "",
+            paymentMethod: "BDO",
+            term: 1,
+            courier: "Lalamove",
+            notes: "",
+            total_price: totalPrice,
+            cartItems: cartItems
+        },
+
+        validate: {
+            firstname: (value) => (value.length < 1 ? 'First name should not be empty' : null),
+            lastname: (value) => (value.length < 1 ? 'Last name should not be empty' : null),
+            email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+            phone: (value) => (/^09\d{2} \d{3} \d{4}$/.test(value) ? null : 'Phone number must be in the format 09X XXX XXXX'),
+            street: (value) => (value.length < 1 ? 'Street address should not be empty' : null),
+            city: (value) => (value.length < 1 ? 'City name should not be empty' : null),
+            province: (value) => (value.length < 1 ? 'Province name should not be empty' : null),
+            zipcode: (value) => (value.length < 4 || value.length >= 5 ? 'Input a valid zipcode' : null),
         },
     });
+
+    const submitInfo = async () => {
+        if (form.validate().hasErrors) {
+            console.log('Validation failed:', form.errors);
+        } else {
+            console.log('Form values:', form.getValues());
+            const response = await fetch('api/orders/add_order', {
+                method: "POST",
+                body: JSON.stringify(form.getValues())
+            });
+
+            const result = await response.json();
+            console.log(result);
+        }
+    }
 
     useEffect(() => {
         console.log("cart", cart);
@@ -62,16 +121,20 @@ export default function Checkout() {
                 }
 
                 if (selected.value === "full") {
-                    setTerm("Full Payment")
+                    setTerm("Full Payment");
+                    form.setFieldValue("term", 1);
                 }
                 else if (selected.value === "down before shipping") {
-                    setTerm("50% Down Payment & 50% Before Shipping")
+                    setTerm("50% Down Payment & 50% Before Shipping");
+                    form.setFieldValue("term", 2);
                 }
                 else if (selected.value === "down cod") {
-                    setTerm("50% Down Payment & 50% Cash on Delivery")
+                    setTerm("50% Down Payment & 50% Cash on Delivery");
+                    form.setFieldValue("term", 3);
                 }
                 else if (selected.value === "3 months") {
-                    setTerm("3 months lay-away")
+                    setTerm("3 months lay-away");
+                    form.setFieldValue("term", 4);
                 }
             }
         } else {
@@ -84,21 +147,13 @@ export default function Checkout() {
             const selected = couriers.find((term) => term.value === value);
             if (selected) {
                 setSelectedCouriers(selected);
+                form.setFieldValue("courier", selected.label);
             }
         } else {
             setSelectedCouriers(couriers[0]);
+            form.setFieldValue("courier", couriers[0].label);
         }
     };
-
-    const getTotalPrice = () => {
-        let totalPrice = 0;
-
-        cart.map((item) => {
-            totalPrice += (item.product.Price * item.quantity);
-        })
-
-        return totalPrice;
-    }
 
     const renderSelectOption: SelectProps['renderOption'] = ({ option, checked }) => {
         const [mainText, feeText] = option.label.split('+');
@@ -201,6 +256,7 @@ export default function Checkout() {
                                     borderColor: "#474747"
                                 }
                             }}
+                            {...form.getInputProps('firstname')}
                         />
                         <TextInput
                             className="font-normal text-[14px] pt-[2.778vh] w-[20.677vw]"
@@ -216,6 +272,7 @@ export default function Checkout() {
                                     borderColor: "#474747"
                                 }
                             }}
+                            {...form.getInputProps('lastname')}
                         />
                         <TextInput
                             className="font-normal text-[14px] pt-[2.778vh] w-[20.677vw]"
@@ -232,6 +289,7 @@ export default function Checkout() {
                                     borderColor: "#474747"
                                 }
                             }}
+                            {...form.getInputProps('email')}
                         />
                         <TextInput
                             className="font-normal text-[14px] pt-[2.778vh] w-[20.677vw]"
@@ -247,6 +305,7 @@ export default function Checkout() {
                                     borderColor: "#474747"
                                 }
                             }}
+                            {...form.getInputProps('phone')}
                         />
                     </SimpleGrid>
                     <div className="w-[43.906vw] h-[7.778vh] mt-[4.63vh] bg-[#474747] rounded-lg flex items-center justify-start px-10">
@@ -266,6 +325,7 @@ export default function Checkout() {
                                 borderColor: "#474747"
                             }
                         }}
+                        {...form.getInputProps('street')}
                     />
                     <SimpleGrid cols={3}>
                         <TextInput
@@ -282,6 +342,7 @@ export default function Checkout() {
                                     borderColor: "#474747"
                                 }
                             }}
+                            {...form.getInputProps('city')}
                         />
                         <TextInput
                             className="font-normal text-[14px] pt-[2.778vh]"
@@ -297,11 +358,11 @@ export default function Checkout() {
                                     borderColor: "#474747"
                                 }
                             }}
+                            {...form.getInputProps('province')}
                         />
-                        <NumberInput
+                        <TextInput
                             className="font-normal text-[14px] pt-[2.778vh]"
                             label="Zip Code"
-                            hideControls
                             required
                             style={epilogue.style}
                             styles={{
@@ -313,6 +374,7 @@ export default function Checkout() {
                                     borderColor: "#474747"
                                 }
                             }}
+                            {...form.getInputProps('zipcode')}
                         />
                     </SimpleGrid>
                     <div className="w-[43.906vw] h-[7.778vh] mt-[4.63vh] bg-[#474747] rounded-lg flex items-center justify-start px-10">
@@ -326,7 +388,7 @@ export default function Checkout() {
                                 <Button
                                     className={`${styles.button} ${payMethod === "BDO" ? styles.activeButton : styles.button}`}
                                     color="white"
-                                    onClick={(e) => { setPayMethod("BDO"); setPaymentImage("/BDO.png"); setQr("/bdo qr.jpg"); }}
+                                    onClick={(e) => { setPayMethod("BDO"); setPaymentImage("/BDO.png"); setQr("/bdo qr.jpg"); form.setFieldValue("paymentMethod", "BDO"); }}
                                 >
                                     <Image
                                         src="/BDO.png"
@@ -336,7 +398,7 @@ export default function Checkout() {
                                 <Button
                                     className={`${styles.button} ${payMethod === "BPI" ? styles.activeButton : styles.button}`}
                                     color="white"
-                                    onClick={(e) => { setPayMethod("BPI"); setPaymentImage("/BPI.png"); setQr("/bpi qr.jpg"); }}
+                                    onClick={(e) => { setPayMethod("BPI"); setPaymentImage("/BPI.png"); setQr("/bpi qr.jpg"); form.setFieldValue("paymentMethod", "BPI"); }}
                                 >
                                     <Image
                                         src="/BPI.png"
@@ -346,7 +408,7 @@ export default function Checkout() {
                                 <Button
                                     className={`${styles.button} ${payMethod === "Metrobank" ? styles.activeButton : styles.button}`}
                                     color="white"
-                                    onClick={(e) => { setPayMethod("Metrobank"); setPaymentImage("/MetroBank.png"); setQr("/metrobank qr.jpg"); }}
+                                    onClick={(e) => { setPayMethod("Metrobank"); setPaymentImage("/MetroBank.png"); setQr("/metrobank qr.jpg"); form.setFieldValue("paymentMethod", "Metrobank"); }}
                                 >
                                     <Image
                                         src="/MetroBank.png"
@@ -356,7 +418,7 @@ export default function Checkout() {
                                 <Button
                                     className={`${styles.button} ${payMethod === "UnionBank" ? styles.activeButton : styles.button}`}
                                     color="white"
-                                    onClick={(e) => { setPayMethod("UnionBank"); setPaymentImage("/UnionBank.png"); setQr("/unionbank qr.jpg"); }}
+                                    onClick={(e) => { setPayMethod("UnionBank"); setPaymentImage("/UnionBank.png"); setQr("/unionbank qr.jpg"); form.setFieldValue("paymentMethod", "UnionBank"); }}
                                 >
                                     <Image
                                         src="/UnionBank.png"
@@ -366,7 +428,7 @@ export default function Checkout() {
                                 <Button
                                     className={`${styles.button} ${payMethod === "GCash" ? styles.activeButton : styles.button}`}
                                     color="white"
-                                    onClick={(e) => { setPayMethod("GCash"); setPaymentImage("/gcash.png"); setQr("/gcash qr.jpg"); }}
+                                    onClick={(e) => { setPayMethod("GCash"); setPaymentImage("/gcash.png"); setQr("/gcash qr.jpg"); form.setFieldValue("paymentMethod", "GCash"); }}
                                 >
                                     <Image
                                         src="/gcash.png"
@@ -376,7 +438,7 @@ export default function Checkout() {
                                 <Button
                                     className={`${styles.button} ${payMethod === "Maya" ? styles.activeButton : styles.button}`}
                                     color="white"
-                                    onClick={(e) => { setPayMethod("Maya"); setPaymentImage("/Maya.png"); setQr("/maya qr.jpg"); }}
+                                    onClick={(e) => { setPayMethod("Maya"); setPaymentImage("/Maya.png"); setQr("/maya qr.jpg"); form.setFieldValue("paymentMethod", "Maya"); }}
                                 >
                                     <Image
                                         src="/Maya.png"
@@ -386,7 +448,7 @@ export default function Checkout() {
                                 <Button
                                     className={`${styles.button} ${payMethod === "PayPal" ? styles.activeButton : styles.button}`}
                                     color="white"
-                                    onClick={(e) => { setPayMethod("PayPal"); setPaymentImage("/PayPal.png"); setQr("https://www.paypal.me/paradisekicks"); }}
+                                    onClick={(e) => { setPayMethod("PayPal"); setPaymentImage("/PayPal.png"); setQr("https://www.paypal.me/paradisekicks"); form.setFieldValue("paymentMethod", "PayPal"); }}
                                 >
                                     <Image
                                         src="/PayPal.png"
@@ -425,7 +487,7 @@ export default function Checkout() {
                             </div>
                         </div>
                         <div className="min-w-[15.625vw] max-w-[15.625vw] ml-5 mt-[2.778vh]">
-                        <p style={epilogue.style} className="text-[1.25 rem] font-normal text-[#474747B3]">Payment Portal</p>
+                            <p style={epilogue.style} className="text-[1.25 rem] font-normal text-[#474747B3]">Payment Portal</p>
                             {payMethod === "PayPal" ? (
                                 <p style={epilogue.style} className="text-[1rem] mt-[2.778vh] font-normal w-full">{qr}</p>
                             ) : (
@@ -483,6 +545,7 @@ export default function Checkout() {
                         minRows={5}
                         maxRows={5}
                         className="my-5"
+                        {...form.getInputProps('notes')}
                     />
 
                     <Button
@@ -490,6 +553,7 @@ export default function Checkout() {
                         fullWidth
                         color="black"
                         radius="md"
+                        onClick={submitInfo}
                         styles={{
                             root: {
                                 height: "7.222vh",
