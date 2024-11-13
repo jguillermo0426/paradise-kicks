@@ -1,7 +1,7 @@
 'use client'
 import { MantineProvider, Select, TextInput, Popover, Button, Pagination, Image, LoadingOverlay } from '@mantine/core';
 import { useEffect, useState } from 'react';
-import { GroupedProduct2, Product } from '@/types/types';
+import { GroupedProduct2, Product, BrandsType } from '@/types/types';
 import { Card, CardBody } from "@nextui-org/react";
 import Link from 'next/link';
 import React from 'react';
@@ -22,6 +22,7 @@ export default function ProductListing({ searchParams }: { searchParams: string 
     const [query] = useDebounce(searchValue, 500);
     const router = useRouter();
     const [loading, setLoading] = useState(true);
+    const [brands, setBrands] = useState<BrandsType[]>();
 
     brandLogoMap.set("Nike", "/nike.png");
     brandLogoMap.set("Adidas", "/adidas.png");
@@ -39,6 +40,36 @@ export default function ProductListing({ searchParams }: { searchParams: string 
         console.log(searchValue);
     }, [query, router]);
 
+    const getBrands = async () => {
+        let fetchedBrandsArray: BrandsType[] = [];
+        let fetchedBrand: BrandsType;
+        
+        const response = await fetch(`/api/brands/get_brands`, {
+            method: "GET"
+        });
+    
+        const result = await response.json();
+        if (result.brands.length !== 0) {
+            result.brands.forEach((brand: any) => {
+                fetchedBrand = {
+                    id: brand.id,
+                    brand_name: brand.brand_name,
+                    brand_image: brand.brand_image
+                }
+                fetchedBrandsArray.push(fetchedBrand);
+            });
+    
+            console.log(fetchedBrandsArray);
+            setBrands(fetchedBrandsArray);
+        } else {
+            console.log("brands not found");
+        }
+    };
+    
+    useEffect(() => {
+        getBrands();
+    }, []);
+    
 
     useEffect(() => {
         const getProducts = async () => {
@@ -203,6 +234,12 @@ export default function ProductListing({ searchParams }: { searchParams: string 
 
     }
 
+    const getBrandLogo = (brandName: string) => {
+        let brandImageLink = (brands?.find(brand => brand.brand_name === brandName))?.brand_image;
+        console.log("BRAND IMAGE: ", brandImageLink);
+        return brandImageLink;
+    }
+
 
     const getImageLink = (groupedProduct: GroupedProduct2) => {
         const colorwayWithImage = groupedProduct.colorways.find((colorway) => colorway.image_link && colorway.image_link.trim() !== '');
@@ -280,16 +317,16 @@ export default function ProductListing({ searchParams }: { searchParams: string 
                         {sortedProducts &&
                             sortedProducts.map((product, productIndex) =>
                                 <Link key={productIndex} href={`/product-details/${product.model}`}>
-                                    <Card key={productIndex} className="max-w-[300px] h-[450px] flex flex-col items-center border-[1px] border-black rounded-2xl p-8">
+                                    <Card key={productIndex} className="max-w-[300px] h-[470px] flex flex-col items-center border-[1px] border-black rounded-2xl p-8">
                                         <CardBody className="flex flex-col justify-between h-full">
-                                            <div className="flex flex-col items-center justify-center w-[250px] min-h-[200px]">
+                                            <div className="flex flex-col items-center justify-center w-full w-[250px] min-h-[250px]">
                                             <LoadingOverlay visible={loading} overlayProps={{ radius: "sm", blur: 2 }} />
                                                 <Image
+                                                    radius="md"
                                                     alt="Shoe Image"
-                                                    className="rounded-xl w-[250px] h-[250px]"
-                                                    fit="contain"
+                                                    fit="cover"
                                                     src={getImageLink(product) || "https://static.nike.com/a/images/t_PDP_936_v1/f_auto,q_auto:eco/af53d53d-561f-450a-a483-70a7ceee380f/W+NIKE+DUNK+LOW.png"}
-                                                    h={200}
+                                                    h={250}
                                                     w={250} />
                                             </div>
                                             <div className="w-full h-full flex flex-col items-start justify-between">
@@ -308,8 +345,8 @@ export default function ProductListing({ searchParams }: { searchParams: string 
                                                 <div className="w-full flex flex-row items-end justify-between mt-4">
                                                     <p className="text-[14px]" style={{ fontFamily: "Epilogue", letterSpacing: "-0.5px" }}>{getTotalStocks(product)} stocks left</p>
                                                     <Image
-                                                        src={brandLogoMap.get(product.brand)}
-                                                        height={28}
+                                                        src={getBrandLogo(product.brand)}
+                                                        className="h-[28px]"
                                                     />
                                                 </div>
                                             </div>
