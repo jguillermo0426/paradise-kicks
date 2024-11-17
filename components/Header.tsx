@@ -17,8 +17,8 @@ type SelectedProps = {
 
 export default function Header({navSelected}: SelectedProps) {
 
-    const selected = "group mx-5 transition-colors flex items-center justify-center w-[7.5rem] pt-20 pb-3 px-5 border-2 border-solid rounded-b-[0.625rem] border-[#38BDBA] -mt-16 hover:cursor-pointer";
-    const unselected = "group mx-5 transition-colors flex items-center hover:bg-[#38BDBA] w-[7.5rem] justify-center pt-20 pb-3 px-5 border-2 border-none rounded-b-[0.625rem] -mt-16 hover:cursor-pointer";
+    const selected = "group mx-5 transition-colors flex items-center justify-center w-[10.5rem] pt-20 pb-3 px-5 border-2 border-solid rounded-b-[0.625rem] border-[#38BDBA] -mt-16 hover:cursor-pointer";
+    const unselected = "group mx-5 transition-colors flex items-center hover:bg-[#38BDBA] w-[10.5rem] justify-center pt-20 pb-3 px-5 border-2 border-none rounded-b-[0.625rem] -mt-16 hover:cursor-pointer";
 
     const selectedText = 'font-semibold transition-colors text-[#38BDBA] text-xl';
     const unselectedText = 'font-semibold transition-colors text-black group-hover:text-white text-xl'

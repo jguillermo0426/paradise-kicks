@@ -218,8 +218,8 @@ export default function ProductListing({ searchParams }: { searchParams: string 
                 <div className="flex flex-col items-center w-full max-w-[1440px] m-6">
                     <div className="w-full flex flex-row items-end justify-between mb-8 px-12">
                         <div className="w-full flex flex-row items-end justify-start">
-                            <p className="text-[100px]" style={{ fontFamily: "EpilogueBold", letterSpacing: "-3px", marginRight: "20px", marginBottom: "-36px" }}>Catalogue</p>
-                            <p className="text-[24px]" style={{ fontFamily: "EpilogueBold", marginRight: "auto" }}>All items</p>
+                            <p className="text-black text-[100px]" style={{ fontFamily: "EpilogueBold", letterSpacing: "-3px", marginRight: "20px", marginBottom: "-36px" }}>Catalogue</p>
+                            <p className="text-black text-[24px]" style={{ fontFamily: "EpilogueBold", marginRight: "auto" }}>All items</p>
                         </div>
 
                         <div className="w-full flex flex-row items-end justify-end">
@@ -239,7 +239,7 @@ export default function ProductListing({ searchParams }: { searchParams: string 
                                             },
                                         }}
                                     >
-                                        Filter/Sort
+                                        Filter / Sort
                                     </Button>
                                 </Popover.Target>
                                 <Popover.Dropdown>
@@ -280,33 +280,33 @@ export default function ProductListing({ searchParams }: { searchParams: string 
                         {sortedProducts &&
                             sortedProducts.map((product, productIndex) =>
                                 <Link key={productIndex} href={`/product-details/${product.model}`}>
-                                    <Card key={productIndex} className="max-w-[300px] h-[450px] flex flex-col items-center border-[1px] border-black rounded-2xl p-8">
+                                    <Card key={productIndex} className="hover:outline hover:outline-dark-gray hover:outline-2 max-w-[300px] h-[450px] flex flex-col items-center border border-dark-gray border-opacity-40 rounded-2xl p-8">
                                         <CardBody className="flex flex-col justify-between h-full">
-                                            <div className="flex flex-col items-center justify-center w-[250px] min-h-[200px]">
+                                            <div className="border border-dark-gray border-opacity-10 rounded-[10px] flex flex-col items-center justify-center w-[240px] min-h-[200px] overflow-hidden">
                                             <LoadingOverlay visible={loading} overlayProps={{ radius: "sm", blur: 2 }} />
                                                 <Image
                                                     alt="Shoe Image"
-                                                    className="rounded-xl w-[250px] h-[250px]"
-                                                    fit="contain"
+                                                    className="w-[250px] h-[250px] object-cover"
+                                                    //fit="contain"
                                                     src={getImageLink(product) || "https://static.nike.com/a/images/t_PDP_936_v1/f_auto,q_auto:eco/af53d53d-561f-450a-a483-70a7ceee380f/W+NIKE+DUNK+LOW.png"}
                                                     h={200}
                                                     w={250} />
                                             </div>
-                                            <div className="w-full h-full flex flex-col items-start justify-between">
+                                            <div className="w-full h-full flex flex-col items-start justify-between mt-[5px]">
                                                 <div className="flex flex-col items-start">
-                                                    <small className="mt-4 text-[14px] text-[#808080]" style={{ fontFamily: "Epilogue" }}>{getTotalColors(product)}
+                                                    <small className="font-semibold mt-4 text-[14px] text-[#177F7D] tracking-tight" style={{ fontFamily: "Epilogue" }}>{getTotalColors(product)}
                                                         {getTotalColors(product) > 1
                                                             ? " colors"
                                                             : " color"
                                                         }
-                                                    </small>
+                                                    </small> 
 
-                                                    <p className="text-[16px]" style={{ fontFamily: "EpilogueSemiBold", letterSpacing: "-0.5px" }}>{product.brand} {product.model}</p>
+                                                    <p className="mt-[5px] text-[20px] leading-tight" style={{ fontFamily: "EpilogueSemiBold", letterSpacing: "-0.5px" }}>{product.brand} {product.model}</p>
                                                     <p className="text-[14px]" style={{ fontFamily: "Epilogue", letterSpacing: "-0.5px" }}>&#8369; {getLowestPrice(product).toFixed(2)}</p>
                                                 </div>
 
                                                 <div className="w-full flex flex-row items-end justify-between mt-4">
-                                                    <p className="text-[14px]" style={{ fontFamily: "Epilogue", letterSpacing: "-0.5px" }}>{getTotalStocks(product)} stocks left</p>
+                                                    <p className="text-success font-semibold text-[14px]" style={{ fontFamily: "Epilogue" }}>{getTotalStocks(product)} stocks left</p>
                                                     <Image
                                                         src={brandLogoMap.get(product.brand)}
                                                         height={28}
