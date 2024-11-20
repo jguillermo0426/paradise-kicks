@@ -100,15 +100,15 @@ export default function Cart() {
 
                     {/* MY CART */}
                     <div className="w-full flex flex-col items-start justify-start mb-10">
-                        <p className="text-[72px]" style={{ fontFamily: "EpilogueBold", letterSpacing: "-1px", marginRight: "auto" }}>
+                        <p className="text-[72px]" style={{ fontFamily: "EpilogueBold", letterSpacing: "-1px", marginRight: "auto", marginLeft: "-2px" }}>
                             My Cart
                         </p>
                         <Notifications />
                         <div className="w-full flex flex-row items-start justify-start mt-10">
                             {/* CART ITEMS LIST*/}
-                            <div className="w-full basis-3/5 flex flex-col justify-center items-center mr-8">
+                            <div className="ml-[-15px] bg-white w-full basis-3/5 flex flex-col justify-center items-center mr-1000">
                                 {cart.map((item, itemIndex) => (
-                                    <div key={itemIndex} className="flex flex-row w-full min-w-[650px] max-w-[720px] h-[228px] items-center justify-start mb-8 p-6 border-[#474747] border-2 rounded-xl">
+                                    <div key={itemIndex} className="ml-[-65px] flex flex-row w-full min-w-[650px] max-w-[720px] h-[228px] items-center justify-start mb-8 p-6 border-[#474747] border-2 rounded-xl">
                                         {/* REMOVE BUTTON */}
                                         <UnstyledButton onClick={() => {removeItem(item.product.SKU)}}>
                                             <svg className="mr-6" width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
