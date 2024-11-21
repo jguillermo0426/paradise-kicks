@@ -12,13 +12,14 @@ export async function GET(req: Request) {
             history_id, order_id, updated_at,
             order_status!status_history_status_id_fkey (status)
         `)
-        .eq('order_id', orderId);
+        .eq('order_id', orderId)
+        .order('history_id', {ascending: true});
 
     if (error) {
         console.error("Error fetching data: ", error);
     } else {
         console.log("status history: ", statusHistory);
         console.log(statusHistory);
-        return Response.json({statusHistory});
+        return Response.json({ statusHistory });
     }
 }
