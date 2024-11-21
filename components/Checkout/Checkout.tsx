@@ -30,7 +30,7 @@ const couriers = [
 ]
 
 export default function Checkout() {
-    const { cart, removeFromCart, increaseCartItem, decreaseCartItem } = useCart();
+    const { cart } = useCart();
     const [payMethod, setPayMethod] = useState<string>('BDO');
     const [selectedTerm, setSelectedTerm] = useState(paymentTerms[0]);
     const [selectedCouriers, setSelectedCouriers] = useState(couriers[0]);
@@ -123,8 +123,11 @@ export default function Checkout() {
             if (selected) {
                 setSelectedTerm(selected);
 
-                if (selected.value != "3 months") {
+                if (selected.value != "3 months" && selected.value != "down cod") {
                     setAddFees(99.00);
+                }
+                else if (selected.value === "down cod") {
+                    setAddFees(250.00)
                 }
                 else {
                     setAddFees(0.00);
