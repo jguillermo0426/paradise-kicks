@@ -20,7 +20,12 @@ export default function OrderTracker() {
     const [orderStatusHistory, setOrderStatusHistory] = useState<OrderHistory[]>([]);
 
     const getOrderStatus = async () => {
-        if (!orderNumber) {;
+        if (!orderNumber) {
+            notifications.show({
+                message: "Please provide an order number.",
+                color: "yellow"
+            });
+            setOrderStatusHistory([]);
             return;
         }
 
@@ -40,6 +45,7 @@ export default function OrderTracker() {
                 message: "Order number not found.",
                 color: "red"
             });
+            setOrderStatusHistory([]);
         }
     }
 
@@ -63,13 +69,20 @@ export default function OrderTracker() {
 
         return formattedDate;
     }
+
+
+    const statusCircle = (<svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="30" cy="30" r="28.5" stroke="black" strokeWidth="3"/>
+        <circle cx="30" cy="30" r="24" fill="#1C1C1C"/>
+        </svg>
+        )
     
 
     return (
         <MantineProvider>
             <div className='flex flex-col items-center m-4 relative z-50 mb-[18rem] bg-white overflow-hidden min-h-screen'>
                 <Notifications />
-                <div className="flex flex-col items-center justify-center w-full px-20 py-10">
+                <div className="flex flex-col items-center justify-center w-full mb-20 px-20 py-10">
                     {/* RETURN BUTTON */}
                     <div className="mr-auto mb-12">
                         <Button
@@ -95,9 +108,9 @@ export default function OrderTracker() {
                         </Button>
                     </div>
                     {/* ORDER TRACKER */}
-                    <div className="flex flex-row items-start justify-center w-full">
+                    <div className="flex flex-row items-start justify-center w-full gap-x-40">
                         {/* LEFT SIDE */}
-                        <div className="flex flex-col items-start w-[60%] mt-16">
+                        <div className="flex flex-col items-start w-[55%] mt-16">
                             <p className="text-[72px] font-bold mb-[-20px] -tracking-[0.025em]" style={epilogue.style}>
                                 Order Tracker
                             </p>
@@ -133,7 +146,7 @@ export default function OrderTracker() {
                         </div>
                         
                         {/* RIGHT SIDE */}
-                        <div className="flex flex-col items-start justify-start w-[40%]">
+                        <div className="flex flex-col items-start justify-start w-[45%]">
                             <div className="flex flex-col items-end justify-start ml-auto mb-12 py-4 border-r-[3px] border-[#D7D7D7]">
                                 <p className="text-[32px] font-bold mr-6 mb-[-10px] -tracking-[0.025em]" style={epilogue.style}>
                                     Order Status
@@ -144,16 +157,32 @@ export default function OrderTracker() {
                                     </p>
                                 )}
                             </div>
+                            {/* STATUS HISTORY */}
                             <div className="flex flex-col items-start">
                                 {orderStatusHistory &&
                                     orderStatusHistory.map((status, statusIndex) => (
-                                        <div key={statusIndex} className='mb-12'>
-                                            <p className="text-[24px] font-bold mb-[-5px] -tracking-[0.025em]" style={epilogue.style}>
-                                                {status.order_status.status}
-                                            </p>
-                                            <p className="text-[20px] text-[#7F7F7F] -tracking-[0.025em]" style={epilogue.style}>
-                                                {formatDate(status.updated_at)}
-                                            </p>
+                                        <div key={statusIndex} className='flex flex-row items-end'>
+                                            {/* CIRCLE & LINE */}
+                                            <div className='flex flex-col items-center mr-6'>
+                                                {statusIndex === 0 ? (
+                                                    statusCircle
+                                                ) : (
+                                                    <>
+                                                        <div className='bg-black w-[4px] h-[120px]'></div>
+                                                        {statusCircle}
+                                                    </>
+                                                )}
+                                                
+                                            </div>
+                                            {/* STATUS & DATETIME */}
+                                            <div className="flex-col">
+                                                <p className="text-[24px] font-bold mb-[-5px] -tracking-[0.025em]" style={epilogue.style}>
+                                                    {status.order_status.status}
+                                                </p>
+                                                <p className="text-[20px] text-[#7F7F7F] -tracking-[0.025em]" style={epilogue.style}>
+                                                    {formatDate(status.updated_at)}
+                                                </p>
+                                            </div>
                                         </div>  
                                     ))
                                 }
