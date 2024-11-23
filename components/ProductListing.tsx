@@ -240,7 +240,7 @@ export default function ProductListing({ searchParams }: { searchParams: string 
                                 <Popover.Target>
                                     <Button
                                         color="black"
-                                        className="mt-[30px] min-[451px]:mt-[20px]"
+                                        className="font-bold mt-[30px] min-[451px]:mt-[20px]"
                                         styles={{
                                             label: {
                                                 fontFamily: "EpilogueThin"
@@ -296,7 +296,7 @@ export default function ProductListing({ searchParams }: { searchParams: string 
                                 placeholder="Search"
                                 value={searchValue}
                                 onChange={e => setSearchValue(e.target.value)}
-                                className="w-full 
+                                className="w-full
                                            max-[502px]:mt-[-180px] mt-[-200px] 
                                            max-[451px]:mt-[-200px]
                                            min-[993px]:w-[250px]"

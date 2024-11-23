@@ -400,7 +400,7 @@ export default function ProductDetails({ productModel }: ProductProps) {
 
     return (
         <MantineProvider>
-            <div className='flex flex-col items-center m-4 relative z-50 mb-[18rem] bg-white overflow-hidden min-h-screen'>
+            <div className='pb-[3rem] flex flex-col items-center m-4 relative z-50 mb-[18rem] bg-white overflow-hidden min-h-screen'>
                 {loading ? (
                     <><div className="ml-[55px] mt-10" style={{ marginRight: "auto" }}>
                         <Button
@@ -469,21 +469,26 @@ export default function ProductDetails({ productModel }: ProductProps) {
                             </div>
                             <div key={productIndex} className="flex flex-row justify-center w-full mx-8 my-2 p-6">
                                 {/* PRODUCT PICTURES */}
-                                <div className="flex flex-col items-center w-[55%] max-w-[724px] mx-8">
+                                <div className="h-[564px] flex flex-col items-center rounded-xl
+                                                w-[55%]
+                                                min-[1228px]:max-w-[724px] mx-8
+                                                min-[1228px]:h-[764px]">
                                     <Carousel
                                         withIndicators
-                                        height={764}
                                         loop
                                         getEmblaApi={(embla) => { emblaRef.current = embla; }}
                                     >
                                         {product.colorways.map((colorway, colorwayIndex) => <Carousel.Slide key={colorwayIndex}>
                                             <Image
                                                 alt="Card background"
-                                                className="object-cover rounded-xl"
+                                                className="object-cover
+                                                           w-[724px] h-[664px] 
+                                                           min-[1228px]:w-[724px] 
+                                                           min-[1228px]:h-[764px]"
                                                 src={colorway.image_link || "https://static.nike.com/a/images/t_PDP_936_v1/f_auto,q_auto:eco/af53d53d-561f-450a-a483-70a7ceee380f/W+NIKE+DUNK+LOW.png"}
-                                                width={724}
-                                                height={764} />
-                                            <p>Hello</p>
+                                                //width={724}
+                                                //height={764} 
+                                                />
                                         </Carousel.Slide>
                                         )}
                                     </Carousel>
@@ -491,13 +496,13 @@ export default function ProductDetails({ productModel }: ProductProps) {
 
                                 {/* PRODUCT DETAILS */}
                                 <div className="flex flex-col w-[45%] justify-start mx-4">
-                                    <p className="text-[20px] text-[#474747]" style={{ fontFamily: "Epilogue", marginBottom: "8px" }}>
+                                    <p className="text-[18px] min-[1228px]:text-[20px] text-[#474747]" style={{ fontFamily: "Epilogue", marginBottom: "8px" }}>
                                         {selectedColorway === ''
                                             ? getTotalStocks(product)
                                             : stock} stocks left
                                     </p>
-                                    <p className="text-[72px]" style={{ fontFamily: "EpilogueBold", letterSpacing: "-3px", lineHeight: "1.00" }}>{product.brand} {product.model}</p>
-                                    <p className="text-[24px]" style={{ fontFamily: "EpilogueMedium" }}>
+                                    <p className="text-[52px] min-[1228px]:text-[72px]" style={{ fontFamily: "EpilogueBold", letterSpacing: "-3px", lineHeight: "1.00" }}>{product.brand} {product.model}</p>
+                                    <p className="text-[20px] min-[1228px]:text-[24px]" style={{ fontFamily: "EpilogueMedium" }}>
                                         {selectedColorway === "" && selectedSKU === ""
                                             ? `${startingPriceDisplay(product)}`
                                             : selectedColorway !== "" && selectedSKU === ""
@@ -508,12 +513,12 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                     {/* COLORWAYS */}
                                     <Divider my="md" />
                                     <p className="text-[20px]" style={{ fontFamily: "Epilogue", letterSpacing: "-1px" }}>Color</p>
-                                    <div className="w-full flex flex-wrap items-center justify-start mb-8">
+                                    <div className="w-full flex flex-wrap items-center justify-start mb-8 gap-0">
                                         {product.colorways.map((colorway, colorwayIndex) =>
                                             <Button
                                                 key={colorwayIndex}
                                                 variant="default"
-                                                className='my-4 mr-2'
+                                                className='my-1 mr-2'
                                                 onClick={() => handleColorwayChange(product, colorway.colorway)}
                                                 style={colorway.colorway === selectedColorway ? buttonStyles.selected : buttonStyles.unselected}
                                                 styles={{
