@@ -294,11 +294,36 @@ export default function ProductListing({ searchParams }: { searchParams: string 
                         </div>
                     </div>
 
-                    <div className="w-[83%] desktop:w-[90%] desktop:mt-0 mt-[60px] grid grid-cols-2 tablet:grid-cols-3 lg:grid-cols-4 gap-8 mb-16 justify-start">
+                    <div className="w-[98%] min-[451px]:w-[83%] desktop:w-[90%] desktop:mt-0 mt-[60px] grid grid-cols-1 min-[320px]:grid-cols-2 min-[768px]:grid-cols-3 min-[993px]:grid-cols-4 gap-2 min-[406px]:gap-5 min-[558px]:gap-8 mb-16 justify-start">
                         {sortedProducts &&
                             sortedProducts.map((product, productIndex) =>
                                 <Link key={productIndex} href={`/product-details/${product.model}`}>
-                                    <Card key={productIndex} className="hover:outline hover:outline-dark-gray hover:outline-2 w-[230px] h-[400px] desktop:w-[300px] desktop:h-[450px] flex flex-col items-center border border-dark-gray border-opacity-40 rounded-2xl p-8">
+                                    <Card key={productIndex} className="hover:outline hover:outline-dark-gray hover:outline-2 
+                                                                        desktop:w-[300px] desktop:h-[450px] 
+                                                                        max-[1201px]:w-[205px]
+                                                                        max-[1050px]:w-[190px] max-[1050px]:h-[375px] 
+                                                                        max-[993px]:w-[230px]
+                                                                        max-[902px]:w-[220px]
+                                                                        max-[844px]:w-[210px]
+                                                                        max-[803px]:w-[200px]
+                                                                        max-[767px]:w-[250px] max-[767px]:h-[405px]  max-[767px]:ml-5
+                                                                        max-[650px]:w-[240px] max-[650px]:ml-0
+                                                                        max-[616px]:w-[230px] max-[616px]:h-[400px] 
+                                                                        max-[583px]:w-[215px] max-[583px]:h-[385px] 
+                                                                        max-[557px]:w-[200px]
+                                                                        max-[492px]:w-[190px]
+                                                                        max-[471px]:w-[180px]
+                                                                        max-[450px]:w-[200px] max-[450px]:h-[370px]
+                                                                        max-[424px]:w-[190px] max-[450px]:h-[360px]
+                                                                        max-[405px]:w-[180px] max-[450px]:h-[350px]
+                                                                        max-[393px]:w-[173px] max-[393px]:mb-1
+                                                                        max-[389px]:w-[170px] 
+                                                                        max-[368px]:w-[160px]
+                                                                        max-[355px]:w-[145px]
+                                                                        max-[320px]:w-[140px]
+                                                                        max-[319px]:w-[230px] max-[319px]:ml-10 max-[319px]:mr-10
+                                                                        h-[400px] 
+                                                                        flex flex-col items-center border border-dark-gray border-opacity-40 rounded-2xl p-8">
                                         <CardBody className="flex flex-col justify-between h-full">
                                             <div className="w-full h-[200px] border border-dark-gray border-opacity-10 rounded-[10px] flex flex-col items-center justify-center w-[240px] desktop:min-h-[200px] overflow-hidden">
                                             <LoadingOverlay visible={loading} overlayProps={{ radius: "sm", blur: 2 }} />
@@ -313,7 +338,9 @@ export default function ProductListing({ searchParams }: { searchParams: string 
                                             </div>
                                             <div className="w-full h-full flex flex-col items-start justify-between mt-[5px]">
                                                 <div className="flex flex-col items-start">
-                                                    <small className="font-semibold mt-4 text-[14px] text-[#177F7D] tracking-tight" style={{ fontFamily: "Epilogue" }}>{getTotalColors(product)}
+                                                    <small className="font-semibold mt-4 
+                                                                      text-[14px] 
+                                                                      text-[#177F7D] tracking-tight" style={{ fontFamily: "Epilogue" }}>{getTotalColors(product)}
                                                         {getTotalColors(product) > 1
                                                             ? " colors"
                                                             : " color"
