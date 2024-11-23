@@ -214,7 +214,7 @@ export default function ProductListing({ searchParams }: { searchParams: string 
 
     return (
         <MantineProvider>
-            <div className="flex flex-col items-center m-3 desktop:m-20 relative z-50 mb-[18rem] bg-white overflow-x-hidden min-h-screen">
+            <div className="flex flex-col items-center m-3 desktop:mt-20 desktop:m-30 relative z-50 mb-[18rem] bg-white overflow-x-hidden min-h-screen">
                 <div className="flex flex-col items-center w-full max-w-[1440px] m-6">
                     <div className="w-full flex flex-col desktop:flex-row items-end justify-between mb-8 px-12">
                         <div className="w-full flex mt-[100px] desktop:mt-0 flex-row items-end justify-start">
