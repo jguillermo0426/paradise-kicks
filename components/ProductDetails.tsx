@@ -469,8 +469,9 @@ export default function ProductDetails({ productModel }: ProductProps) {
                             </div>
                             <div key={productIndex} className="flex flex-col min-[878px]:flex-row justify-center w-full mx-8 my-2 p-6">
                                 {/* PRODUCT PICTURES */}
-                                <div className="h-[564px] flex flex-col items-center rounded-xl mx-8 min-[879px]:w-[55%]
-                                                min-[1228px]:max-w-[724px]">
+                                <div className="h-[764px] flex flex-col items-center rounded-xl mx-8 min-[879px]:w-[55%]
+                                                min-[1228px]:max-w-[724px]
+                                                max-[1228px]:h-[534px] max-[1228px]:mb-10">
                                     <Carousel
                                         withIndicators
                                         loop
@@ -495,7 +496,7 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                 </div>
 
                                 {/* PRODUCT DETAILS */}
-                                <div className="max-[878px]:w-full max-[878px]:px-5 max-[878px]:mx-0
+                                <div className="max-[878px]:w-full max-[878px]:px-10 max-[878px]:py-5 max-[878px]:mx-0
                                                 flex flex-col w-[45%] justify-start mx-4">
                                     <p className="text-[18px] min-[1228px]:text-[20px] text-[#474747]" style={{ fontFamily: "Epilogue", marginBottom: "8px" }}>
                                         {selectedColorway === ''
@@ -534,7 +535,7 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                                     }
                                                 }}
                                             >
-                                                <p className="text-[14px]" style={{ fontFamily: "Epilogue" }}>{colorway.colorway}</p>
+                                                <p className="text-[13px]" style={{ fontFamily: "Epilogue" }}>{colorway.colorway}</p>
                                             </Button>
                                         )}
                                     </div>
@@ -557,7 +558,7 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                                         label: {
                                                             fontFamily: "Epilogue",
                                                             fontWeight: 400,
-                                                            fontSize: "14px",
+                                                            fontSize: "13px",
                                                             color: "black"
                                                         }
                                                     }}
@@ -582,12 +583,12 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                                             root: {
                                                                 backgroundColor: "white",
                                                                 height: "58px",
-                                                                width: "150px"
+                                                                width: "140px"
                                                             },
                                                             label: {
                                                                 fontFamily: "Epilogue",
                                                                 fontWeight: 100,
-                                                                fontSize: "14px",
+                                                                fontSize: "13px",
                                                                 color: "black"
                                                             }
                                                         }}
