@@ -467,12 +467,10 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                     Return
                                 </Button>
                             </div>
-                            <div key={productIndex} className="flex flex-row justify-center w-full mx-8 my-2 p-6">
+                            <div key={productIndex} className="flex flex-col min-[878px]:flex-row justify-center w-full mx-8 my-2 p-6">
                                 {/* PRODUCT PICTURES */}
-                                <div className="h-[564px] flex flex-col items-center rounded-xl
-                                                w-[55%]
-                                                min-[1228px]:max-w-[724px] mx-8
-                                                min-[1228px]:h-[764px]">
+                                <div className="h-[564px] flex flex-col items-center rounded-xl mx-8 min-[879px]:w-[55%]
+                                                min-[1228px]:max-w-[724px]">
                                     <Carousel
                                         withIndicators
                                         loop
@@ -481,10 +479,12 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                         {product.colorways.map((colorway, colorwayIndex) => <Carousel.Slide key={colorwayIndex}>
                                             <Image
                                                 alt="Card background"
-                                                className="object-cover
+                                                className="object-cover rounded-xl
                                                            w-[724px] h-[664px] 
                                                            min-[1228px]:w-[724px] 
-                                                           min-[1228px]:h-[764px]"
+                                                           min-[1228px]:h-[764px]
+                                                           max-[1228px]:h-[534px]
+                                                           "
                                                 src={colorway.image_link || "https://static.nike.com/a/images/t_PDP_936_v1/f_auto,q_auto:eco/af53d53d-561f-450a-a483-70a7ceee380f/W+NIKE+DUNK+LOW.png"}
                                                 //width={724}
                                                 //height={764} 
@@ -495,7 +495,8 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                 </div>
 
                                 {/* PRODUCT DETAILS */}
-                                <div className="flex flex-col w-[45%] justify-start mx-4">
+                                <div className="max-[878px]:w-full max-[878px]:px-5 max-[878px]:mx-0
+                                                flex flex-col w-[45%] justify-start mx-4">
                                     <p className="text-[18px] min-[1228px]:text-[20px] text-[#474747]" style={{ fontFamily: "Epilogue", marginBottom: "8px" }}>
                                         {selectedColorway === ''
                                             ? getTotalStocks(product)
