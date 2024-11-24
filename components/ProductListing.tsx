@@ -338,7 +338,7 @@ export default function ProductListing({ searchParams }: { searchParams: string 
                                                                         max-[616px]:w-[230px] max-[616px]:h-[400px] 
                                                                         max-[583px]:w-[215px] max-[583px]:h-[385px] 
                                                                         max-[557px]:w-[200px]
-                                                                        max-[492px]:w-[190px]
+                                                                        max-[505px]:w-[190px]
                                                                         max-[471px]:w-[180px]
                                                                         max-[450px]:w-[200px] max-[450px]:h-[370px]
                                                                         max-[424px]:w-[190px] max-[450px]:h-[360px]
