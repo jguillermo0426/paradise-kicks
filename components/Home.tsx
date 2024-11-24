@@ -18,11 +18,11 @@ export default function Home() {
 
 
     const exploreIcon = (<svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M1.5625 13.4375L13.4375 1.5625M13.4375 1.5625H4.53125M13.4375 1.5625V10.4688" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M1.5625 13.4375L13.4375 1.5625M13.4375 1.5625H4.53125M13.4375 1.5625V10.4688" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>)
 
-    const quickHelpArrow = (<svg width="20" height="30" viewBox="0 0 20 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M1 28.9618L19.1652 14.4362L1 1.00002" stroke="#1C1C1C"/>
+    const quickHelpArrow = (<svg width="20" height="20" viewBox="0 0 20 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1 28.9618L19.1652 14.4362L1 1.00002" strokeWidth="2" stroke="#1C1C1C"/>
     </svg>)
 
     
@@ -211,27 +211,30 @@ export default function Home() {
                 <div className="w-full flex flex-col items-center justify-center">
                     <div className="w-full h-full flex flex-col relative z-0">
                         <Image
-                            className="w-screen"
+                            className="w-screen shadow-lg"
                             src="/homeimage.png"
                         />
-                        <div className="absolute inset-0 z-10 w-[40%] h-full mr-auto" style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }}>
-                            <div className="flex flex-col w-full h-full items-start justify-between px-16 py-[20%]">
-                                <p className="text-[4vw] sm:text-[64px]" style={{ fontFamily: "EpilogueBold", color: "white", letterSpacing: -2.5, lineHeight: 1.1 }}>
-                                    Bringing<br/>
+                        <div className="absolute inset-0 z-10 w-[40%] h-full mr-auto shadow-2xl" style={{ backgroundColor: 'rgba(28, 28, 28, 0.23)' }}>
+                            <div className="flex flex-col w-full h-full items-start justify-between px-16 py-[25%]">
+                                <p className="ml-10 text-[4vw] tracking-tighter" style={{ fontFamily: "EpilogueBold", color: "white", lineHeight: 1.1 }}>
+                                    <span className="text-[5vw] mr-[1.5px]" style={{ fontStyle: "italic" }}>B</span>ringing<br/>
                                     today's most<br/>
                                     in-demand<br/>
-                                    sneakers<br/>
+
+                                    <div style={{ display: "inline-block", transform: "rotate(-3deg)"}}>
+                                        <span className="shadow-2xl text-[#1A5756] bg-[#FFF8AB] p-2 pb-1 pl-4 pr-4 rounded-[10px]">sneakers</span><br/>
+                                    </div><br/>
+                                    
                                     within your<br/>
                                     reach.
                                 </p>
-                                <div className="flex flex-col justify-center">
-                                    <p className="text-[7px] sm:text-[16px] mb-2" style={{ fontFamily: "Epilogue", color: "white" }}>
-                                        View Catalogue
-                                    </p>
+                                <div className="ml-10 flex flex-col justify-center">
                                     <UnstyledButton component="a" href="/product-listing">
-                                        <div className="flex flex-row items-center justify-between w-[81px] sm:w-[192px] px-4 py-2 border border-[#FFF480] rounded-lg">
-                                            <p className="text-[7px] sm:text-[16px]" style={{ fontFamily: "Epilogue", color: "white" }}>
-                                                Explore more
+                                        <div className="flex flex-row items-center justify-between h-[40px] w-[250px] px-4 py-2
+                                                        hover:ease-in hover:duration-200 hover:outline hover:outline-offset-4 hover:outline-[#177F7D] hover:bg-[#177F7D]
+                                                        outline outline-offset-4 outline-[#22A7A4] bg-[#22A7A4] shadow-xl rounded-full">
+                                            <p className="pl-1 pt-1 text-[16px] font-semibold" style={{ fontFamily: "Epilogue", color: "white" }}>
+                                                Explore Catalogue
                                             </p> 
                                             {exploreIcon}
                                         </div>
@@ -243,11 +246,11 @@ export default function Home() {
                     </div>   
                 </div>
 
-                <div className="w-full flex flex-col items-center justify-center px-16 py-10">
+                <div className="mt-5 w-full flex flex-col items-center justify-center px-16 py-10">
                     {/* FEATURED BRANDS */}
-                    <div className="w-full flex flex-col items-start justify-center mb-6">
-                        <p className="text-[4vw] sm:text-[40px]" style={{ fontFamily: "EpilogueBold", color: "black", letterSpacing: -1 }}> 
-                            Featured Brands
+                    <div className="w-full flex flex-col items-center justify-center mb-6 p-1">
+                        <p className="text-[4vw] sm:text-[40px]" style={{ fontFamily: "EpilogueBold", color: "#1C1C1C", letterSpacing: -1 }}> 
+                            Our Featured Brands
                         </p>
                     </div>
                     <div className="flex flex-row items-center w-full justify-center mb-10">
@@ -271,7 +274,8 @@ export default function Home() {
                                 {brands ? (
                                     brands.map((brand, brandIndex) => (
                                         <Carousel.Slide key={brandIndex}>
-                                            <div className="flex items-center justify-center w-full h-full px-2 border-2 border-black rounded-lg">
+                                            <div className="flex items-center justify-center w-full h-full px-2 border border-dark-gray border-opacity-10 rounded-lg
+                                                            hover:border hover:border-black hover:border-2">
                                                 <Image
                                                     h={40}
                                                     fit="contain"
@@ -300,7 +304,8 @@ export default function Home() {
                                 {groupedProducts &&
                                     groupedProducts.map((product, productIndex) =>
                                         <Link key={productIndex} href={`/product-details/${product.model}`}>
-                                            <Card key={productIndex} className="max-w-[300px] h-[470px] flex flex-col items-center border border-black rounded-2xl p-8">
+                                            <Card key={productIndex} className="max-w-[300px] h-[470px] flex flex-col items-center border border-black rounded-2xl p-8
+                                                                                hover:outline hover:outline-dark-gray hover:outline-2">
                                                 <CardBody className="flex flex-col justify-between h-full">
                                                     <div className="flex flex-col items-center justify-center w-full w-[250px] min-h-[250px]">
                                                         <Image
@@ -313,7 +318,7 @@ export default function Home() {
                                                     </div>
                                                     <div className="w-full h-full flex flex-col items-start justify-between">
                                                         <div className="flex flex-col items-start">
-                                                            <small className="mt-4 text-[14px] text-[#808080]" style={{ fontFamily: "Epilogue" }}>{getTotalColors(product)}
+                                                            <small className="font-semibold mt-4 text-[14px] text-[#177F7D]" style={{ fontFamily: "Epilogue" }}>{getTotalColors(product)}
                                                                 {getTotalColors(product) > 1
                                                                     ? " colors"
                                                                     : " color"
@@ -325,7 +330,7 @@ export default function Home() {
                                                         </div>
 
                                                         <div className="w-full flex flex-row items-end justify-between mt-4">
-                                                            <p className="text-[14px]" style={{ fontFamily: "Epilogue", letterSpacing: "-0.5px" }}>{getTotalStocks(product)} stocks left</p>
+                                                            <p className="font-semibold text-[#2E7D31] text-[14px]" style={{ fontFamily: "Epilogue", letterSpacing: "-0.5px" }}>{getTotalStocks(product)} stocks left</p>
                                                             <Image
                                                                 src={getBrandLogo(product.brand)}
                                                                 className="h-[28px]"
@@ -343,8 +348,10 @@ export default function Home() {
                     </div>
                     {/* SHOW ALL */}
                     <UnstyledButton component="a" href="/product-listing">
-                        <div className="flex flex-col items-center justify-center w-[164px] h-[60px] border border-black rounded-2xl">
-                            <p className="text-[22px]" style={{ fontFamily: "Epilogue", fontWeight: 600, letterSpacing: -1 }}>
+                        <div className="flex flex-col items-center justify-center w-[164px] h-[40px] pt-1 mb-10
+                                        hover:ease-in hover:duration-200 hover:outline hover:outline-offset-4 hover:outline-[#177F7D] hover:bg-[#177F7D]
+                                        outline outline-offset-4 outline-[#22A7A4] bg-[#22A7A4] shadow-xl rounded-full">
+                            <p className="text-[16px] text-[#FFFFFF]" style={{ fontFamily: "Epilogue", fontWeight: 600, letterSpacing: -1 }}>
                                 Show All
                             </p>
                         </div>
@@ -354,9 +361,9 @@ export default function Home() {
                     </div>
 
                     {/* FAQS */}
-                    <div id="faq-section" className="flex flex-col items-center justify-center w-[85%] mt-2 mb-12">
+                    <div id="faq-section" className="p-0 mb-10 flex flex-col items-center justify-center w-[95%]">
                         <p className="text-[4vw] sm:text-[40px] mb-8 mr-auto" style={{ fontFamily: "EpilogueBold", color: "black", letterSpacing: -1 }}> 
-                            Frequently Asked Questions
+                            Frequently Asked Questions (FAQs)
                         </p>
                         <Accordion 
                         className="w-full"
@@ -365,11 +372,11 @@ export default function Home() {
                         styles={{
                             label: {
                                 fontFamily: "Epilogue",
-                                fontSize: "24px",
+                                fontSize: "18px",
                                 paddingInline: "10px"
                             },
                             item: {
-                                border: "1px solid black",
+                                border: "1px solid #1C1C1C",
                                 backgroundColor: "white"
                             },
                             content: {
@@ -397,18 +404,18 @@ export default function Home() {
                     <Affix position={{ bottom: 20, right: 20 }}>
                         <Popover width={439} trapFocus position="top" withArrow shadow="md" radius="md">
                             <Popover.Target>
-                                <Button w={180} h={57} variant="filled" color="black" radius="md">
-                                    <p className="text-[20px]">Quick Help</p>
+                                <Button w={150} h={47} variant="filled" color="#1C1C1C" radius="md">
+                                    <p className="text-[15px]">Quick Help</p>
                                 </Button> 
                             </Popover.Target>
                             <Popover.Dropdown>
                                 <div className="p-8">
-                                    <p className="text-[32px] mb-4" style={{ fontFamily: "EpilogueBold" }}>
+                                    <p className="text-[28px] mb-4" style={{ fontFamily: "EpilogueBold" }}>
                                         Quick Help
                                     </p>
                                     <UnstyledButton component="a">
-                                        <div className="flex flex-row items-center justify-between px-6 py-2 mb-6 border border-black rounded-xl">
-                                            <p className="text-[24px]" style={{ fontFamily: "Epilogue"}}>
+                                        <div className="flex flex-row items-center justify-between px-6 py-2 mb-3 border border-black rounded-lg">
+                                            <p className="text-[18px]" style={{ fontFamily: "Epilogue"}}>
                                                 Track Order
                                             </p>
                                             {quickHelpArrow}
@@ -416,8 +423,8 @@ export default function Home() {
                                     </UnstyledButton>
 
                                     <UnstyledButton onClick={() => scrolltoFAQs('faq-section')} style={{ display: 'block', width: "100%" }}>
-                                        <div className="flex flex-row items-center justify-between px-6 py-2 border border-black rounded-xl">
-                                            <p className="text-[24px]" style={{ fontFamily: "Epilogue"}}>
+                                        <div className="flex flex-row items-center justify-between px-6 py-2 border border-black rounded-lg">
+                                            <p className="text-[18px]" style={{ fontFamily: "Epilogue"}}>
                                                 FAQs
                                             </p>
                                             {quickHelpArrow}

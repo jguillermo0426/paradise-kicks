@@ -17,10 +17,10 @@ type SelectedProps = {
 
 export default function Header({navSelected}: SelectedProps) {
 
-    const selected = "group mx-5 transition-colors flex items-center justify-center w-[7.5rem] pt-20 pb-3 px-5 border-2 border-solid rounded-b-[0.625rem] border-[#38BDBA] -mt-16 hover:cursor-pointer";
-    const unselected = "group mx-5 transition-colors flex items-center hover:bg-[#38BDBA] w-[7.5rem] justify-center pt-20 pb-3 px-5 border-2 border-none rounded-b-[0.625rem] -mt-16 hover:cursor-pointer";
+    const selected = "group mx-5 transition-colors flex items-center justify-center w-[9rem] pt-20 pb-3 px-5 border-2 border-solid rounded-b-[0.625rem] border-[#177F7D] -mt-16 hover:cursor-pointer";
+    const unselected = "group mx-5 transition-colors flex items-center hover:bg-[#177F7D] w-[9rem] justify-center pt-20 pb-3 px-5 border-2 border-none rounded-b-[0.625rem] -mt-16 hover:cursor-pointer";
 
-    const selectedText = 'font-semibold transition-colors text-[#38BDBA] text-xl';
+    const selectedText = 'font-semibold transition-colors text-[#177F7D] text-xl';
     const unselectedText = 'font-semibold transition-colors text-black group-hover:text-white text-xl'
 
     const { cart } = useCart();
@@ -31,7 +31,7 @@ export default function Header({navSelected}: SelectedProps) {
     }, [cart]);
 
     return(
-        <main className="flex flex-col bg-white w-full h-[6rem] justify-between items-center">
+        <main className="flex flex-col w-full h-[6rem] justify-between items-center">
             <div className="flex flex-row bg-white w-full h-auto justify-between items-between px-10">
                 <div className='flex flex-col justify-center items-center'>
                     <Link href="/">
