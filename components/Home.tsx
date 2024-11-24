@@ -232,7 +232,7 @@ export default function Home() {
                                     <UnstyledButton component="a" href="/product-listing">
                                         <div className="flex flex-row items-center justify-between h-[40px] w-[250px] px-4 py-2
                                                         hover:ease-in hover:duration-200 hover:outline hover:outline-offset-4 hover:outline-[#177F7D] hover:bg-[#177F7D]
-                                                        outline outline-offset-4 outline-[#22A7A4] bg-[#22A7A4] shadow-xl rounded-full">
+                                                        outline outline-offset-4 outline-[#22A7A4] bg-[#22A7A4] shadow-xl rounded-lg">
                                             <p className="pl-1 pt-1 text-[16px] font-semibold" style={{ fontFamily: "Epilogue", color: "white" }}>
                                                 Explore Catalogue
                                             </p> 
@@ -350,7 +350,7 @@ export default function Home() {
                     <UnstyledButton component="a" href="/product-listing">
                         <div className="flex flex-col items-center justify-center w-[164px] h-[40px] pt-1 mb-10
                                         hover:ease-in hover:duration-200 hover:outline hover:outline-offset-4 hover:outline-[#177F7D] hover:bg-[#177F7D]
-                                        outline outline-offset-4 outline-[#22A7A4] bg-[#22A7A4] shadow-xl rounded-full">
+                                        outline outline-offset-4 outline-[#22A7A4] bg-[#22A7A4] shadow-xl rounded-lg">
                             <p className="text-[16px] text-[#FFFFFF]" style={{ fontFamily: "Epilogue", fontWeight: 600, letterSpacing: -1 }}>
                                 Show All
                             </p>
