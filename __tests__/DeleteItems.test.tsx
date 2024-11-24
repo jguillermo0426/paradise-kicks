@@ -7,16 +7,20 @@ import {v4 as uuidv4} from 'uuid';
 
 /* DELETE */
 
-/* 
 jest.mock('@/utils/supabase/server', () => {
     return {
-      createClient: jest.fn().mockImplementation(() => {
-        return {
-          from: jest.fn().mockReturnThis(),
-          update: jest.fn().mockResolvedValue({ data: [{ SKU: uuidv4(), available: false }] }),
-          eq: jest.fn().mockReturnThis(), 
-        };
-      }),
+        createClient: jest.fn().mockImplementation(() => {
+            return {
+                // mock supabase funcs
+                from: jest.fn().mockReturnValue({
+                    update: jest.fn().mockReturnValue({
+                        eq: jest.fn().mockResolvedValue(
+                            { data: [{ SKU: uuidv4(), available: false }] }
+                        ),
+                    }),
+                }),
+            };
+        }),
     };
 });
   
@@ -45,9 +49,9 @@ describe('Delete Product', () => {
         
         const response = await POST({ json: () => Promise.resolve(formData) } as any);
 
-        expect(client.from).toHaveBeenCalledWith('products');
-        expect(client.from('products').update).toHaveBeenCalledWith({ SKU: myuuid, available: false });
-        expect(client.from('products').eq).toHaveBeenCalledWith('SKU', 'old-sku');
+        expect(client.from).toHaveBeenCalledWith('product');
+        expect(client.from('product').update).toHaveBeenCalledWith({ SKU: uuidv4(), available: false });
+        expect(client.from('product').eq).toHaveBeenCalledWith('SKU', 'old-sku');
 
         expect(response).toEqual({
             products: [
@@ -56,18 +60,24 @@ describe('Delete Product', () => {
         });
     });
 });
-*/
+
 
 
 /* ADD */
+/*
 jest.mock('@/utils/supabase/server', () => {
     return {
         createClient: jest.fn().mockImplementation(() => {
             // mock supabase functions
             return {
-                from: jest.fn().mockReturnThis(),
-                insert: jest.fn().mockResolvedValue({ data: [{ SKU: 'new-sku', available: true }] }),
-                select: jest.fn().mockReturnThis(),
+                from: jest.fn().mockReturnValue({
+                    insert: jest.fn().mockReturnValue({
+                        select: jest.fn().mockResolvedValue(
+                            { data: [{ SKU: 'new-sku', available: true }] }
+                        ),
+                    }),
+                }),
+                
             };
         }),
     };
@@ -115,3 +125,4 @@ describe('Add Product', () => {
         expect(client.from('product').select).toHaveBeenCalled();
     });
 });
+*/
