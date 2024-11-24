@@ -74,6 +74,7 @@ export default function Cart() {
             <div className="flex flex-col items-center m-20 relative z-50 mb-[18rem] bg-white overflow-x-hidden min-h-screen">
                 <div className="flex flex-col items-center justify-center w-full max-w-[1440px] m-6">
                     <Button
+                    className="hover:outline hover:outline-offset-2 hover:outline-dark-gray shadow-lg"
                     component="a"
                     href="/product-listing"
                     variant="filled"
@@ -218,7 +219,7 @@ export default function Cart() {
                                     />
                                 </div>
                                 <Button
-                                    className="mt-auto"
+                                    className="hover:outline hover:outline-offset-2 hover:outline-dark-gray shadow-lg mt-auto"
                                     variant="filled"
                                     fullWidth
                                     radius="md"
