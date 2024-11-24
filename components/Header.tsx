@@ -33,7 +33,7 @@ export default function Header({navSelected}: SelectedProps) {
     return(
         <main className="flex flex-col w-full h-[6rem] justify-between items-center">
             <div className="flex flex-row bg-white w-full h-auto justify-between items-between px-10">
-                <div className='flex flex-col justify-center items-center'>
+                <div className='ml-10 flex flex-col justify-center items-center'>
                     <Link href="/">
                         <UnstyledButton>
                         <Image
@@ -67,7 +67,7 @@ export default function Header({navSelected}: SelectedProps) {
 
                 {/* CART */}
                 <Link href="/cart">
-                    <div className="flex flex-row items-center justify-end pt-20 pb-3 border-2 border-none -mt-12 ">
+                    <div className="mr-10 flex flex-row items-center justify-end pt-20 pb-3 border-2 border-none -mt-12 ">
                         <Badge size="sm" color="#2E7D31" circle 
                         className="z-10"
                         styles={{ 
