@@ -221,8 +221,8 @@ export default function Home() {
                                     today's most<br/>
                                     in-demand<br/>
 
-                                    <div style={{ display: "inline-block", transform: "rotate(-3deg)"}}>
-                                        <span className="shadow-2xl text-[#1A5756] bg-[#FFF8AB] p-2 pb-1 pl-4 pr-4 rounded-[10px]">sneakers</span><br/>
+                                    <div style={{ display: "inline-block", transform: "rotate(-4deg)"}}>
+                                        <span className="shadow-2xl text-[#1A5756] bg-[#EDEDED] p-2 pb-1 pl-4 pr-4 rounded-[10px]">sneakers</span><br/>
                                     </div><br/>
                                     
                                     within your<br/>
