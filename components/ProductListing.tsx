@@ -240,7 +240,8 @@ export default function ProductListing({ searchParams }: { searchParams: string 
                                 <Popover.Target>
                                     <Button
                                         color="black"
-                                        className="font-bold mt-[30px] min-[451px]:mt-[20px]"
+                                        className="hover:outline hover:outline-offset-2 hover:outline-dark-gray shadow-lg 
+                                                   font-bold mt-[30px] min-[451px]:mt-[20px]"
                                         styles={{
                                             label: {
                                                 fontFamily: "EpilogueThin"
@@ -256,7 +257,7 @@ export default function ProductListing({ searchParams }: { searchParams: string 
                                         <svg
                                             data-slot="icon"
                                             fill="none"
-                                            strokeWidth="1.3"
+                                            strokeWidth="2"
                                             stroke="currentColor"  
                                             viewBox="0 0 24 24"
                                             xmlns="http://www.w3.org/2000/svg"
