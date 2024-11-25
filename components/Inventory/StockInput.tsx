@@ -50,12 +50,11 @@ export default function StockInput({ item, handleChangeNumber, index, invalidSto
                 hideControls
                 style={epilogue.style}
                 className="font-bold text-[20px]"
-                handlersRef={handlersRefs} // Assign individual ref
+                handlersRef={handlersRefs}
                 value={item.stock}
                 step={1}
                 min={0}
-                onChange={(e) => handleChangeNumber(e, index, "stock")} // Fix stock reference
-                error={invalidStock[index] ? "Stock is not a valid number" : ""}
+                onChange={(e) => handleChangeNumber(e, index, "stock")}
                 withErrorStyles={invalidStock[index]}
             />
             <ActionIcon
