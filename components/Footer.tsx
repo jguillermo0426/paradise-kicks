@@ -14,15 +14,15 @@ export default function Footer() {
         <main className="flex flex-col bg-[#38BDBA] w-full h-auto fixed bottom-0 -z-10 justify-center items-center">
             <div className="ml-[10%] flex flex-row bg-[#38BDBA] w-full h-[16rem] justify-start items-center">
                 <div className='flex flex-row items-start justify-center h-full'>
-                    <div className='flex flex-col items-center justify-center p-12'>
+                    <div className='flex flex-col items-center justify-center p-12 mt-2'>
                         <Image
                             src="/white logo.png"
                             className='mb-5'
                             h={40}
                         />
-                        <p className="font-extrabold italic text-white text-xl" style={epilogue.style}>Paradise Kicks</p>
+                        <p className="mr-10 font-extrabold italic text-white text-lg" style={epilogue.style}>Paradise Kicks</p>
                     </div>
-                    <Divider orientation='vertical' color="white"/>
+                    <Divider orientation='vertical' className="ml-10" color="white"/>
                 </div>
 
                 <div className='flex flex-row items-start justify-center p-12 m-20'>
