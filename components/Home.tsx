@@ -207,7 +207,7 @@ export default function Home() {
 
     return (
         <MantineProvider>
-            <div className="flex flex-col items-center relative z-50 mb-[18rem] bg-white min-h-screen">
+            <div className="flex flex-col items-center z-0 relative mb-[18rem] bg-white min-h-screen">
                 <div className="w-full flex flex-col items-center justify-center">
                     <div className="w-full h-full flex flex-col relative z-0">
                         <Image
@@ -361,7 +361,7 @@ export default function Home() {
                     </div>
 
                     {/* FAQS */}
-                    <div id="faq-section" className="p-0 mb-10 flex flex-col items-center justify-center w-[95%]">
+                    <div id="faq-section" className="p-0 mb-10 flex flex-col items-center justify-center w-[90%]">
                         <p className="text-[4vw] sm:text-[40px] mb-8 mr-auto" style={{ fontFamily: "EpilogueBold", color: "black", letterSpacing: -1 }}> 
                             Frequently Asked Questions (FAQs)
                         </p>
@@ -373,6 +373,7 @@ export default function Home() {
                             label: {
                                 fontFamily: "Epilogue",
                                 fontSize: "18px",
+                                fontWeight: 600,
                                 paddingInline: "10px"
                             },
                             item: {

@@ -26,12 +26,18 @@ export default function Header({navSelected}: SelectedProps) {
     const { cart } = useCart();
     const [items, setItems] = useState(0);
 
+    const [ isOpen, setIsOpen ] = useState(false);
+
+    const toggleNavbar = () => {
+        setIsOpen(!isOpen);
+    }
+
     useEffect(() => {
         setItems(cart.length);
     }, [cart]);
 
     return(
-        <main className="flex flex-col w-full h-[6rem] justify-between items-center">
+        <main className="z-50 shadow-lg sticky top-0 flex flex-col w-full h-[6rem] justify-between items-center">
             <div className="flex flex-row bg-white w-full h-auto justify-between items-between px-10">
                 <div className='ml-10 flex flex-col justify-center items-center'>
                     <Link href="/">
@@ -63,6 +69,15 @@ export default function Header({navSelected}: SelectedProps) {
                             <p style={epilogue.style} className={navSelected === "Contact" ? selectedText : unselectedText}>Contact</p>
                         </div>
                     </Anchor>
+                </div>
+
+                {/* NAVBAR TOGGLE */}
+                <div className="flex justify-end min-[868px]:hidden">
+                    <button className="w-[48px] h-[48px] mt-5" onClick={toggleNavbar}>
+                        <svg className="w-full h-full" fill="none" stroke-width="2" stroke="black" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path strokeLinecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"></path>
+                        </svg>
+                    </button>
                 </div>
 
                 {/* CART */}
@@ -97,7 +112,7 @@ export default function Header({navSelected}: SelectedProps) {
                 
                 
             </div>    
-            <Divider className='w-full' color="#474747"/>
+            
         </main>
     );
 }
