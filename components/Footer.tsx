@@ -59,7 +59,7 @@ export default function Footer() {
                         </div>
 
                         <div className='flex flex-col items-start justify-center mx-10'>
-                            <p style={epilogue.style} className='max-[612px]:text-[18px] max-[612px]:mb-2 font-black text-white text-xl mb-5'>FOLLOW US</p>
+                            <p style={epilogue.style} className='max-[612px]:hidden font-black text-white text-xl mb-5'>FOLLOW US</p>
                             
                             <div className='flex flex-row gap-1'>
                                 <Anchor href="https://www.facebook.com/63paradisekicks">
