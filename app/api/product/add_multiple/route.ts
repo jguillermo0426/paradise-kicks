@@ -13,12 +13,12 @@ export async function POST(req: Request) {
         "Price",
         "Size",
         "Colorway",
-        "image_link",
     ];
 
     for (const item of formData) {
         for (const field of requiredFields) {
             if (!item[field]) {
+                console.log("Missing required field");
                 return Response.json({
                     status: 400,
                     error: `Missing required field: ${field}`,
@@ -26,7 +26,7 @@ export async function POST(req: Request) {
             }
         }
 
-        if (typeof item.Stock !== "number" || typeof item.Price !== "number") {
+        if (isNaN(item.Stock) || isNaN(item.Price)) {
             return Response.json({
                 status: 400,
                 error: `Invalid data type for Stock or Price`,

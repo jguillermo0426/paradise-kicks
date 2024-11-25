@@ -16,7 +16,6 @@ type editItemProps = {
 export default function EditItems({ onSuccess, searchValue, onError }: editItemProps) {
     const [editProducts, setEditProducts] = useState<GroupedProduct2[]>([]);
     const [filteredProducts, setFilteredProducts] = useState<GroupedProduct2[]>([]);
-    const [groupedProducts, setGroupedProducts] = useState<GroupedProduct2[]>([]);
     const [totalPages, setTotalPages] = useState<number>(1);
     const [activePage, setPage] = useState(1);
     const debouncedSearchValue = useDebounce(searchValue, 100);
@@ -118,8 +117,8 @@ export default function EditItems({ onSuccess, searchValue, onError }: editItemP
 
             if (result.status == 200 && result.products) {
                 onSuccess();
-                setGroupedProducts([]);
-                setEditProducts(sortByModel(groupedProducts));
+                const products = groupProducts(result.products);
+                setEditProducts(sortByModel(products));
             }
             else if (result.status == 400 || result.status == 500){
                 onError(result.error);
