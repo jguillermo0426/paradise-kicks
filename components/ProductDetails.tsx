@@ -232,8 +232,14 @@ export default function ProductDetails({ productModel }: ProductProps) {
             // if the group of the colorways doesnt exist, create it
             if (!colorwayGroup) {
                 colorwayGroup = { id: colorwayId, image_link: image_link, colorway: Colorway, sizes: [], model: Model, brand: Brand };
+                if (image_link) {
+                    colorwayGroup.image_link = image_link;  // assign image link if available
+                }
                 grouped[Model].colorways.push(colorwayGroup);
                 colorwayId += 1;
+            }
+            if (image_link) {
+                colorwayGroup.image_link = image_link;  // assign image link if available
             }
 
             // assign the individual sku, size, stock, and price for the shoe
@@ -397,6 +403,19 @@ export default function ProductDetails({ productModel }: ProductProps) {
         }
     }
 
+    const getImageLink = (groupedProduct: GroupedProduct2, selectedColorway: string) => {
+        let imageLink = "";
+
+        const colorway = groupedProduct.colorways.find(
+            (colorway) => colorway.colorway === selectedColorway
+        );
+
+        if (colorway && colorway.image_link && colorway.image_link.trim() !== ""){
+            console.log(colorway.colorway, colorway.image_link)
+            return colorway.image_link.trim();
+        }
+    };
+
 
     return (
         <MantineProvider>
@@ -480,7 +499,7 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                             <Image
                                                 alt="Card background"
                                                 className="object-cover rounded-xl"
-                                                src={colorway.image_link || "https://static.nike.com/a/images/t_PDP_936_v1/f_auto,q_auto:eco/af53d53d-561f-450a-a483-70a7ceee380f/W+NIKE+DUNK+LOW.png"}
+                                                src={getImageLink(product, colorway.colorway) || "https://static.nike.com/a/images/t_PDP_936_v1/f_auto,q_auto:eco/af53d53d-561f-450a-a483-70a7ceee380f/W+NIKE+DUNK+LOW.png"}
                                                 width={724}
                                                 height={764} />
                                             <p>Hello</p>
