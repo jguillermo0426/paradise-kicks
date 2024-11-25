@@ -1,8 +1,6 @@
 import { POST } from '@/app/api/product/delete_product/route';
-// import { POST } from '@/app/api/product/add_product/route';
 import { Product } from '@/types/types';
 import { createClient } from '@/utils/supabase/server';
-import { v4 as uuidv4 } from 'uuid';
 
 
 /* DELETE */
