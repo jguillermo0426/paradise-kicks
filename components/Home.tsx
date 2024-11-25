@@ -17,7 +17,7 @@ export default function Home() {
     const [faqs, setFaqs] = useState<FaqsType[]>();
 
 
-    const exploreIcon = (<svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+    const exploreIcon = (<svg className="max-[477px]:w-[11px] max-[477px]:stroke-1 max-[769px]:w-[13px] stroke-2" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M1.5625 13.4375L13.4375 1.5625M13.4375 1.5625H4.53125M13.4375 1.5625V10.4688" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>)
 
@@ -214,26 +214,29 @@ export default function Home() {
                             className="w-screen shadow-lg"
                             src="/homeimage.png"
                         />
-                        <div className="absolute inset-0 z-10 w-[40%] h-full mr-auto shadow-2xl" style={{ backgroundColor: 'rgba(28, 28, 28, 0.23)' }}>
-                            <div className="flex flex-col w-full h-full items-start justify-between px-16 py-[25%]">
+                        <div className="max-[320px]:w-[80%] max-[477px]:w-[70%] max-[769px]:w-[65%] max-[769px]:-mt-10 max-[1200px]:w-[50%] absolute inset-0 z-10 w-[40%] h-full mr-auto shadow-2xl" style={{ backgroundColor: 'rgba(28, 28, 28, 0.23)' }}>
+                            <div className="flex flex-col w-full h-full items-start justify-between px-16 py-[25%] max-[769px]:px-10 max-[477px]:px-5">
                                 <p className="ml-10 text-[4vw] tracking-tighter" style={{ fontFamily: "EpilogueBold", color: "white", lineHeight: 1.1 }}>
                                     <span className="text-[5vw] mr-[1.5px]" style={{ fontStyle: "italic" }}>B</span>ringing<br/>
                                     today's most<br/>
                                     in-demand<br/>
 
-                                    <div style={{ display: "inline-block", transform: "rotate(-4deg)"}}>
-                                        <span className="shadow-2xl text-[#1A5756] bg-[#EDEDED] p-2 pb-1 pl-4 pr-4 rounded-[10px]">sneakers</span><br/>
+                                    <div className="max-[769px]:mb-1" style={{ display: "inline-block", transform: "rotate(-4deg)"}}>
+                                        <span className="max-[769px]:rounded-[5px] max-[769px]:p-1 max-[769px]:px-2shadow-2xl text-[#1A5756] bg-[#EDEDED] p-2 pb-1 px-4 rounded-[10px]">sneakers</span><br/>
                                     </div><br/>
                                     
                                     within your<br/>
                                     reach.
                                 </p>
-                                <div className="ml-10 flex flex-col justify-center">
+                                <div className="max-[477px]:mt-5 max-[1200px]:mt-10 ml-10 flex flex-col justify-center">
                                     <UnstyledButton component="a" href="/product-listing">
-                                        <div className="flex flex-row items-center justify-between h-[40px] w-[250px] px-4 py-2
+                                        <div className="max-[477px]:h-[25px] max-[477px]:w-[165px] max-[477px]:outline-2 max-[477px]:outline-offset-2 max-[477px]:rounded-sm
+                                                        max-[769px]:h-[32px] max-[769px]:w-[190px] max-[769px]:outline-2 max-[769px]:outline-offset-3
+                                                        flex flex-row items-center justify-between h-[40px] w-[250px] px-4 py-2
                                                         hover:ease-in hover:duration-200 hover:outline hover:outline-offset-4 hover:outline-[#177F7D] hover:bg-[#177F7D]
                                                         outline outline-offset-4 outline-[#22A7A4] bg-[#22A7A4] shadow-xl rounded-lg">
-                                            <p className="pl-1 pt-1 text-[16px] font-semibold" style={{ fontFamily: "Epilogue", color: "white" }}>
+                                            <p className="max-[477px]:pl-0
+                                                          max-[477px]:text-[11px] max-[769px]:text-[13px] pl-1 pt-1 text-[16px] font-semibold" style={{ fontFamily: "Epilogue", color: "white" }}>
                                                 Explore Catalogue
                                             </p> 
                                             {exploreIcon}
