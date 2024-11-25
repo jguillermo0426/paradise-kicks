@@ -9,10 +9,11 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 type editItemProps = {
     onSuccess: () => void;
     searchValue: string;
+    onError: (message: string) => void;
 }
 
 
-export default function EditItems({ onSuccess, searchValue }: editItemProps) {
+export default function EditItems({ onSuccess, searchValue, onError }: editItemProps) {
     const [editProducts, setEditProducts] = useState<GroupedProduct2[]>([]);
     const [filteredProducts, setFilteredProducts] = useState<GroupedProduct2[]>([]);
     const [groupedProducts, setGroupedProducts] = useState<GroupedProduct2[]>([]);
@@ -115,10 +116,13 @@ export default function EditItems({ onSuccess, searchValue }: editItemProps) {
             const result = await response.json();
             console.log(result);
 
-            if (result) {
+            if (result.status == 200 && result.products) {
                 onSuccess();
                 setGroupedProducts([]);
                 setEditProducts(sortByModel(groupedProducts));
+            }
+            else if (result.status == 400 || result.status == 500){
+                onError(result.error);
             }
         }
     }

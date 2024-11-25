@@ -102,7 +102,7 @@ export default function AdminStock() {
             }
 
             {value === "2" &&
-                <EditItems searchValue={searchValue} onSuccess={handleNotification} />
+                <EditItems searchValue={searchValue} onSuccess={handleNotification} onError={handleError} />
             }
 
             {value === "3" &&

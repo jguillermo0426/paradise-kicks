@@ -8,9 +8,32 @@ export async function POST(req: Request) {
     console.log(formData);
 
     const products: Product[] = [];
+    const errors: string[] = [];
+
+    const editableFields = [
+        { field: 'Model', type: 'string' },
+        { field: 'Brand', type: 'string' },
+        { field: 'Stock', type: 'number' },
+        { field: 'Price', type: 'number' },
+        { field: 'Size', type: 'string' },
+        { field: 'Colorway', type: 'string' },
+        { field: 'image_link', type: 'string' },
+    ];
+
+    for (const product of formData) {
+        for (const { field, type } of editableFields) {
+            if (typeof product[field] !== type) {
+                console.log(`Invalid data type for ${field} in product ${product.SKU}`);
+                return Response.json({
+                    status: 400,
+                    error: `Invalid data type for ${field} in product ${product.SKU}`
+                });
+            }
+        }
+    }
 
     const promises = formData.map(async (product: Product) => {
-        const { data } = await supabase
+        const { data, error } = await supabase
             .from('product')
             .update({
                 Model: product.Model,
@@ -22,10 +45,23 @@ export async function POST(req: Request) {
                 image_link: product.image_link
             })
             .eq('SKU', product.SKU);      
-        products.push(data as unknown as Product);  
+        if (error) {
+            errors.push(`Error updating product ${product.SKU}: ${error.message}`);
+        } 
+        else if (data) {
+            products.push(data as Product);
+        }  
     });
 
     await Promise.all(promises);
 
-    return Response.json({products});
+    //return Response.json({products});
+
+    if (errors.length > 0) {
+        console.log(errors.join("; "));
+        return Response.json({ status: 500, error: errors.join("; ") });
+    }
+    else {
+        return Response.json({ status: 200, products });
+    }
 }
