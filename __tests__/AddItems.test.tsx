@@ -8,20 +8,19 @@ afterEach(() => {
 });
 
 jest.mock('@/utils/supabase/server', () => {
-    // Mock insert to accept arguments and return the mock data
     const insertMock = jest.fn().mockResolvedValue({
         data: [{ SKU: 'new-sku', available: true }],
-        error: null, // Simulate no error for the insert operation
+        error: null, 
     });
 
-    // Mock the from method
+ 
     const fromMock = jest.fn().mockReturnValue({
-        insert: insertMock,  // simulate insert method
+        insert: insertMock, 
     });
 
     return {
         createClient: jest.fn().mockImplementation(() => ({
-            from: fromMock,  // return fromMock when createClient is called
+            from: fromMock, 
         })),
     };
 });
@@ -45,15 +44,12 @@ describe('Add Product', () => {
             image_link: 'https://example.com/image.jpg',
         };
 
-        // Pass formData as an object instead of an array
         const formData = testProduct;
 
         const response = await POST({ json: () => Promise.resolve(formData) } as any);
 
-        // Ensure `client.from` was called with 'product'
         expect(client.from).toHaveBeenCalledWith('product');
 
-        // Ensure `insert` method is called with correct data
         expect(client.from('product').insert).toHaveBeenCalledWith([
             {
                 SKU: 'new-sku',
