@@ -19,7 +19,6 @@ export async function POST(req: Request) {
                 available: true
             },
         ])
-        .select()
 
     return Response.json({data});
 }

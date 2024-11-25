@@ -7,6 +7,10 @@ import { v4 as uuidv4 } from 'uuid';
 
 /* DELETE */
 
+afterEach(() => {
+    jest.clearAllMocks();
+});
+
 jest.mock('@/utils/supabase/server', () => {
     const fromMock = jest.fn().mockReturnValue({
         update: jest.fn().mockReturnValue({
@@ -52,7 +56,7 @@ describe('Delete Product', () => {
         const formData = [testProduct];
 
         const response = await POST({ json: () => Promise.resolve(formData) } as any);
-        
+
         expect(client.from).toHaveBeenCalledWith('product');
         expect(client.from('product').update).toHaveBeenCalledWith({ SKU: 'mocked-uuid', available: false });
 
@@ -64,68 +68,3 @@ describe('Delete Product', () => {
     });
 });
 
-
-
-/* ADD */
-/*
-jest.mock('@/utils/supabase/server', () => {
-    return {
-        createClient: jest.fn().mockImplementation(() => {
-            // mock supabase functions
-            return {
-                from: jest.fn().mockReturnValue({
-                    insert: jest.fn().mockReturnValue({
-                        select: jest.fn().mockResolvedValue(
-                            { data: [{ SKU: 'new-sku', available: true }] }
-                        ),
-                    }),
-                }),
-                
-            };
-        }),
-    };
-});
-
-
-global.Response = {
-    json: jest.fn((data) => data),
-} as any;
-
-
-describe('Add Product', () => {
-    it('should insert a new product into the product table', async () => {
-        const client = createClient();
-
-        const testProduct = {
-            SKU: 'new-sku',
-            Model: 'New Model',
-            Brand: 'New Brand',
-            Stock: 10,
-            Price: 100,
-            Size: '7.5 M / 9 W',
-            Colorway: 'Blue',
-            image_link: 'https://example.com/image.jpg',
-        };
-
-        const formData = [testProduct];
-
-        const response = await POST({ json: () => Promise.resolve(formData) } as any);
-
-        expect(client.from).toHaveBeenCalledWith('product');
-        expect(client.from('product').insert).toHaveBeenCalledWith([
-            {
-                SKU: 'new-sku', 
-                Model: 'New Model',
-                Brand: 'New Brand',
-                Stock: 10,
-                Price: 100,
-                Size: '7.5 M / 9 W',
-                Colorway: 'Blue',
-                image_link: 'https://example.com/image.jpg',
-                available: true, 
-            },
-        ]);
-        expect(client.from('product').select).toHaveBeenCalled();
-    });
-});
-*/
