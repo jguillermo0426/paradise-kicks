@@ -8,15 +8,20 @@ import { useRouter } from 'next/navigation';
 import { Image, PasswordInput, TextInput, Button } from '@mantine/core';
 import { Notifications, showNotification } from '@mantine/notifications';
 import { Epilogue } from 'next/font/google';
+
+
 const epilogue = Epilogue({
     subsets: ['latin'],
     display: 'swap',
 })
+
+
 export default function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
+  
     const envUsername = process.env.NEXT_PUBLIC_USERNAME;
     const envPassword = process.env.NEXT_PUBLIC_PASSWORD;
     const handleUsernameChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -25,6 +30,7 @@ export default function Login() {
     const handlePasswordChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
         setPassword(e.target.value);
     };
+
     const logIn: FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
         if (username === envUsername && password === envPassword) {
@@ -38,6 +44,7 @@ export default function Login() {
             });
         }
     }
+    
     return (
         <main>
             <div className="flex flex-row w-full items-center justify-center" style={{ height: "100vh" }}>

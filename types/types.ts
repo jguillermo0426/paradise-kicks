@@ -95,6 +95,7 @@ export type ProductsOrdered = {
     payment_terms: PaymentTerms;
     products_ordered: ProductQty[];
     status_history: OrderHistory[];
+    notes?: string;
 }
 
 export type ProductQty = {
@@ -109,7 +110,6 @@ export type OrderHistory = {
     history_id: number;
     order_id: string;
     updated_at: Date;
-    product_id: string;
     order_status: {
         id: number;
         status: string;
