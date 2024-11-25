@@ -110,8 +110,12 @@ export default function AddItem({ onSuccess, onError }: addItemProps) {
             const result = await response.json();
             console.log(result);
 
-            if (result) {
+            if (result.status == 200) {
                 onSuccess();
+                setVisibleCsv(false);
+            } 
+            else {
+                onError(result.error);
                 setVisibleCsv(false);
             }
         }

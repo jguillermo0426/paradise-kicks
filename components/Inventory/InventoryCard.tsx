@@ -56,14 +56,13 @@ export default function CardTest({ cardProduct, onChange }: CardTestProps) {
 
     const handleChangeNumber = (e: string | number, index: number, toChange: string) => {
         const updatedSizes = [...editedSizes.sizes];
-    
-        // Update the specific size item immutably
+        
         updatedSizes[index] = {
             ...updatedSizes[index],
             [toChange]: Number(e),
         };
     
-        // Update the `editedSizes` state
+    
         const updatedEditedSizes = {
             ...editedSizes,
             sizes: updatedSizes,
@@ -71,24 +70,21 @@ export default function CardTest({ cardProduct, onChange }: CardTestProps) {
     
         setEditedSizes(updatedEditedSizes);
     
-        // Check for invalid stock values
+
         if (toChange === "stock") {
             const stockErrArray = updatedSizes.map((value) => value.stock < 1);
             isInvalidStock(stockErrArray);
         }
     
-        // Check for invalid price values
         if (toChange === "price") {
             const priceErrArray = updatedSizes.map((value) => value.price < 1);
             isInvalidPrice(priceErrArray);
         }
-    
-        // Trigger parent onChange callback
+
         onChange(updatedEditedSizes);
     };
     
 
-    // handles changing the value of the field for strings
     const handleChangeString = (e: ChangeEvent<HTMLInputElement>, index: number, toChange: string) => {
         const updatedSizes = [...editedSizes.sizes];
 
