@@ -207,7 +207,8 @@ export default function Home() {
 
     return (
         <MantineProvider>
-            <div className="flex flex-col items-center z-0 relative mb-[18rem] bg-white min-h-screen">
+            <div className="flex flex-col items-center z-0 relative bg-white min-h-screen
+                            mb-[350px] max-[1358px]:mb-[420px] max-[820px]:mb-[820px]"> {/*update other pages*/}
                 <div className="w-full flex flex-col items-center justify-center">
                     <div className="w-full h-full flex flex-col relative z-0">
                         <Image
@@ -249,10 +250,10 @@ export default function Home() {
                     </div>   
                 </div>
 
-                <div className="mt-5 w-full flex flex-col items-center justify-center px-16 py-10">
+                <div className="mt-5 w-full flex flex-col items-center justify-center max-[420px]:px-5 max-[768px]:py-6 max-[768px]:px-12 px-16 py-10">
                     {/* FEATURED BRANDS */}
                     <div className="w-full flex flex-col items-center justify-center mb-6 p-1">
-                        <p className="text-[4vw] sm:text-[40px]" style={{ fontFamily: "EpilogueBold", color: "#1C1C1C", letterSpacing: -1 }}> 
+                        <p className="text-[4vw] md:text-[40px] max-[768px]:text-[22px] max-[768px]:-mb-5" style={{ fontFamily: "EpilogueBold", color: "#1C1C1C", letterSpacing: -1 }}> 
                             Our Featured Brands
                         </p>
                     </div>
@@ -277,10 +278,10 @@ export default function Home() {
                                 {brands ? (
                                     brands.map((brand, brandIndex) => (
                                         <Carousel.Slide key={brandIndex}>
-                                            <div className="flex items-center justify-center w-full h-full px-2 border border-dark-gray border-opacity-10 rounded-lg
+                                            <div className="max-[768px]:mt-3 max-[768px]:h-[80%] align-items-center flex items-center justify-center w-full h-full px-2 border border-dark-gray border-opacity-10 rounded-lg
                                                             hover:border hover:border-black hover:border-2">
                                                 <Image
-                                                    h={40}
+                                                    className="max-[768px]:h-[25px] h-[35px]"
                                                     fit="contain"
                                                     src={brand.brand_image}
                                                     alt={`Brand ${brandIndex}`}
@@ -310,7 +311,7 @@ export default function Home() {
                                             <Card key={productIndex} className="max-w-[300px] h-[470px] flex flex-col items-center border border-black rounded-2xl p-8
                                                                                 hover:outline hover:outline-dark-gray hover:outline-2">
                                                 <CardBody className="flex flex-col justify-between h-full">
-                                                    <div className="flex flex-col items-center justify-center w-full w-[250px] min-h-[250px]">
+                                                    <div className="-mt-8 flex flex-col items-center justify-center w-full w-[250px] min-h-[250px]">
                                                         <Image
                                                             radius="md"
                                                             alt="Shoe Image"
@@ -365,7 +366,7 @@ export default function Home() {
 
                     {/* FAQS */}
                     <div id="faq-section" className="p-0 mb-10 flex flex-col items-center justify-center w-[90%]">
-                        <p className="text-[4vw] sm:text-[40px] mb-8 mr-auto" style={{ fontFamily: "EpilogueBold", color: "black", letterSpacing: -1 }}> 
+                        <p className="text-[4vw] md:text-[40px] max-[768px]:text-[22px] mb-8 mr-auto" style={{ fontFamily: "EpilogueBold", color: "black", letterSpacing: -1 }}> 
                             Frequently Asked Questions (FAQs)
                         </p>
                         <Accordion 
@@ -375,7 +376,7 @@ export default function Home() {
                         styles={{
                             label: {
                                 fontFamily: "Epilogue",
-                                fontSize: "18px",
+                                fontSize: "16px",
                                 fontWeight: 600,
                                 paddingInline: "10px"
                             },

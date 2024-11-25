@@ -9,7 +9,7 @@ export default function HomePage() {
   return (
     <MantineProvider>
       <CartProvider>
-        <Header navSelected="None"/>
+        <Header navSelected="Home"/>
         <Paper shadow="xl">
           <Home />
         </Paper>
