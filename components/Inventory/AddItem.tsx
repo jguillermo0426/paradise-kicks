@@ -19,10 +19,11 @@ const epilogue = Epilogue({
 const acceptableCSVFileTypes = ".csv";
 
 type addItemProps = {
-    onSuccess: () => void
+    onSuccess: () => void;
+    onError: (message: string) => void;
 }
 
-export default function AddItem({ onSuccess }: addItemProps) {
+export default function AddItem({ onSuccess, onError }: addItemProps) {
     const [productData, setProductData] = useState<Product[]>([]);
     const [previewURL, setPreviewURL] = useState<string | null>(null);
     const csvRef = useRef<HTMLInputElement>(null);
@@ -52,7 +53,7 @@ export default function AddItem({ onSuccess }: addItemProps) {
     const addProduct = async (values: Product) => {
         setVisibleSingle(true);
         console.log('Submitting form with values:', values);
-        const response = await fetch(' product/add_product', {
+        const response = await fetch('/api/product/add_product', {
             method: "POST",
             body: JSON.stringify(values)
         })
@@ -60,8 +61,12 @@ export default function AddItem({ onSuccess }: addItemProps) {
         const result = await response.json()
         console.log(result);
 
-        if (result) {
+        if (result.status == 200) {
             onSuccess();
+            setVisibleSingle(false);
+        } 
+        else {
+            onError(result.error);
             setVisibleSingle(false);
         }
     }
@@ -80,6 +85,7 @@ export default function AddItem({ onSuccess }: addItemProps) {
             Papa.parse<Product>(csvFile, {
                 skipEmptyLines: true,
                 header: true,
+                transform: (value) => value.trim(),
                 complete: function (results) {
                     console.log("Finished:", results.data);
                     const products: Product[] = results.data;

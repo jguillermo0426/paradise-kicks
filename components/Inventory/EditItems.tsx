@@ -9,10 +9,11 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 type editItemProps = {
     onSuccess: () => void;
     searchValue: string;
+    onError: (message: string) => void;
 }
 
 
-export default function EditItems({ onSuccess, searchValue }: editItemProps) {
+export default function EditItems({ onSuccess, searchValue, onError }: editItemProps) {
     const [editProducts, setEditProducts] = useState<GroupedProduct2[]>([]);
     const [filteredProducts, setFilteredProducts] = useState<GroupedProduct2[]>([]);
     const [groupedProducts, setGroupedProducts] = useState<GroupedProduct2[]>([]);
@@ -115,10 +116,13 @@ export default function EditItems({ onSuccess, searchValue }: editItemProps) {
             const result = await response.json();
             console.log(result);
 
-            if (result) {
+            if (result.status == 200 && result.products) {
                 onSuccess();
                 setGroupedProducts([]);
                 setEditProducts(sortByModel(groupedProducts));
+            }
+            else if (result.status == 400 || result.status == 500){
+                onError(result.error);
             }
         }
     }
@@ -206,6 +210,10 @@ export default function EditItems({ onSuccess, searchValue }: editItemProps) {
         return Object.values(grouped);
     }
 
+    useEffect(() => {
+        setPage(1);
+    }, [debouncedSearchValue]);
+
     // Fetch products on page change
     useEffect(() => {
         const getProduct = async () => {
@@ -226,7 +234,7 @@ export default function EditItems({ onSuccess, searchValue }: editItemProps) {
 
     return (
         <div className='w-full flex flex-col items-center justify-center'>
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
                 {filteredProducts &&
                     filteredProducts.map((product, productIndex) =>
                         product.colorways.map((colorway, colorwayIndex) => (

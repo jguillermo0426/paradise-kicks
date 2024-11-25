@@ -1,14 +1,16 @@
-import { NextRequest, NextResponse  } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export default function middleware(req: NextRequest) {
-  let verify = req.cookies.get('loggedin');
-  let url = req.url
+  const verify = req.cookies.get('loggedin');
+  const { pathname } = req.nextUrl;
 
-  if(!verify && url.includes("/admin-dashboard")) {
-    return NextResponse.redirect("localhost:3000/login");
+  // Redirect to /login if not verified and trying to access /admin-dashboard
+  if (!verify && pathname.startsWith("/admin-dashboard")) {
+    return NextResponse.redirect(new URL("/login", req.url));
   }
 
-  if(verify && url === "localhost:3000/login") {
-    return NextResponse.redirect("localhost:3000/admin-dashboard/inventory");
+  // Redirect to /admin-dashboard/inventory if already verified and accessing /login
+  if (verify && pathname === "/login") {
+    return NextResponse.redirect(new URL("/admin-dashboard/inventory", req.url));
   }
 }

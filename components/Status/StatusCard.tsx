@@ -18,8 +18,8 @@ const status = [
     "Order Placed",
     "In Transit",
     "Awaiting Payment",
-    "Completed",
     "Cancelled",
+    "Completed",
     "Order Approved",
     "Paid",
 ]
@@ -67,7 +67,7 @@ export default function StatusCard({ orderedProducts, onChange }: StatusProps) {
                 history_id: 0,
                 order_id: orderId,
                 order_status: {
-                    id: status.findIndex((s) => s === value),
+                    id: status.findIndex((s) => s === value) + 1,
                     status: value 
                 },
                 updated_at: new Date()
@@ -142,13 +142,13 @@ export default function StatusCard({ orderedProducts, onChange }: StatusProps) {
                 </div>
 
                 <div className='w-32 h-full flex flex-col justify-start'>
-                    <p style={epilogue.style} className="font-semibold text-[16px]">Quantity</p>
-                    <p style={epilogue.style} className="font-normal text-[16px]">{totalQty}</p>
+                    <p style={epilogue.style} className="font-semibold text-[16px]">Customer</p>
+                    <p style={epilogue.style} className="font-normal text-[16px]">{orderedProducts.customer_name}</p>
                 </div>
 
                 <div className='w-32 h-full flex flex-col justify-start'>
-                    <p style={epilogue.style} className="font-semibold text-[16px]">Total Price</p>
-                    <p style={epilogue.style} className="font-normal text-[16px]">{totalPrice}</p>
+                    <p style={epilogue.style} className="font-semibold text-[16px]">Time Ordered</p>
+                    <p style={epilogue.style} className="font-normal text-[16px]">{!isNaN(new Date(orderedProducts.status_history[0].updated_at).getTime()) ? new Date(orderedProducts.status_history[0].updated_at).toLocaleDateString("en-US") : "No date"}</p>
                 </div>
             </div>
         </>
