@@ -477,7 +477,7 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                                 max-[1228px]:h-[534px] max-[1228px]:mb-10
                                                 max-[456px]:h-[234px] max-[1228px]:mb-3
                                                 max-[393px]:mx-0
-                                                max-[393px]:max-w-[724px]">
+                                                max-[393px]:max-w-full max-[393px]:mx-8 max-[393px]:">
                                     <Carousel
                                         withIndicators
                                         loop
@@ -486,13 +486,13 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                         {product.colorways.map((colorway, colorwayIndex) => <Carousel.Slide key={colorwayIndex}>
                                             <Image
                                                 alt="Card background"
-                                                className="object-cover rounded-xl
+                                                className="object-cover rounded-xl 
                                                            w-[724px] h-[664px] 
                                                            min-[1228px]:w-[724px] 
                                                            min-[1228px]:h-[764px]
                                                            max-[1228px]:h-[534px]
                                                            max-[456px]:h-[234px]
-                                                           max-[393px]:max-w-[724px]"
+                                                           max-[393px]:max-w-screen bg-[#EDEDED]"
                                                 src={colorway.image_link || "https://static.nike.com/a/images/t_PDP_936_v1/f_auto,q_auto:eco/af53d53d-561f-450a-a483-70a7ceee380f/W+NIKE+DUNK+LOW.png"}
                                                 //width={724}
                                                 //height={764} 
