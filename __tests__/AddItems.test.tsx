@@ -67,3 +67,41 @@ describe('Add Product', () => {
         //expect(response).toEqual({ data: [{ SKU: 'new-sku', available: true }] });
     });
 });
+
+
+it('should return an error if required fields are missing', async () => {
+    const formData = {
+        Price: 100,
+        Size: '7.5 M / 9 W',
+    };
+
+    const response = await POST({ json: () => Promise.resolve(formData) } as any);
+
+    expect(response).toEqual({
+        error: 'Missing required field: SKU',
+        status: 400
+    });
+
+    expect(response.status).toBe(400);
+});
+
+
+it('should return an error for invalid data types', async () => {
+    const formData = {
+        SKU: 'new-sku',
+        Model: 'New Model',
+        Brand: 'New Brand',
+        Stock: 'ten',
+        Price: 100,
+        Size: '7.5 M / 9 W',
+        Colorway: 'Blue',
+        image_link: 'https://example.com/image.jpg',
+    };
+
+    const response = await POST({ json: () => Promise.resolve(formData) } as any);
+
+    expect(response).toEqual({
+        error: 'Invalid data type for Stock',
+        status: 400
+    });
+});

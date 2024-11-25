@@ -19,10 +19,11 @@ const epilogue = Epilogue({
 const acceptableCSVFileTypes = ".csv";
 
 type addItemProps = {
-    onSuccess: () => void
+    onSuccess: () => void;
+    onError: (message: string) => void;
 }
 
-export default function AddItem({ onSuccess }: addItemProps) {
+export default function AddItem({ onSuccess, onError }: addItemProps) {
     const [productData, setProductData] = useState<Product[]>([]);
     const [previewURL, setPreviewURL] = useState<string | null>(null);
     const csvRef = useRef<HTMLInputElement>(null);
@@ -60,8 +61,12 @@ export default function AddItem({ onSuccess }: addItemProps) {
         const result = await response.json()
         console.log(result);
 
-        if (result) {
+        if (result.status == 200) {
             onSuccess();
+            setVisibleSingle(false);
+        } 
+        else {
+            onError(result.error);
             setVisibleSingle(false);
         }
     }
