@@ -26,8 +26,8 @@ export default function Header({navSelected}: SelectedProps) {
     const selectedToggle = "group transition-colors flex w-full justify-left pl-5 p-3 rounded-lg outline outline-2 outline-[#177F7D] hover:bg-[#F0F0F0] hover:cursor-pointer";
     const unselectedToggle = "group transition-colors flex w-full justify-left pl-5 p-3 rounded-lg hover:bg-[#177F7D] hover:cursor-pointer";
 
-    const selectedTextToggle = 'max-[420px]:text-sm font-semibold transition-colors text-[#177F7D] text-xl';
-    const unselectedTextToggle = 'max-[420px]:text-sm font-semibold transition-colors text-black group-hover:text-white text-xl'
+    const selectedTextToggle = 'max-[420px]:text-[16px] font-semibold transition-colors text-[#177F7D] text-xl';
+    const unselectedTextToggle = 'max-[420px]:text-[16px] font-semibold transition-colors text-black group-hover:text-white text-xl'
 
     const { cart } = useCart();
     const [items, setItems] = useState(0);
