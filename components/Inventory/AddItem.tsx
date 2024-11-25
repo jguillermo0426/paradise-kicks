@@ -132,7 +132,10 @@ export default function AddItem({ onSuccess, onError }: addItemProps) {
     };
 
     const handleSingleUpload = async (values: Product) => {
-        if (!file) return;
+        if (!file) {
+            onError("No image uploaded");
+            return;
+        };
 
         const filename = values.SKU;
         const storageRef = ref(storage, `images/${filename}`);
