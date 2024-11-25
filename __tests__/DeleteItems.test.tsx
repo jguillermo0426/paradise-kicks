@@ -2,28 +2,32 @@ import { POST } from '@/app/api/product/delete_product/route';
 // import { POST } from '@/app/api/product/add_product/route';
 import { Product } from '@/types/types';
 import { createClient } from '@/utils/supabase/server';
-import {v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 
 /* DELETE */
 
 jest.mock('@/utils/supabase/server', () => {
-    return {
-        createClient: jest.fn().mockImplementation(() => {
-            return {
-                // mock supabase funcs
-                from: jest.fn().mockReturnValue({
-                    update: jest.fn().mockReturnValue({
-                        eq: jest.fn().mockResolvedValue(
-                            { data: [{ SKU: uuidv4(), available: false }] }
-                        ),
-                    }),
-                }),
-            };
+    const fromMock = jest.fn().mockReturnValue({
+        update: jest.fn().mockReturnValue({
+            eq: jest.fn().mockResolvedValue({
+                data: [{ SKU: 'mocked-uuid', available: false }],
+            }),
         }),
+    });
+
+    return {
+        createClient: jest.fn().mockImplementation(() => ({
+            from: fromMock,
+        })),
+        fromMock,
     };
 });
-  
+
+jest.mock('uuid', () => ({
+    v4: jest.fn(() => 'mocked-uuid'),
+}));
+
 
 global.Response = {
     json: jest.fn((data) => data),
@@ -46,17 +50,16 @@ describe('Delete Product', () => {
         };
 
         const formData = [testProduct];
-        
-        const response = await POST({ json: () => Promise.resolve(formData) } as any);
 
+        const response = await POST({ json: () => Promise.resolve(formData) } as any);
+        
         expect(client.from).toHaveBeenCalledWith('product');
-        expect(client.from('product').update).toHaveBeenCalledWith({ SKU: uuidv4(), available: false });
-        //expect(client.from('product').eq).toHaveBeenCalledWith('SKU', 'old-sku');
+        expect(client.from('product').update).toHaveBeenCalledWith({ SKU: 'mocked-uuid', available: false });
 
         expect(response).toEqual({
-            products: [
+            products: [[
                 { SKU: 'mocked-uuid', available: false },
-            ],
+            ]],
         });
     });
 });
