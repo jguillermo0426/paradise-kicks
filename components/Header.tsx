@@ -155,7 +155,7 @@ export default function Header({navSelected}: SelectedProps) {
                                 <div className='flex flex-col justify-items-stretch	w-full'>
                                 <motion.div>
                                     <Anchor href="/" underline='never'>
-                                        <div className="justify-stretch flex flex row items-center px-3">
+                                        <div className="justify-stretch flex flex row items-center px-3 mb-1">
                                             <div className={`group ${navSelected === "Home" ? selectedToggle : unselectedToggle}`}>
                                                 <p style={epilogue.style} className={navSelected === "Home" ? selectedTextToggle : unselectedTextToggle}>Home</p>
                                                 <svg className="w-[20px] h-[20px] ml-auto mt-1 stroke-[#177F7D]" data-slot="icon" fill="none" strokeWidth="3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -168,7 +168,7 @@ export default function Header({navSelected}: SelectedProps) {
 
                                 <motion.div>
                                     <Anchor href="/product-listing" underline='never'>
-                                        <div className="my-1 justify-stretch flex flex row items-center px-3">
+                                        <div className="my-1 justify-stretch flex flex row items-center px-3 mb-1">
                                             <div className={`group ${navSelected === "Catalogue" ? selectedToggle : unselectedToggle}`}>
                                                 <p style={epilogue.style} className={navSelected === "Catalogue" ? selectedTextToggle : unselectedTextToggle}>Catalogue</p>
                                                 <svg className="w-[20px] h-[20px] ml-auto mt-1 stroke-[#177F7D]" data-slot="icon" fill="none" strokeWidth="3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
