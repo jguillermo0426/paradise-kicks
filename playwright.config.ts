@@ -71,12 +71,12 @@ export default defineConfig({
   ],
 
   /* Run your local dev server before starting the tests */
-  // running login page to test admin dashboard
-  // webServer: {
-  //   command: 'npm run dev',
-  //   url: 'http://localhost:3000/',
-  //  timeout: 120000,
-  //   reuseExistingServer: !process.env.CI,
-  // },
+ 
+  webServer: {
+    command: 'npm run dev',
+    url: 'http://localhost:3000/',
+   timeout: 120000,
+    reuseExistingServer: !process.env.CI,
+  },
    
 });
