@@ -8,11 +8,9 @@ import React from 'react';
 import classes from "./css/tabs.module.css";
 import { useRouter } from "next/navigation";
 import { useDebounce } from "use-debounce";
-import { useCart } from '@/utils/useCart';
 
 
-export default function ProductListing({ searchParams }: { searchParams: string }) {
-    const [groupedProducts, setGroupedProducts] = useState<GroupedProduct2[]>([]);
+export default function ProductListing() {
     const brandLogoMap: Map<string, string> = new Map();
     const [totalPages, setTotalPages] = useState<number>(1);
     const [activePage, setPage] = useState(1);
@@ -41,7 +39,7 @@ export default function ProductListing({ searchParams }: { searchParams: string 
     }, [query, router]);
 
     const getBrands = async () => {
-        let fetchedBrandsArray: BrandsType[] = [];
+        const fetchedBrandsArray: BrandsType[] = [];
         let fetchedBrand: BrandsType;
         
         const response = await fetch(`/api/brands/get_brands`, {
@@ -50,7 +48,7 @@ export default function ProductListing({ searchParams }: { searchParams: string 
     
         const result = await response.json();
         if (result.brands.length !== 0) {
-            result.brands.forEach((brand: any) => {
+            result.brands.forEach((brand: BrandsType) => {
                 fetchedBrand = {
                     id: brand.id,
                     brand_name: brand.brand_name,
@@ -127,8 +125,6 @@ export default function ProductListing({ searchParams }: { searchParams: string 
                     sorted2 = products.sort((a: GroupedProduct2, b: GroupedProduct2) => b.colorways[0].sizes[0].price - a.colorways[0].sizes[0].price); // Descending Price order
                 }
 
-                setGroupedProducts(sorted2);
-
                 if (sortFilter) {
                     setSortedProducts(sorted2);
                 }
@@ -204,7 +200,7 @@ export default function ProductListing({ searchParams }: { searchParams: string 
 
     const getTotalColors = (groupedProduct: GroupedProduct2) => {
         let totalColors = 0;
-        groupedProduct.colorways.forEach((colorway) => {
+        groupedProduct.colorways.forEach(() => {
             totalColors += 1;
         });
 
@@ -235,7 +231,7 @@ export default function ProductListing({ searchParams }: { searchParams: string 
     }
 
     const getBrandLogo = (brandName: string) => {
-        let brandImageLink = (brands?.find(brand => brand.brand_name === brandName))?.brand_image;
+        const brandImageLink = (brands?.find(brand => brand.brand_name === brandName))?.brand_image;
         console.log("BRAND IMAGE: ", brandImageLink);
         return brandImageLink;
     }

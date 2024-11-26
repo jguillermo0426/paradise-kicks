@@ -1,10 +1,10 @@
-import { Product, CardProduct, GroupedProduct2, GroupedProduct } from "@/types/types";
-import { Button, Pagination } from "@mantine/core";
-import { useState, useEffect, useMemo } from "react";
-import InventoryCard from "./InventoryCard";
-import classes from '../css/tabs.module.css';
 import { storage } from "@/firebase/firebase";
+import { CardProduct, GroupedProduct2, Product } from "@/types/types";
+import { Button, Pagination } from "@mantine/core";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { useEffect, useState } from "react";
+import classes from '../css/tabs.module.css';
+import InventoryCard from "./InventoryCard";
 
 type editItemProps = {
     onSuccess: () => void;
@@ -41,7 +41,7 @@ export default function EditItems({ onSuccess, searchValue, onError }: editItemP
 
     useEffect(() => {
         const filterProducts = () => {
-            var productsArray: GroupedProduct2[] = [];
+            let productsArray: GroupedProduct2[] = [];
 
             // if (searchValue) {
             //     editProducts.forEach((product) => {

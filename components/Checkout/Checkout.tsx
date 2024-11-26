@@ -1,15 +1,14 @@
 'use client'
 
-import { Button, NumberInput, SimpleGrid, TextInput, Image, Select, SelectProps, Divider, Textarea } from "@mantine/core"
-import { useCart } from '@/utils/useCart';
-import { forwardRef, useEffect, useState } from "react";
-import { Epilogue } from 'next/font/google';
-import { useForm } from "@mantine/form";
-import styles from "../css/button.module.css"
-import select from "../css/select.module.css"
 import { itemOrder } from "@/types/types";
-import ShortUniqueId from 'short-unique-id';
+import { useCart } from '@/utils/useCart';
+import { Button, Divider, Image, Select, SelectProps, SimpleGrid, Textarea, TextInput } from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { Epilogue } from 'next/font/google';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from "react";
+import ShortUniqueId from 'short-unique-id';
+import styles from "../css/button.module.css";
 
 const epilogue = Epilogue({
     subsets: ['latin'],
@@ -168,7 +167,7 @@ export default function Checkout() {
         }
     };
 
-    const renderSelectOption: SelectProps['renderOption'] = ({ option, checked }) => {
+    const renderSelectOption: SelectProps['renderOption'] = ({ option }) => {
         const [mainText, feeText] = option.label.split('+');
         const [topText, bottomText] = mainText.split('&');
         return (
@@ -190,9 +189,9 @@ export default function Checkout() {
         );
     }
 
-    const renderCourier: SelectProps['renderOption'] = ({ option, checked }) => {
-        var mainText = option.label;
-        var subText = "";
+    const renderCourier: SelectProps['renderOption'] = ({ option }) => {
+        let mainText = option.label;
+        let subText = "";
         if (option.label.includes("Pick-Up")) {
             mainText = "LBC Branch";
             subText = "Pick-Up"
@@ -401,7 +400,7 @@ export default function Checkout() {
                                 <Button
                                     className={`${styles.button} ${payMethod === "BDO" ? styles.activeButton : styles.button}`}
                                     color="white"
-                                    onClick={(e) => { setPayMethod("BDO"); setPaymentImage("/BDO.png"); setQr("/bdo qr.jpg"); form.setFieldValue("paymentMethod", "BDO"); }}
+                                    onClick={() => { setPayMethod("BDO"); setPaymentImage("/BDO.png"); setQr("/bdo qr.jpg"); form.setFieldValue("paymentMethod", "BDO"); }}
                                 >
                                     <Image
                                         src="/BDO.png"
@@ -411,7 +410,7 @@ export default function Checkout() {
                                 <Button
                                     className={`${styles.button} ${payMethod === "BPI" ? styles.activeButton : styles.button}`}
                                     color="white"
-                                    onClick={(e) => { setPayMethod("BPI"); setPaymentImage("/BPI.png"); setQr("/bpi qr.jpg"); form.setFieldValue("paymentMethod", "BPI"); }}
+                                    onClick={() => { setPayMethod("BPI"); setPaymentImage("/BPI.png"); setQr("/bpi qr.jpg"); form.setFieldValue("paymentMethod", "BPI"); }}
                                 >
                                     <Image
                                         src="/BPI.png"
@@ -421,7 +420,7 @@ export default function Checkout() {
                                 <Button
                                     className={`${styles.button} ${payMethod === "Metrobank" ? styles.activeButton : styles.button}`}
                                     color="white"
-                                    onClick={(e) => { setPayMethod("Metrobank"); setPaymentImage("/MetroBank.png"); setQr("/metrobank qr.jpg"); form.setFieldValue("paymentMethod", "Metrobank"); }}
+                                    onClick={() => { setPayMethod("Metrobank"); setPaymentImage("/MetroBank.png"); setQr("/metrobank qr.jpg"); form.setFieldValue("paymentMethod", "Metrobank"); }}
                                 >
                                     <Image
                                         src="/MetroBank.png"
@@ -431,7 +430,7 @@ export default function Checkout() {
                                 <Button
                                     className={`${styles.button} ${payMethod === "UnionBank" ? styles.activeButton : styles.button}`}
                                     color="white"
-                                    onClick={(e) => { setPayMethod("UnionBank"); setPaymentImage("/UnionBank.png"); setQr("/unionbank qr.jpg"); form.setFieldValue("paymentMethod", "UnionBank"); }}
+                                    onClick={() => { setPayMethod("UnionBank"); setPaymentImage("/UnionBank.png"); setQr("/unionbank qr.jpg"); form.setFieldValue("paymentMethod", "UnionBank"); }}
                                 >
                                     <Image
                                         src="/UnionBank.png"
@@ -441,7 +440,7 @@ export default function Checkout() {
                                 <Button
                                     className={`${styles.button} ${payMethod === "GCash" ? styles.activeButton : styles.button}`}
                                     color="white"
-                                    onClick={(e) => { setPayMethod("GCash"); setPaymentImage("/gcash.png"); setQr("/gcash qr.jpg"); form.setFieldValue("paymentMethod", "GCash"); }}
+                                    onClick={() => { setPayMethod("GCash"); setPaymentImage("/gcash.png"); setQr("/gcash qr.jpg"); form.setFieldValue("paymentMethod", "GCash"); }}
                                 >
                                     <Image
                                         src="/gcash.png"
@@ -451,7 +450,7 @@ export default function Checkout() {
                                 <Button
                                     className={`${styles.button} ${payMethod === "Maya" ? styles.activeButton : styles.button}`}
                                     color="white"
-                                    onClick={(e) => { setPayMethod("Maya"); setPaymentImage("/Maya.png"); setQr("/maya qr.jpg"); form.setFieldValue("paymentMethod", "Maya"); }}
+                                    onClick={() => { setPayMethod("Maya"); setPaymentImage("/Maya.png"); setQr("/maya qr.jpg"); form.setFieldValue("paymentMethod", "Maya"); }}
                                 >
                                     <Image
                                         src="/Maya.png"
@@ -461,7 +460,7 @@ export default function Checkout() {
                                 <Button
                                     className={`${styles.button} ${payMethod === "PayPal" ? styles.activeButton : styles.button}`}
                                     color="white"
-                                    onClick={(e) => { setPayMethod("PayPal"); setPaymentImage("/PayPal.png"); setQr("https://www.paypal.me/paradisekicks"); form.setFieldValue("paymentMethod", "PayPal"); }}
+                                    onClick={() => { setPayMethod("PayPal"); setPaymentImage("/PayPal.png"); setQr("https://www.paypal.me/paradisekicks"); form.setFieldValue("paymentMethod", "PayPal"); }}
                                 >
                                     <Image
                                         src="/PayPal.png"

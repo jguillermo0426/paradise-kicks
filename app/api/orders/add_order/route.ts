@@ -5,7 +5,7 @@ export async function POST(req: Request) {
     const supabase = createClient();
     const formData = await req.json();
 
-   
+
     const cartItems: itemOrder[] = formData.cartItems;
 
     const { data, error } = await supabase
@@ -67,7 +67,7 @@ export async function POST(req: Request) {
     });
 
 
-    const { data: status, error: statusError } = await supabase
+    const { error: statusError } = await supabase
         .from('status_history')
         .insert([
             {

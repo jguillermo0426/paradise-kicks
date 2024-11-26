@@ -58,7 +58,7 @@ export async function GET(req: Request) {
     }
 
     // Define the count query to get the total unique combinations
-    var countQueryBase =  `
+    let countQueryBase =  `
     SELECT COUNT(*) AS total_unique_combinations
     FROM (
         SELECT DISTINCT "Model", "Colorway"

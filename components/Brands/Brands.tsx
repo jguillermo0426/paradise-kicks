@@ -1,6 +1,6 @@
 'use client'
-import { BrandsType, Product } from '@/types/types';
-import { SimpleGrid, Image, Button, Box, LoadingOverlay, TextInput } from '@mantine/core';
+import { BrandsType } from '@/types/types';
+import { SimpleGrid, Image, Button, Box, TextInput } from '@mantine/core';
 import { Notifications, showNotification } from '@mantine/notifications';
 import { Epilogue } from 'next/font/google';
 import { useEffect, useRef, useState } from 'react';
@@ -173,7 +173,7 @@ export default function Brands() {
                                     fallbackSrc="/placeholder.svg"
                                     fit="contain"
                                     className='mt-3 hover:cursor-pointer'
-                                    onClick={(e) => deleteBrand(brand.brand_name)}
+                                    onClick={() => deleteBrand(brand.brand_name)}
                                 />
                             </div>
                         ))}

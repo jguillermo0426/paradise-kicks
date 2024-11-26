@@ -1,20 +1,17 @@
 'use client'
-import { MantineProvider, Select, TextInput, Popover, Button, Pagination, LoadingOverlay, ActionIcon, UnstyledButton } from '@mantine/core';
-import { useEffect, useState } from 'react';
-import { GroupedProduct2, Product, itemOrder } from '@/types/types';
-import React from 'react';
-import { Image } from "@nextui-org/image";
+import { itemOrder } from '@/types/types';
 import { useCart } from '@/utils/useCart';
-import '@mantine/notifications/styles.css';
+import { ActionIcon, Button, MantineProvider, UnstyledButton } from '@mantine/core';
 import { notifications, Notifications } from '@mantine/notifications';
-import { useRouter } from "next/navigation"; 
+import '@mantine/notifications/styles.css';
+import { Image } from "@nextui-org/image";
 import { Link } from '@nextui-org/react';
+import { useRouter } from "next/navigation";
+import { useEffect } from 'react';
 
 
 export default function Cart() {
     const { cart, removeFromCart, increaseCartItem, decreaseCartItem } = useCart();
-    const [item, setItem] = useState<Product>();
-    const [cartItems, setCartItems] = useState<itemOrder[]>([]);
     const router = useRouter();
     const brandLogoMap: Map<string, string> = new Map();
 
@@ -29,7 +26,7 @@ export default function Cart() {
     }
 
     const increaseQuantity = (item: itemOrder) => {
-        let newQuantity = item.quantity + 1;
+        const newQuantity = item.quantity + 1;
 
         if (newQuantity <= item.product.Stock) {
             increaseCartItem(item.sku);

@@ -1,16 +1,13 @@
 'use client'
-import { Button, FloatingIndicator, Tabs, TextInput } from '@mantine/core';
-import { useState, useCallback } from 'react';
+import { FloatingIndicator, Tabs, TextInput } from '@mantine/core';
 import { Notifications, showNotification } from '@mantine/notifications';
-import SearchBar from '../SearchBar';
 import { Epilogue } from 'next/font/google';
-import classes from '../css/tabs.module.css';
-import BrandSelect from '../BrandsSelect';
-import AddItem from './AddItem';
-import EditItems from './EditItems';
-import DeleteItems from './DeleteItems';
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import styles from "../css/inputfield.module.css";
+import classes from '../css/tabs.module.css';
+import AddItem from './AddItem';
+import DeleteItems from './DeleteItems';
+import EditItems from './EditItems';
 
 const epilogue = Epilogue({
     subsets: ['latin'],

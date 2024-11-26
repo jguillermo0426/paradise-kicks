@@ -1,7 +1,6 @@
 'use client'
 
 import { Button, TextInput } from "@mantine/core";
-import { useState } from "react";
 import styles from "./css/searchbar.module.css"
 
 type SearchBarProps = {
@@ -10,14 +9,6 @@ type SearchBarProps = {
 
 
 export default function SearchBar({ onSearchChange }: SearchBarProps) {
-    const [searchInput, setSearchInput] = useState<string>('');
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newValue = e.target.value;
-        setSearchInput(newValue);
-        onSearchChange(newValue);
-    };
-
     return (
         <main className="flex flex-row">
             <TextInput
@@ -26,7 +17,6 @@ export default function SearchBar({ onSearchChange }: SearchBarProps) {
                     input: styles.input,
                 }}
                 className="mx-4"
-                value={searchInput}
                 onChange={(event) => onSearchChange(event.currentTarget.value)}
                 placeholder="Search"
             />

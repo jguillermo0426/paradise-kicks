@@ -1,10 +1,10 @@
 import { createClient } from "@/utils/supabase/server";
 
-export async function GET(req: Request) {
+export async function GET() {
 
     const supabase = createClient();
 
-    let { data: brands, error } = await supabase
+    const { data: brands} = await supabase
         .from('brands')
         .select()
 
