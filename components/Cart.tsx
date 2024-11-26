@@ -107,7 +107,8 @@ export default function Cart() {
 
     return (
         <MantineProvider>
-            <div className="flex flex-col items-center m-20 relative z-50 mb-[18rem] bg-white overflow-x-hidden min-h-screen">
+            <div className="flex flex-col items-center 
+                            m-20 relative z-0 mb-[18rem] bg-white overflow-x-hidden min-h-screen">
                 <div className="flex flex-col items-center justify-center w-full max-w-[1440px] m-6">
                     <Button
                     className="hover:outline hover:outline-offset-2 hover:outline-dark-gray shadow-lg"
@@ -137,9 +138,13 @@ export default function Cart() {
 
                     {/* MY CART */}
                     <div className="w-full flex flex-col items-start justify-start mb-10">
-                        <p className="text-[72px]" style={{ fontFamily: "EpilogueBold", letterSpacing: "-1px", marginRight: "auto", marginLeft: "-2px" }}>
-                            My Cart
-                        </p>
+                    <p className="text-[100px] mb-[-25px] 
+                                          max-[1368px]:text-[72px]
+                                          min-[993px]:mb-[-36px] 
+                                          max-[552px]:text-[62px]
+                                          max-[502px]:text-[52px]
+                                          text-black "
+                                          style={{ fontFamily: "EpilogueBold", letterSpacing: "-3px", marginRight: "20px" }}>My Cart</p>
                         <Notifications />
                         <div className="w-full flex flex-row items-start justify-start mt-10">
                             {/* CART ITEMS LIST*/}
