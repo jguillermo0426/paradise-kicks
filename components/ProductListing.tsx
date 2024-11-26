@@ -268,20 +268,35 @@ export default function ProductListing({ searchParams }: { searchParams: string 
 
     return (
         <MantineProvider>
-            <div className="flex flex-col items-center m-20 relative z-50 mb-[18rem] bg-white overflow-x-hidden min-h-screen">
+            <div className="flex flex-col items-center m-3 min-[993px]:mt-20 min-[993px]:m-30 relative z-0 mb-[18rem] bg-white overflow-x-hidden min-h-screen">
                 <ScrollToHashElement behavior="smooth" inline="center" block="center" />
                 <div className="flex flex-col items-center w-full max-w-[1440px] m-6">
-                    <div className="w-full flex flex-row items-end justify-between mb-8 px-12">
-                        <div className="w-full flex flex-row items-end justify-start">
-                            <p className="text-[100px]" style={{ fontFamily: "EpilogueBold", letterSpacing: "-3px", marginRight: "20px", marginBottom: "-36px" }}>Catalogue</p>
-                            <p className="text-[24px]" style={{ fontFamily: "EpilogueBold", marginRight: "auto" }}>All items</p>
+                    <div className="w-full flex flex-col min-[993px]:flex-row items-end justify-between mb-0 px-2
+                                    min-[1368px]:mb-8
+                                    min-[451px]:px-12">
+                        <div className="w-full flex mt-[100px] min-[993px]:mt-0 flex-row items-end justify-start">
+                            <p className="text-[100px] mb-[-25px] 
+                                          max-[1368px]:text-[72px]
+                                          min-[993px]:mb-[-36px] 
+                                          max-[552px]:text-[62px]
+                                          max-[502px]:text-[52px]
+                                          text-black "
+                                          style={{ fontFamily: "EpilogueBold", letterSpacing: "-3px", marginRight: "20px" }}>Catalogue</p>
+                            <p className="text-black 
+                                          text-[24px]
+                                          max-[1368px]:text-[18px]
+                                          max-[1022px]:text-[14px]
+                                          max-[369px]:text-[12px]" 
+                                style={{ fontFamily: "EpilogueBold", marginRight: "auto" }}>All items</p>
                         </div>
 
-                        <div className="w-full flex flex-row items-end justify-end">
+                        <div className="w-full relative min-[993px]:flex min-[993px]:flex-row items-end justify-end">
                             <Popover width={200} position="bottom" withArrow shadow="md">
                                 <Popover.Target>
                                     <Button
                                         color="black"
+                                        className="hover:outline hover:outline-offset-2 hover:outline-dark-gray shadow-lg 
+                                                   font-bold mt-[30px] min-[451px]:mt-[20px]"
                                         styles={{
                                             label: {
                                                 fontFamily: "EpilogueThin"
@@ -294,7 +309,23 @@ export default function ProductListing({ searchParams }: { searchParams: string 
                                             },
                                         }}
                                     >
-                                        Filter/Sort
+                                        <svg
+                                            data-slot="icon"
+                                            fill="none"
+                                            strokeWidth="2"
+                                            stroke="currentColor"  
+                                            viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            aria-hidden="true"
+                                            className="w-5 h-5 mr-3 mb-1 text-white"  
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
+                                            />
+                                        </svg>
+                                        Filter / Sort
                                     </Button>
                                 </Popover.Target>
                                 <Popover.Dropdown>
@@ -320,11 +351,14 @@ export default function ProductListing({ searchParams }: { searchParams: string 
                                 placeholder="Search"
                                 value={searchValue}
                                 onChange={e => setSearchValue(e.target.value)}
+                                className="w-full
+                                           max-[502px]:mt-[-180px] mt-[-200px] 
+                                           max-[451px]:mt-[-200px]
+                                           min-[993px]:w-[250px]"
                                 styles={{
                                     input: {
                                         fontFamily: "Epilogue",
                                         height: "45px",
-                                        width: "250px",
                                     }
                                 }}
                             />
@@ -334,40 +368,89 @@ export default function ProductListing({ searchParams }: { searchParams: string 
                     {loading ? (
                         <Loader className="my-20" size={30} />
                     ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-16 justify-start">
+                        <div className="w-[98%] pt-10
+                                    min-[451px]:w-[83%] max-[451px]:pt-7
+                                    desktop:w-[90%] desktop:mt-0 
+                                    min-[451px]:mt-[40px] grid grid-cols-1 
+                                    max-[992px]:mt-[80px]
+                                    min-[320px]:grid-cols-2 
+                                    min-[768px]:grid-cols-3 
+                                    min-[993px]:grid-cols-4 gap-2 
+                                    min-[406px]:gap-5 
+                                    min-[558px]:gap-8 
+                                    mb-16 justify-start">
                             {sortedProducts &&
                                 sortedProducts.map((product, productIndex) =>
                                     <Link key={productIndex} href={`/product-details/${product.model}`}>
-                                        <Card key={productIndex} className="max-w-[300px] h-[470px] flex flex-col items-center border-[1px] border-black rounded-2xl p-8">
-                                            <CardBody className="flex flex-col justify-between h-full">
-                                                <div className="flex flex-col items-center justify-center w-full w-[250px] min-h-[250px]">
+                                        <Card key={productIndex} className="hover:outline hover:outline-dark-gray hover:outline-2 
+                                                                        desktop:w-[300px] desktop:h-[450px] 
+                                                                        max-[1201px]:w-[205px]
+                                                                        max-[1050px]:w-[190px] max-[1050px]:h-[375px] 
+                                                                        max-[993px]:w-[230px]
+                                                                        max-[902px]:w-[220px]
+                                                                        max-[844px]:w-[210px]
+                                                                        max-[803px]:w-[200px]
+                                                                        max-[767px]:w-[250px] max-[767px]:h-[405px]  max-[767px]:ml-5
+                                                                        max-[650px]:w-[240px] max-[650px]:ml-0
+                                                                        max-[616px]:w-[230px] max-[616px]:h-[400px] 
+                                                                        max-[583px]:w-[215px] max-[583px]:h-[385px] 
+                                                                        max-[557px]:w-[200px]
+                                                                        max-[505px]:w-[190px]
+                                                                        max-[471px]:w-[180px]
+                                                                        max-[450px]:w-[200px] max-[450px]:h-[370px]
+                                                                        max-[424px]:w-[190px] max-[450px]:h-[360px]
+                                                                        max-[405px]:w-[180px] max-[450px]:h-[350px]
+                                                                        max-[393px]:w-[173px] max-[393px]:mb-1
+                                                                        max-[389px]:w-[170px] 
+                                                                        max-[368px]:w-[160px]
+                                                                        max-[355px]:w-[145px]
+                                                                        max-[320px]:w-[140px]
+                                                                        max-[319px]:w-[230px] max-[319px]:ml-10 max-[319px]:mr-10
+                                                                        h-[400px] 
+                                                                        flex flex-col items-center border border-dark-gray border-opacity-40 rounded-2xl p-8">
+                                            <CardBody className="p-0 m-0 max-[451px]:w-[125px] flex flex-col justify-between h-full">
+                                                <div className="w-auto h-[200px] border border-dark-gray border-opacity-10 rounded-[10px] flex flex-col items-center justify-center w-[240px] desktop:min-h-[200px] overflow-hidden">
                                                 <LoadingOverlay visible={loading} overlayProps={{ radius: "sm", blur: 2 }} />
                                                     <Image
-                                                        radius="md"
                                                         alt="Shoe Image"
-                                                        fit="cover"
+                                                        className="w-full h-full object-cover"
+                                                        //fit="contain"
                                                         src={getImageLink(product) || "https://static.nike.com/a/images/t_PDP_936_v1/f_auto,q_auto:eco/af53d53d-561f-450a-a483-70a7ceee380f/W+NIKE+DUNK+LOW.png"}
-                                                        h={250}
-                                                        w={250} />
+                                                        //h={250}
+                                                        //w={250} 
+                                                        />
                                                 </div>
-                                                <div className="w-full h-full flex flex-col items-start justify-between">
+                                                <div className="w-full h-full flex flex-col items-start justify-between mt-[5px]">
                                                     <div className="flex flex-col items-start">
-                                                        <small className="mt-4 text-[14px] text-[#808080]" style={{ fontFamily: "Epilogue" }}>{getTotalColors(product)}
+                                                        <small className="font-semibold mt-4 
+                                                                      text-[14px] 
+                                                                      max-[451px]:text-[11px]
+                                                                      text-[#177F7D] tracking-tight" style={{ fontFamily: "Epilogue" }}>{getTotalColors(product)}
                                                             {getTotalColors(product) > 1
                                                                 ? " colors"
                                                                 : " color"
                                                             }
                                                         </small>
 
-                                                        <p className="text-[16px]" style={{ fontFamily: "EpilogueSemiBold", letterSpacing: "-0.5px" }}>{product.brand} {product.model}</p>
-                                                        <p className="text-[14px]" style={{ fontFamily: "Epilogue", letterSpacing: "-0.5px" }}>&#8369; {getLowestPrice(product).toFixed(2)}</p>
+                                                        <p className="mt-[5px] 
+                                                                  text-[18px] 
+                                                                  max-[451px]:text-[14px]
+                                                                  desktop:text-[20px] leading-tight" 
+                                                        style={{ fontFamily: "EpilogueSemiBold", letterSpacing: "-0.5px" }}>{product.brand} {product.model}</p>
+                                                        <p className="text-[14px] 
+                                                                  max-[451px]:text-[12px]" 
+                                                       style={{ fontFamily: "Epilogue", letterSpacing: "-0.5px" }}>&#8369; {getLowestPrice(product).toFixed(2)}</p>
                                                     </div>
 
                                                     <div className="w-full flex flex-row items-end justify-between mt-4">
-                                                        <p className="text-[14px]" style={{ fontFamily: "Epilogue", letterSpacing: "-0.5px" }}>{getTotalStocks(product)} stocks left</p>
+                                                        <p className="text-success font-semibold text-[12px] 
+                                                                  desktop:text-[14px]
+                                                                  max-[556px]:text-[10px]" 
+                                                       style={{ fontFamily: "Epilogue" }}>{getTotalStocks(product)} stocks left</p>
                                                         <Image
+                                                            className="h-[15px] ml-3 min-[451px]:h-[20px] desktop:h-[28px]"
                                                             src={getBrandLogo(product.brand)}
-                                                            className="h-[28px]"
+                                                            //height={28}
                                                         />
                                                     </div>
                                                 </div>
