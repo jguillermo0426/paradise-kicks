@@ -5,6 +5,7 @@ import { Epilogue } from 'next/font/google';
 import { useCart } from '@/utils/useCart';
 import { useEffect, useState, } from 'react';
 import Link from 'next/link';
+import { AnimatePresence, motion } from "framer-motion";
 
 const epilogue = Epilogue({
   subsets: ['latin'],
@@ -37,6 +38,12 @@ export default function Header({navSelected}: SelectedProps) {
     const toggleNavbar = () => {
         setIsOpen(!isOpen);
     }
+
+    const animations = {
+        hidden: { opacity: 0, y: -20 },
+        show: { opacity: 1, y: 0 },
+        exit: { opacity: 0, y: 20 }
+    };
 
     useEffect(() => {
         setItems(cart.length);
@@ -135,45 +142,60 @@ export default function Header({navSelected}: SelectedProps) {
                         </Link>
                     </div>
 
-                    { isOpen && (
-                        <div className="flex basis-full flex-col items-center pb-3 mt-2">
-                            <div className='flex flex-col justify-items-stretch	w-full'>
-                                <Anchor href="/" underline='never'>
-                                    <div className="justify-stretch flex flex row items-center px-3">
-                                        <div className={`group ${navSelected === "Home" ? selectedToggle : unselectedToggle}`}>
-                                            <p style={epilogue.style} className={navSelected === "Home" ? selectedTextToggle : unselectedTextToggle}>Home</p>
-                                            <svg className="w-[20px] h-[20px] ml-auto mt-1 stroke-[#177F7D]" data-slot="icon" fill="none" strokeWidth="3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
-                                            </svg>
+                    <AnimatePresence mode="wait">
+                        { isOpen && (
+                            <motion.div
+                                layout="position"
+                                initial="hidden"
+                                animate="show"
+                                variants={animations}
+                            >
+                            
+                            <div className="flex basis-full flex-col items-center pb-3 mt-2">
+                                <div className='flex flex-col justify-items-stretch	w-full'>
+                                <motion.div>
+                                    <Anchor href="/" underline='never'>
+                                        <div className="justify-stretch flex flex row items-center px-3">
+                                            <div className={`group ${navSelected === "Home" ? selectedToggle : unselectedToggle}`}>
+                                                <p style={epilogue.style} className={navSelected === "Home" ? selectedTextToggle : unselectedTextToggle}>Home</p>
+                                                <svg className="w-[20px] h-[20px] ml-auto mt-1 stroke-[#177F7D]" data-slot="icon" fill="none" strokeWidth="3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
+                                                </svg>
+                                            </div>
                                         </div>
-                                    </div>
-                                </Anchor>
+                                    </Anchor>
+                                </motion.div>
 
-                                <Anchor href="/product-listing" underline='never'>
-                                    <div className="my-1 justify-stretch flex flex row items-center px-3">
-                                        <div className={`group ${navSelected === "Catalogue" ? selectedToggle : unselectedToggle}`}>
-                                            <p style={epilogue.style} className={navSelected === "Catalogue" ? selectedTextToggle : unselectedTextToggle}>Catalogue</p>
-                                            <svg className="w-[20px] h-[20px] ml-auto mt-1 stroke-[#177F7D]" data-slot="icon" fill="none" strokeWidth="3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
-                                            </svg>
+                                <motion.div>
+                                    <Anchor href="/product-listing" underline='never'>
+                                        <div className="my-1 justify-stretch flex flex row items-center px-3">
+                                            <div className={`group ${navSelected === "Catalogue" ? selectedToggle : unselectedToggle}`}>
+                                                <p style={epilogue.style} className={navSelected === "Catalogue" ? selectedTextToggle : unselectedTextToggle}>Catalogue</p>
+                                                <svg className="w-[20px] h-[20px] ml-auto mt-1 stroke-[#177F7D]" data-slot="icon" fill="none" strokeWidth="3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
+                                                </svg>
+                                            </div>
                                         </div>
-                                    </div>
-                                </Anchor>
+                                    </Anchor>
+                                </motion.div>
 
-                                <Anchor href="/" underline='never'>
-                                    <div className="justify-stretch flex flex row items-center px-3 mb-3">
-                                        <div className={`group ${navSelected === "Contact" ? selectedToggle : unselectedToggle}`}>
-                                            <p style={epilogue.style} className={navSelected === "Contact" ? selectedTextToggle : unselectedTextToggle}>Contact</p>
-                                            <svg className="w-[20px] h-[20px] ml-auto mt-1 stroke-[#177F7D]" data-slot="icon" fill="none" strokeWidth="3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
-                                            </svg>
+                                <motion.div>
+                                    <Anchor href="/" underline='never'>
+                                        <div className="justify-stretch flex flex row items-center px-3 mb-3">
+                                            <div className={`group ${navSelected === "Contact" ? selectedToggle : unselectedToggle}`}>
+                                                <p style={epilogue.style} className={navSelected === "Contact" ? selectedTextToggle : unselectedTextToggle}>Contact</p>
+                                                <svg className="w-[20px] h-[20px] ml-auto mt-1 stroke-[#177F7D]" data-slot="icon" fill="none" strokeWidth="3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
+                                                </svg>
+                                            </div>
                                         </div>
-                                    </div>
-                                    
-                                </Anchor>
+                                    </Anchor>
+                                </motion.div>
+                                </div>
                             </div>
-                        </div>
-                    )}
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
                 </div>
 
                 {/* CART */}
