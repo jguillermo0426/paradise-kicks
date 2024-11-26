@@ -311,7 +311,7 @@ export default function Home() {
                                             <Card key={productIndex} className="max-w-[300px] h-[470px] flex flex-col items-center border border-black rounded-2xl p-8
                                                                                 hover:outline hover:outline-dark-gray hover:outline-2">
                                                 <CardBody className="flex flex-col justify-between h-full">
-                                                    <div className="-mt-8 flex flex-col items-center justify-center w-full w-[250px] min-h-[250px]">
+                                                    <div className="rounded-[10px] -mt-8 flex flex-col items-center justify-center w-full w-[250px] min-h-[250px]">
                                                         <Image
                                                             radius="md"
                                                             alt="Shoe Image"

@@ -268,7 +268,7 @@ export default function ProductListing({ searchParams }: { searchParams: string 
 
     return (
         <MantineProvider>
-            <div className="flex flex-col items-center m-3 min-[993px]:mt-20 min-[993px]:m-30 relative z-0 mb-[18rem] bg-white overflow-x-hidden min-h-screen">
+            <div className="flex flex-col items-center m-3 min-[993px]:mt-20 min-[993px]:m-30 relative z-0 mb-[18rem] bg-white overflow-x-hidden min-h-screen"> 
                 <ScrollToHashElement behavior="smooth" inline="center" block="center" />
                 <div className="flex flex-col items-center w-full max-w-[1440px] m-6">
                     <div className="w-full flex flex-col min-[993px]:flex-row items-end justify-between mb-0 px-2
@@ -478,18 +478,18 @@ export default function ProductListing({ searchParams }: { searchParams: string 
             <Affix position={{ bottom: 20, right: 20 }}>
                 <Popover width={439} trapFocus position="top" withArrow shadow="md" radius="md">
                     <Popover.Target>
-                        <Button w={180} h={57} variant="filled" color="black" radius="md">
-                            <p className="text-[20px]">Quick Help</p>
+                        <Button w={150} h={57} variant="filled" color="black" radius="md">
+                            <p className="text-[15px]">Quick Help</p>
                         </Button> 
                     </Popover.Target>
                     <Popover.Dropdown>
                         <div className="p-8">
-                            <p className="text-[32px] mb-4" style={{ fontFamily: "EpilogueBold" }}>
+                            <p className="text-[28px] mb-4" style={{ fontFamily: "EpilogueBold" }}>
                                 Quick Help
                             </p>
                             <UnstyledButton component="a">
-                                <div className="flex flex-row items-center justify-between px-6 py-2 mb-6 border border-black rounded-xl">
-                                    <p className="text-[24px]" style={{ fontFamily: "Epilogue"}}>
+                                <div className="flex flex-row items-center justify-between px-6 py-2 mb-3 border border-black rounded-lg">
+                                    <p className="text-[18px]" style={{ fontFamily: "Epilogue"}}>
                                         Track Order
                                     </p>
                                     {quickHelpArrow}
@@ -500,8 +500,8 @@ export default function ProductListing({ searchParams }: { searchParams: string 
                             component="a" 
                             href="/#faq-section" 
                             style={{ display: 'block', width: "100%" }}>
-                                <div className="flex flex-row items-center justify-between px-6 py-2 border border-black rounded-xl">
-                                    <p className="text-[24px]" style={{ fontFamily: "Epilogue"}}>
+                                <div className="flex flex-row items-center justify-between px-6 py-2 border border-black rounded-lg">
+                                    <p className="text-[18px]" style={{ fontFamily: "Epilogue"}}>
                                         FAQs
                                     </p>
                                     {quickHelpArrow}
