@@ -110,6 +110,7 @@ export default function Cart() {
             <div className="flex flex-col items-center m-20 relative z-50 mb-[18rem] bg-white overflow-x-hidden min-h-screen">
                 <div className="flex flex-col items-center justify-center w-full max-w-[1440px] m-6">
                     <Button
+                    className="hover:outline hover:outline-offset-2 hover:outline-dark-gray shadow-lg"
                     component="a"
                     href="/product-listing"
                     variant="filled"
@@ -136,15 +137,15 @@ export default function Cart() {
 
                     {/* MY CART */}
                     <div className="w-full flex flex-col items-start justify-start mb-10">
-                        <p className="text-[72px]" style={{ fontFamily: "EpilogueBold", letterSpacing: "-1px", marginRight: "auto" }}>
+                        <p className="text-[72px]" style={{ fontFamily: "EpilogueBold", letterSpacing: "-1px", marginRight: "auto", marginLeft: "-2px" }}>
                             My Cart
                         </p>
                         <Notifications />
                         <div className="w-full flex flex-row items-start justify-start mt-10">
                             {/* CART ITEMS LIST*/}
-                            <div className="w-full basis-3/5 flex flex-col justify-center items-center mr-8">
+                            <div className="ml-[-15px] bg-white w-full basis-3/5 flex flex-col justify-center items-center mr-1000">
                                 {cart.map((item, itemIndex) => (
-                                    <div key={itemIndex} className="flex flex-row w-full min-w-[650px] max-w-[720px] h-[228px] items-center justify-start mb-8 p-6 border-[#474747] border-2 rounded-xl">
+                                    <div key={itemIndex} className="ml-[-65px] flex flex-row w-full min-w-[650px] max-w-[720px] h-[228px] items-center justify-start mb-8 p-6 border-[#474747] border-2 rounded-xl">
                                         {/* REMOVE BUTTON */}
                                         <UnstyledButton onClick={() => {removeItem(item.product.SKU)}}>
                                             <svg className="mr-6" width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -211,7 +212,7 @@ export default function Cart() {
                                         </div>
                                         <div className="h-full flex flex-col items-end justify-between ml-auto">
                                             <Image
-                                                src={getBrandLogo(item.product.Brand)}
+                                                src={brandLogoMap.get(item.product.Brand)}
                                                 height={28}
                                             />
                                             <p className="text-[24px]" style={{ fontFamily: "EpilogueMedium", marginBottom: "-8px" }}>
@@ -253,26 +254,25 @@ export default function Cart() {
                                         src="/gcash.png"
                                     />
                                 </div>
-                                <Link href="/checkout" className='w-full mt-auto'>
-                                    <Button
-                                        variant="filled"
-                                        fullWidth
-                                        radius="md"
-                                        color="black"
-                                        styles={{
-                                            root: {
-                                                height: "78px"
-                                            },
-                                            label: {
-                                                fontFamily: "EpilogueBold",
-                                                fontSize: "24px",
-                                                color: "#EDEDED"
-                                            }
-                                        }}
-                                    >
-                                        Proceed to Checkout
-                                    </Button>
-                                </Link>
+                                <Button
+                                    className="hover:outline hover:outline-offset-2 hover:outline-dark-gray shadow-lg mt-auto"
+                                    variant="filled"
+                                    fullWidth
+                                    radius="md"
+                                    color="black"
+                                    styles={{
+                                        root: {
+                                            height: "78px"
+                                        },
+                                        label: {
+                                            fontFamily: "EpilogueBold",
+                                            fontSize: "24px",
+                                            color: "#EDEDED"
+                                        }
+                                    }}
+                                >
+                                    Proceed to Checkout
+                                </Button>
                                     
                             </div> 
                         </div>
