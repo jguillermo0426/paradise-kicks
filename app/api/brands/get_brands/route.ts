@@ -9,6 +9,6 @@ export async function GET(req: Request) {
         .select()
 
 
-    console.log("brands: ", brands);
+    //console.log("brands: ", brands);
     return Response.json({ brands });
 }
