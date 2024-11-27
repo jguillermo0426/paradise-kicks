@@ -13,7 +13,7 @@ export default function Inventory() {
             <Paper shadow="xl">
                 <AdminStock/>
             </Paper>
-            <Footer/>
+            
         </MantineProvider>
     );
 }

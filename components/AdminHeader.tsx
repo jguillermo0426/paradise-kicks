@@ -16,11 +16,12 @@ type SelectedProps = {
 
 export default function Header({ navSelected }: SelectedProps) {
     const router = useRouter();
-    const selected = "group mx-5 transition-colors flex items-center justify-center w-[7.5rem] pt-20 pb-3 px-5 border-2 border-solid rounded-b-[0.625rem] border-[#38BDBA] -mt-16 hover:cursor-pointer";
-    const unselected = "group mx-5 transition-colors flex items-center hover:bg-[#38BDBA] w-[7.5rem] justify-center pt-20 pb-3 px-5 border-2 border-none rounded-b-[0.625rem] -mt-16 hover:cursor-pointer";
 
-    const selectedText = 'font-semibold transition-colors text-[#38BDBA] text-xl';
-    const unselectedText = 'font-semibold transition-colors text-black group-hover:text-white text-xl'
+    const selected = "max-[1024px]:w-[7rem] max-[912px]:mx-1 group mx-5 transition-colors flex items-center justify-center w-[9rem] pt-20 pb-3 px-5 border-2 border-solid rounded-b-[0.625rem] border-[#177F7D] -mt-16 hover:bg-[#F0F0F0] hover:cursor-pointer";
+    const unselected = "max-[1024px]:w-[7rem] max-[912px]:mx-1 group mx-5 transition-colors flex items-center hover:bg-[#177F7D] w-[9rem] justify-center pt-20 pb-3 px-5 border-2 border-none rounded-b-[0.625rem] -mt-16 hover:cursor-pointer";
+
+    const selectedText = 'font-semibold transition-colors text-[#177F7D] max-[1024px]:text-[16px] text-xl';
+    const unselectedText = 'font-semibold transition-colors text-black group-hover:text-white max-[1024px]:text-[16px] text-xl'
 
     const logOut = () => {
         Cookies.remove("loggedin");
@@ -71,7 +72,23 @@ export default function Header({ navSelected }: SelectedProps) {
                 </div>
 
                 <div className="flex flex-row items-center justify-end pt-20 pb-3 border-2 border-none -mt-16 w-[40rem]">
-                    <div className='m-5 flex items-center justify-center w-6 h-6 rounded-full bg-black'>
+                    <div className="ml-1 m-5 flex items-center justify-center w-6 h-6">
+                        <svg
+                            data-slot="icon"
+                            fill="none"
+                            stroke-width="2"
+                            stroke="#177F7D"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true"
+                            className="w-full h-full mb-1"
+                        >
+                            <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"
+                            ></path>
+                        </svg>
                     </div>
                     <Anchor onClick={logOut} underline='never'>
                         <p style={epilogue.style} className='font-semibold text-black text-xl'>Logout</p>
