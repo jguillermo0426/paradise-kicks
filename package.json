@@ -35,13 +35,15 @@
     "papaparse": "^5.4.1",
     "react": "^18",
     "react-dom": "^18",
+    "react-router-dom": "^6.28.0",
     "short-unique-id": "^5.2.0",
     "supabase": "^1.192.5",
     "use-debounce": "^10.0.4",
     "uuid": "^10.0.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.49.0",
+    "@cascadia-code/scroll-to-hash-element": "^2.0.3",
+    "@playwright/test": "^1.49.0,
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.0.1",

@@ -127,3 +127,9 @@ export type itemOrder = {
     product: Product;
     quantity: number;
 }
+
+export type FaqsType = {
+    id: number;
+    question: string;
+    answer: string;
+}

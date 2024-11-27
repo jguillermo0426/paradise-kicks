@@ -1,6 +1,6 @@
 'use client'
 
-import { Anchor, Divider, Image, Badge } from '@mantine/core';  
+import { Anchor, Divider, Image, Badge, UnstyledButton } from '@mantine/core';  
 import { Epilogue } from 'next/font/google';
 import { useCart } from '@/utils/useCart';
 import { useEffect, useState, } from 'react';
@@ -33,15 +33,25 @@ export default function Header({navSelected}: SelectedProps) {
     return(
         <main className="flex flex-col bg-white w-full h-[6rem] justify-between items-center">
             <div className="flex flex-row bg-white w-full h-auto justify-between items-between px-10">
-                <div className='w-[40rem]'>
-                    <Image
-                        src="/blue logo.png"
-                        h={90}
-                        w={90}
-                    />
+                <div className='flex flex-col justify-center items-center'>
+                    <Link href="/">
+                        <UnstyledButton>
+                        <Image
+                            src="/blue logo.png"
+                            h={90}
+                            w={90}
+                            /> 
+                        </UnstyledButton>
+                    </Link>
                 </div>
 
-                <div className='flex flex-row w-[40rem] items-center justify-center'>
+                <div className='flex flex-row items-center justify-center'>
+                    <Anchor href="/" underline='never'>
+                        <div className={`group ${navSelected === "Home" ? selected : unselected}`}>
+                            <p style={epilogue.style} className={navSelected === "Home" ? selectedText : unselectedText}>Home</p>
+                        </div>
+                    </Anchor>
+
                     <Anchor href="/product-listing" underline='never'>
                         <div className={`group ${navSelected === "Catalogue" ? selected : unselected}`}>
                             <p style={epilogue.style} className={navSelected === "Catalogue" ? selectedText : unselectedText}>Catalogue</p>
@@ -57,7 +67,7 @@ export default function Header({navSelected}: SelectedProps) {
 
                 {/* CART */}
                 <Link href="/cart">
-                    <div className="flex flex-row items-center justify-end pt-20 pb-3 border-2 border-none -mt-12 w-[40rem]">
+                    <div className="flex flex-row items-center justify-end pt-20 pb-3 border-2 border-none -mt-12 ">
                         <Badge size="sm" color="#2E7D31" circle 
                         className="z-10"
                         styles={{ 
