@@ -10,6 +10,6 @@ export async function GET(req: Request) {
         .order('id', { ascending: true })
 
 
-    console.log("faqs: ", faqs);
+    // console.log("faqs: ", faqs);
     return Response.json({ faqs });
 }

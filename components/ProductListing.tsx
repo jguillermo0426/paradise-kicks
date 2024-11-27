@@ -9,7 +9,7 @@ import classes from "./css/tabs.module.css";
 import { useRouter } from "next/navigation";
 import { useDebounce } from "use-debounce";
 import { useCart } from '@/utils/useCart';
-import ScrollToHashElement from "@cascadia-code/scroll-to-hash-element";
+// import ScrollToHashElement from "@cascadia-code/scroll-to-hash-element";
 
 
 export default function ProductListing({ searchParams }: { searchParams: string }) {
@@ -173,8 +173,15 @@ export default function ProductListing({ searchParams }: { searchParams: string 
                 // if the group of the colorways doesnt exist, create it
                 if (!colorwayGroup) {
                     colorwayGroup = { id: colorwayId, image_link: image_link, colorway: Colorway, sizes: [], model: Model, brand: Brand };
+                    if (image_link) {
+                        colorwayGroup.image_link = image_link;  // assign image link if available
+                    }
                     grouped[Model].colorways.push(colorwayGroup);
                     colorwayId += 1;
+                }
+                
+                if (image_link) {
+                    colorwayGroup.image_link = image_link;  // assign image link if available
                 }
 
                 // assign the individual sku, size, stock, and price for the shoe
@@ -269,7 +276,7 @@ export default function ProductListing({ searchParams }: { searchParams: string 
     return (
         <MantineProvider>
             <div className="flex flex-col items-center m-20 relative z-50 mb-[18rem] bg-white overflow-x-hidden min-h-screen">
-                <ScrollToHashElement behavior="smooth" inline="center" block="center" />
+                {/*<ScrollToHashElement behavior="smooth" inline="center" block="center" />*/}
                 <div className="flex flex-col items-center w-full max-w-[1440px] m-6">
                     <div className="w-full flex flex-row items-end justify-between mb-8 px-12">
                         <div className="w-full flex flex-row items-end justify-start">

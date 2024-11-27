@@ -15,7 +15,7 @@ export async function GET(req: Request) {
 
     // Fetch unique models from the database
     const { data: uniqueModels, error: uniqueError } = await supabase
-        .rpc('get_unique_models', {
+        .rpc('get_home_products', {
             limit_count,
             limit_offset,
             search_term,
@@ -56,7 +56,7 @@ export async function GET(req: Request) {
         FROM product
         WHERE (${modelConditions}) AND "available" = true`;
 
-    console.log("query: " + query);
+    //console.log("query: " + query);
 
 
     const { data: products, error: productError } = await supabase
