@@ -60,7 +60,7 @@ export default function ProductListing({ searchParams }: { searchParams: string 
                 fetchedBrandsArray.push(fetchedBrand);
             });
     
-            console.log(fetchedBrandsArray);
+            //console.log(fetchedBrandsArray);
             setBrands(fetchedBrandsArray);
         } else {
             console.log("brands not found");
@@ -91,7 +91,7 @@ export default function ProductListing({ searchParams }: { searchParams: string 
             });
 
             const result = await response.json();
-            console.log(result.products);
+            //console.log(result.products);
             if (result.products.length !== 0) {
                 const sortedProducts = result.products.sort((a: Product, b: Product) => {
                     if (a.Colorway < b.Colorway) return -1;
@@ -110,9 +110,9 @@ export default function ProductListing({ searchParams }: { searchParams: string 
         
             
 
-                console.log(sortedProducts);
+                //console.log(sortedProducts);
                 const products = groupProducts(sortedProducts);
-
+                console.log("Grouped products: ", products);
                 let sorted2 = products;
                 if (filterParam == "alphabetical") {
                     sorted2 = products.sort((a: GroupedProduct2, b: GroupedProduct2) => {
@@ -244,14 +244,12 @@ export default function ProductListing({ searchParams }: { searchParams: string 
 
     const getBrandLogo = (brandName: string) => {
         let brandImageLink = (brands?.find(brand => brand.brand_name === brandName))?.brand_image;
-        console.log("BRAND IMAGE: ", brandImageLink);
         return brandImageLink;
     }
 
 
     const getImageLink = (groupedProduct: GroupedProduct2) => {
         const colorwayWithImage = groupedProduct.colorways.find((colorway) => colorway.image_link && colorway.image_link.trim() !== '');
-        console.log(colorwayWithImage);
 
         return colorwayWithImage ? colorwayWithImage.image_link : "";
     };
