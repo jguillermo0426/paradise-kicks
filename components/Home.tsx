@@ -207,8 +207,7 @@ export default function Home() {
 
     return (
         <MantineProvider>
-            <div className="flex flex-col items-center z-0 relative bg-white min-h-screen
-                            mb-[350px] max-[1358px]:mb-[420px] max-[820px]:mb-[820px]"> {/*update other pages*/}
+            <div className="flex flex-col items-center z-0 relative bg-white h-full">
                 <div className="w-full flex flex-col items-center justify-center">
                     <div className="w-full h-full flex flex-col relative z-0">
                         <Image

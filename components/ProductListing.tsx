@@ -268,7 +268,7 @@ export default function ProductListing({ searchParams }: { searchParams: string 
 
     return (
         <MantineProvider>
-            <div className="flex flex-col items-center m-3 min-[993px]:mt-20 min-[993px]:m-30 relative z-0 mb-[18rem] bg-white overflow-x-hidden min-h-screen"> 
+            <div className="flex flex-col items-center mt-3 mx-3 min-[993px]:mt-20 min-[993px]:mx-20 relative z-0 bg-white overflow-x-hidden min-h-screen"> 
                 <ScrollToHashElement behavior="smooth" inline="center" block="center" />
                 <div className="flex flex-col items-center w-full max-w-[1440px] m-6">
                     <div className="w-full flex flex-col min-[993px]:flex-row items-end justify-between mb-0 px-2
@@ -478,7 +478,7 @@ export default function ProductListing({ searchParams }: { searchParams: string 
             <Affix position={{ bottom: 20, right: 20 }}>
                 <Popover width={439} trapFocus position="top" withArrow shadow="md" radius="md">
                     <Popover.Target>
-                        <Button w={150} h={57} variant="filled" color="black" radius="md">
+                        <Button w={150} h={47} variant="filled" color="#1C1C1C" radius="md">
                             <p className="text-[15px]">Quick Help</p>
                         </Button> 
                     </Popover.Target>

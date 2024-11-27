@@ -11,11 +11,13 @@ const epilogue = Epilogue({
 export default function Footer() {
 
     return(
-        <main className="flex flex-col bg-[#38BDBA] w-full h-auto fixed bottom-0 -z-10 justify-center items-center">
+        <main className="flex flex-col bg-[#38BDBA] w-full justify-center items-center overflow-hidden">
             <div className="max-[612px]:flex-col ml-[10%] flex flex-row bg-[#38BDBA] w-full justify-start items-center 
                             h-[350px] max-[1358px]:h-[420px] max-[820px]:h-[820px]"> 
-                <div className='flex flex-row items-start justify-center h-full'>
-                    <div className='max-[612px]:pb-0 max-[612px]:pt-20 max-[612px]:mt-20 max-[612px]:mr-10 flex flex-col items-center justify-center p-12 mt-16'>
+                <div className='h-full flex flex-row items-start justify-center'>
+                    <div className='max-[612px]:pb-0 max-[612px]:mr-10 w-full
+                                    max-[420px]:pt-0 max-[420px]:mt-10 max-[420px]:w-[60%]
+                                    flex flex-col items-center justify-center p-12 mt-16'>
                         <Image
                             src="/white logo.png"
                             className='mb-5 max-[612px]:mt-10 max-[612px]:p-0 max-[612px]:m-0 h-[35px]'
@@ -77,7 +79,7 @@ export default function Footer() {
 
             <Divider orientation='horizontal' className='w-full' color="white"/>
             
-            <div className="flex flex-row w-full bg-[#177F7D] h-[2rem] justify-end items-center px-10">
+            <div className="max-[420px]:justify-center flex flex-row w-full bg-[#177F7D] h-[2rem] justify-end items-center px-10">
                 <p style={epilogue.style} className='max-[612px]:text-[12px] text-white font-semibold text-sm'>© Paradise Kicks 2024 All Rights Reserved</p>
             </div>
         </main>

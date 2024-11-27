@@ -401,8 +401,7 @@ export default function ProductDetails({ productModel }: ProductProps) {
     return (
         <MantineProvider>
             <div className='pb-[3rem] flex flex-col items-center 
-                            m-0 relative z-0 mb-[18rem] bg-white overflow-hidden min-h-screen
-                            mb-[350px] max-[1358px]:mb-[420px] max-[820px]:mb-[820px]'> {/*update other pages*/}
+                            m-0 relative z-0 bg-white overflow-hidden min-h-screen'>
                 {loading ? (
                     <><div className="ml-[35px] mt-10 desktop:ml-[65px]" style={{ marginRight: "auto" }}>
                         <Button
