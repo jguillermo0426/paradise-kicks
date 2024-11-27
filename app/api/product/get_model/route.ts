@@ -19,6 +19,6 @@ export async function GET(req: Request) {
         .rpc('get_unique_sizes', { model: productModel});
 
     console.log("Model: ", productModel);
-    console.log("Sizes: ", sizes);
+    //console.log("Sizes: ", sizes);
     return Response.json({ model, sizes });
 }
