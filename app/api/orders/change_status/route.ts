@@ -83,3 +83,4 @@ export async function POST(req: Request) {
 
     // Return the response
     return Response.json({ results: successfulUpdates, orderProducts });
+}
