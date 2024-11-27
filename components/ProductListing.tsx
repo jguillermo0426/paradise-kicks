@@ -1,5 +1,5 @@
 'use client'
-import { MantineProvider, Select, TextInput, Popover, Button, Pagination, Image, LoadingOverlay } from '@mantine/core';
+import { MantineProvider, Select, TextInput, Popover, Button, Pagination, Image, LoadingOverlay, Affix, UnstyledButton, Loader } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import { GroupedProduct2, Product, BrandsType } from '@/types/types';
 import { Card, CardBody } from "@nextui-org/react";
@@ -9,6 +9,7 @@ import classes from "./css/tabs.module.css";
 import { useRouter } from "next/navigation";
 import { useDebounce } from "use-debounce";
 import { useCart } from '@/utils/useCart';
+import ScrollToHashElement from "@cascadia-code/scroll-to-hash-element";
 
 
 export default function ProductListing({ searchParams }: { searchParams: string }) {
@@ -249,9 +250,26 @@ export default function ProductListing({ searchParams }: { searchParams: string 
     };
 
 
+    const handleScrollToFAQs = () => {
+        router.push("/");
+
+        setTimeout(() => {
+            const faqSection = document.getElementById('faq-section');
+            if (faqSection) {
+                faqSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        }, 300); 
+    };
+
+    const quickHelpArrow = (<svg width="20" height="30" viewBox="0 0 20 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1 28.9618L19.1652 14.4362L1 1.00002" stroke="#1C1C1C"/>
+    </svg>)
+
+
     return (
         <MantineProvider>
             <div className="flex flex-col items-center m-20 relative z-50 mb-[18rem] bg-white overflow-x-hidden min-h-screen">
+                <ScrollToHashElement behavior="smooth" inline="center" block="center" />
                 <div className="flex flex-col items-center w-full max-w-[1440px] m-6">
                     <div className="w-full flex flex-row items-end justify-between mb-8 px-12">
                         <div className="w-full flex flex-row items-end justify-start">
@@ -313,48 +331,52 @@ export default function ProductListing({ searchParams }: { searchParams: string 
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-16 justify-start">
-                        {sortedProducts &&
-                            sortedProducts.map((product, productIndex) =>
-                                <Link key={productIndex} href={`/product-details/${product.model}`}>
-                                    <Card key={productIndex} className="max-w-[300px] h-[470px] flex flex-col items-center border-[1px] border-black rounded-2xl p-8">
-                                        <CardBody className="flex flex-col justify-between h-full">
-                                            <div className="flex flex-col items-center justify-center w-full w-[250px] min-h-[250px]">
-                                            <LoadingOverlay visible={loading} overlayProps={{ radius: "sm", blur: 2 }} />
-                                                <Image
-                                                    radius="md"
-                                                    alt="Shoe Image"
-                                                    fit="cover"
-                                                    src={getImageLink(product) || "https://static.nike.com/a/images/t_PDP_936_v1/f_auto,q_auto:eco/af53d53d-561f-450a-a483-70a7ceee380f/W+NIKE+DUNK+LOW.png"}
-                                                    h={250}
-                                                    w={250} />
-                                            </div>
-                                            <div className="w-full h-full flex flex-col items-start justify-between">
-                                                <div className="flex flex-col items-start">
-                                                    <small className="mt-4 text-[14px] text-[#808080]" style={{ fontFamily: "Epilogue" }}>{getTotalColors(product)}
-                                                        {getTotalColors(product) > 1
-                                                            ? " colors"
-                                                            : " color"
-                                                        }
-                                                    </small>
-
-                                                    <p className="text-[16px]" style={{ fontFamily: "EpilogueSemiBold", letterSpacing: "-0.5px" }}>{product.brand} {product.model}</p>
-                                                    <p className="text-[14px]" style={{ fontFamily: "Epilogue", letterSpacing: "-0.5px" }}>&#8369; {getLowestPrice(product).toFixed(2)}</p>
-                                                </div>
-
-                                                <div className="w-full flex flex-row items-end justify-between mt-4">
-                                                    <p className="text-[14px]" style={{ fontFamily: "Epilogue", letterSpacing: "-0.5px" }}>{getTotalStocks(product)} stocks left</p>
+                    {loading ? (
+                        <Loader className="my-20" size={30} />
+                    ) : (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-16 justify-start">
+                            {sortedProducts &&
+                                sortedProducts.map((product, productIndex) =>
+                                    <Link key={productIndex} href={`/product-details/${product.model}`}>
+                                        <Card key={productIndex} className="max-w-[300px] h-[470px] flex flex-col items-center border-[1px] border-black rounded-2xl p-8">
+                                            <CardBody className="flex flex-col justify-between h-full">
+                                                <div className="flex flex-col items-center justify-center w-full w-[250px] min-h-[250px]">
+                                                <LoadingOverlay visible={loading} overlayProps={{ radius: "sm", blur: 2 }} />
                                                     <Image
-                                                        src={getBrandLogo(product.brand)}
-                                                        className="h-[28px]"
-                                                    />
+                                                        radius="md"
+                                                        alt="Shoe Image"
+                                                        fit="cover"
+                                                        src={getImageLink(product) || "https://static.nike.com/a/images/t_PDP_936_v1/f_auto,q_auto:eco/af53d53d-561f-450a-a483-70a7ceee380f/W+NIKE+DUNK+LOW.png"}
+                                                        h={250}
+                                                        w={250} />
                                                 </div>
-                                            </div>
-                                        </CardBody>
-                                    </Card>
-                                </Link>
-                            )}
-                    </div>
+                                                <div className="w-full h-full flex flex-col items-start justify-between">
+                                                    <div className="flex flex-col items-start">
+                                                        <small className="mt-4 text-[14px] text-[#808080]" style={{ fontFamily: "Epilogue" }}>{getTotalColors(product)}
+                                                            {getTotalColors(product) > 1
+                                                                ? " colors"
+                                                                : " color"
+                                                            }
+                                                        </small>
+
+                                                        <p className="text-[16px]" style={{ fontFamily: "EpilogueSemiBold", letterSpacing: "-0.5px" }}>{product.brand} {product.model}</p>
+                                                        <p className="text-[14px]" style={{ fontFamily: "Epilogue", letterSpacing: "-0.5px" }}>&#8369; {getLowestPrice(product).toFixed(2)}</p>
+                                                    </div>
+
+                                                    <div className="w-full flex flex-row items-end justify-between mt-4">
+                                                        <p className="text-[14px]" style={{ fontFamily: "Epilogue", letterSpacing: "-0.5px" }}>{getTotalStocks(product)} stocks left</p>
+                                                        <Image
+                                                            src={getBrandLogo(product.brand)}
+                                                            className="h-[28px]"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </CardBody>
+                                        </Card>
+                                    </Link>
+                                )}
+                        </div>
+                    )}       
                 </div>
                 <Pagination
                     value={activePage}
@@ -369,6 +391,43 @@ export default function ProductListing({ searchParams }: { searchParams: string 
                     }}
                 />
             </div>
+            {/* QUICK HELP */}
+            <Affix position={{ bottom: 20, right: 20 }}>
+                <Popover width={439} trapFocus position="top" withArrow shadow="md" radius="md">
+                    <Popover.Target>
+                        <Button w={180} h={57} variant="filled" color="black" radius="md">
+                            <p className="text-[20px]">Quick Help</p>
+                        </Button> 
+                    </Popover.Target>
+                    <Popover.Dropdown>
+                        <div className="p-8">
+                            <p className="text-[32px] mb-4" style={{ fontFamily: "EpilogueBold" }}>
+                                Quick Help
+                            </p>
+                            <UnstyledButton component="a">
+                                <div className="flex flex-row items-center justify-between px-6 py-2 mb-6 border border-black rounded-xl">
+                                    <p className="text-[24px]" style={{ fontFamily: "Epilogue"}}>
+                                        Track Order
+                                    </p>
+                                    {quickHelpArrow}
+                                </div>
+                            </UnstyledButton>
+
+                            <UnstyledButton 
+                            component="a" 
+                            href="/#faq-section" 
+                            style={{ display: 'block', width: "100%" }}>
+                                <div className="flex flex-row items-center justify-between px-6 py-2 border border-black rounded-xl">
+                                    <p className="text-[24px]" style={{ fontFamily: "Epilogue"}}>
+                                        FAQs
+                                    </p>
+                                    {quickHelpArrow}
+                                </div>
+                            </UnstyledButton>
+                        </div>        
+                    </Popover.Dropdown>
+                </Popover>
+            </Affix>
         </MantineProvider>
     );
 }

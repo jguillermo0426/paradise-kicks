@@ -1,7 +1,7 @@
 'use client'
-import { MantineProvider, Select, TextInput, Popover, Button, Pagination, LoadingOverlay, ActionIcon, UnstyledButton } from '@mantine/core';
+import { MantineProvider, Button, ActionIcon, UnstyledButton } from '@mantine/core';
 import { useEffect, useState } from 'react';
-import { GroupedProduct2, Product, itemOrder } from '@/types/types';
+import { Product, itemOrder, BrandsType } from '@/types/types';
 import React from 'react';
 import { Image } from "@nextui-org/image";
 import { useCart } from '@/utils/useCart';
@@ -13,16 +13,45 @@ import { Link } from '@nextui-org/react';
 
 export default function Cart() {
     const { cart, removeFromCart, increaseCartItem, decreaseCartItem } = useCart();
-    const [item, setItem] = useState<Product>();
-    const [cartItems, setCartItems] = useState<itemOrder[]>([]);
     const router = useRouter();
     const brandLogoMap: Map<string, string> = new Map();
+    const [brands, setBrands] = useState<BrandsType[]>();
 
     brandLogoMap.set("Nike", "/nike.png");
     brandLogoMap.set("Adidas", "/adidas.png");
     brandLogoMap.set("New Balance", "/new balance.png");
     brandLogoMap.set("On", "/on.png");
     brandLogoMap.set("Puma", "/puma.png");
+
+    const getBrands = async () => {
+        let fetchedBrandsArray: BrandsType[] = [];
+        let fetchedBrand: BrandsType;
+        
+        const response = await fetch(`/api/brands/get_brands`, {
+            method: "GET"
+        });
+    
+        const result = await response.json();
+        if (result.brands.length !== 0) {
+            result.brands.forEach((brand: any) => {
+                fetchedBrand = {
+                    id: brand.id,
+                    brand_name: brand.brand_name,
+                    brand_image: brand.brand_image
+                }
+                fetchedBrandsArray.push(fetchedBrand);
+            });
+    
+            console.log(fetchedBrandsArray);
+            setBrands(fetchedBrandsArray);
+        } else {
+            console.log("brands not found");
+        }
+    };
+    
+    useEffect(() => {
+        getBrands();
+    }, []);
 
     const removeItem = (itemSKU: string) => {
         removeFromCart(itemSKU);
@@ -67,6 +96,12 @@ export default function Cart() {
         })
 
         return totalQuantity;
+    }
+
+    const getBrandLogo = (brandName: string) => {
+        let brandImageLink = (brands?.find(brand => brand.brand_name === brandName))?.brand_image;
+        console.log("BRAND IMAGE: ", brandImageLink);
+        return brandImageLink;
     }
 
 
@@ -176,7 +211,7 @@ export default function Cart() {
                                         </div>
                                         <div className="h-full flex flex-col items-end justify-between ml-auto">
                                             <Image
-                                                src={brandLogoMap.get(item.product.Brand)}
+                                                src={getBrandLogo(item.product.Brand)}
                                                 height={28}
                                             />
                                             <p className="text-[24px]" style={{ fontFamily: "EpilogueMedium", marginBottom: "-8px" }}>
@@ -218,9 +253,8 @@ export default function Cart() {
                                         src="/gcash.png"
                                     />
                                 </div>
-                                <Link href="/checkout" className='w-full'>
+                                <Link href="/checkout" className='w-full mt-auto'>
                                     <Button
-                                        className="mt-auto"
                                         variant="filled"
                                         fullWidth
                                         radius="md"

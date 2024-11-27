@@ -1,6 +1,6 @@
 'use client'
 
-import { Anchor, Divider, Image, Badge } from '@mantine/core';  
+import { Anchor, Divider, Image, Badge, UnstyledButton } from '@mantine/core';  
 import { Epilogue } from 'next/font/google';
 import { useCart } from '@/utils/useCart';
 import { useEffect, useState, } from 'react';
@@ -17,8 +17,8 @@ type SelectedProps = {
 
 export default function Header({navSelected}: SelectedProps) {
 
-    const selected = "group mx-5 transition-colors flex items-center justify-center w-[7.5rem] pt-20 pb-3 px-5 border-2 border-solid rounded-b-[0.625rem] border-[#38BDBA] -mt-16 hover:cursor-pointer";
-    const unselected = "group mx-5 transition-colors flex items-center hover:bg-[#38BDBA] w-[7.5rem] justify-center pt-20 pb-3 px-5 border-2 border-none rounded-b-[0.625rem] -mt-16 hover:cursor-pointer";
+    const selected = "group mx-5 transition-colors flex items-center justify-center min-w-[7.5rem] pt-20 pb-3 px-4 border-2 border-solid rounded-b-[0.625rem] border-[#38BDBA] -mt-16 hover:cursor-pointer";
+    const unselected = "group mx-5 transition-colors flex items-center hover:bg-[#38BDBA] min-w-[7.5rem] justify-center pt-20 pb-3 px-4 border-2 border-none rounded-b-[0.625rem] -mt-16 hover:cursor-pointer";
 
     const selectedText = 'font-semibold transition-colors text-[#38BDBA] text-xl';
     const unselectedText = 'font-semibold transition-colors text-black group-hover:text-white text-xl'
@@ -33,31 +33,41 @@ export default function Header({navSelected}: SelectedProps) {
     return(
         <main className="flex flex-col bg-white w-full h-[6rem] justify-between items-center">
             <div className="flex flex-row bg-white w-full h-auto justify-between items-between px-10">
-                <div className='w-[40rem]'>
-                    <Image
-                        src="/blue logo.png"
-                        h={90}
-                        w={90}
-                    />
+                <div className='flex flex-col justify-center items-center'>
+                    <Link href="/">
+                        <UnstyledButton>
+                        <Image
+                            src="/blue logo.png"
+                            h={90}
+                            w={90}
+                            /> 
+                        </UnstyledButton>
+                    </Link>
                 </div>
 
-                <div className='flex flex-row w-[40rem] items-center justify-center'>
+                <div className='flex flex-row items-center justify-center'>
+                    <Anchor href="/" underline='never'>
+                        <div className={`group ${navSelected === "Home" ? selected : unselected}`}>
+                            <p style={epilogue.style} className={navSelected === "Home" ? selectedText : unselectedText}>Home</p>
+                        </div>
+                    </Anchor>
+
                     <Anchor href="/product-listing" underline='never'>
                         <div className={`group ${navSelected === "Catalogue" ? selected : unselected}`}>
                             <p style={epilogue.style} className={navSelected === "Catalogue" ? selectedText : unselectedText}>Catalogue</p>
                         </div>
                     </Anchor>
 
-                    <Anchor href="/" underline='never'>
-                        <div className={navSelected === "Contact" ? selected : unselected}>
-                            <p style={epilogue.style} className={navSelected === "Contact" ? selectedText : unselectedText}>Contact</p>
+                    <Anchor href="/order-tracker" underline='never'>
+                        <div className={navSelected === "Order Tracker" ? selected : unselected}>
+                            <p style={epilogue.style} className={navSelected === "Order Tracker" ? selectedText : unselectedText}>Order Tracker</p>
                         </div>
                     </Anchor>
                 </div>
 
                 {/* CART */}
                 <Link href="/cart">
-                    <div className="flex flex-row items-center justify-end pt-20 pb-3 border-2 border-none -mt-12 w-[40rem]">
+                    <div className="flex flex-row items-center justify-end pt-20 pb-3 border-2 border-none -mt-12 ">
                         <Badge size="sm" color="#2E7D31" circle 
                         className="z-10"
                         styles={{ 

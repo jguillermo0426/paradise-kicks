@@ -29,7 +29,6 @@ const status = [
 
 
 export default function AdminStock() {
-    const [rootRef, setRootRef] = useState<HTMLDivElement | null>(null);
     const [orderIds, setOrderIds] = useState<string[]>([]);
     const [orderProducts, setOrderProducts] = useState<ProductsOrdered[]>();
     const [selectedStatus, setSelectedStatus] = useState<string | null>(status[0]);
@@ -95,6 +94,15 @@ export default function AdminStock() {
     }, [orderIds]);
 
     const editStatus = (status: OrderHistory, order: ProductsOrdered) => {
+        const isStatusAlreadyAdded = order.status_history.some(
+            (existingStatus) => existingStatus.history_id === status.history_id
+        );
+
+        if (isStatusAlreadyAdded) {
+            console.log('Status already exists, skipping update.');
+            return;
+        }
+
         const updatedHistory = [...order.status_history, status];
 
         const updatedProduct: ProductsOrdered = {
@@ -106,19 +114,26 @@ export default function AdminStock() {
             o.id === order.id ? updatedProduct : o
         );
 
+        console.log(updatedOrderProducts);
         setOrderProducts(updatedOrderProducts);
-    }
+    };
 
     const confirmStatus = async () => {
+        console.log(orderProducts);
         const response = await fetch('/api/orders/change_status', {
             method: "POST",
             body: JSON.stringify({ orderProducts })
         })
 
         const result = await response.json()
-
         if (result) {
             handleNotification();
+            const fetchUpdatedOrders = await fetch(`/api/orders/get_from_id`, {
+                method: 'POST',
+                body: JSON.stringify(orderIds),
+            });
+            const updatedOrders = await fetchUpdatedOrders.json();
+            setOrderProducts(updatedOrders.orders);
         }
     }
 
@@ -265,18 +280,20 @@ export default function AdminStock() {
                 Save Order Status
             </Button>
 
-            <Pagination 
-                    value={activePage} 
-                    total={totalPages} 
-                    onChange={(page) => {{
+            <Pagination
+                value={activePage}
+                total={totalPages}
+                onChange={(page) => {
+                    {
                         setPage(page);
-                        window.scrollTo(0,0);
-                    }}} 
-                    className='my-5'
-                    classNames={{
-                        root: classes.pageRoot
-                    }}
-                />
+                        window.scrollTo(0, 0);
+                    }
+                }}
+                className='my-5'
+                classNames={{
+                    root: classes.pageRoot
+                }}
+            />
             <Notifications></Notifications>
 
         </div>

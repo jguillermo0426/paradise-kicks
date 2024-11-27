@@ -14,6 +14,7 @@ type SelectedProps = {
     navSelected: string;
 }
 
+
 export default function Header({ navSelected }: SelectedProps) {
     const router = useRouter();
     const selected = "group mx-5 transition-colors flex items-center justify-center w-[7.5rem] pt-20 pb-3 px-5 border-2 border-solid rounded-b-[0.625rem] border-[#38BDBA] -mt-16 hover:cursor-pointer";
@@ -26,6 +27,7 @@ export default function Header({ navSelected }: SelectedProps) {
         Cookies.remove("loggedin");
         router.push("/login");
     }
+
 
     return (
         <main className="flex flex-col bg-white w-full h-[6rem] justify-between items-center">

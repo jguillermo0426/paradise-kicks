@@ -12,4 +12,3 @@ export async function GET(req: Request) {
 
     console.log("faqs: ", faqs);
     return Response.json({ faqs });
-}

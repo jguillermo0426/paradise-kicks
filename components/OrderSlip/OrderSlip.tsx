@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import styles from "../css/table.module.css"
 import domtoimage from 'dom-to-image';
 import { saveAs } from 'file-saver';
+import { useCart } from '@/utils/useCart';
 
 const epilogue = Epilogue({
     subsets: ['latin'],
@@ -14,6 +15,7 @@ const epilogue = Epilogue({
 })
 
 export default function OrderSlip({ orderslipid }: { orderslipid: string }) {
+    const { clearCart } = useCart();
     const [order, setOrder] = useState<ProductsOrdered>();
     const [date, setDate] = useState<string>();
     const [fee, setFee] = useState<number>(0);
@@ -30,11 +32,15 @@ export default function OrderSlip({ orderslipid }: { orderslipid: string }) {
             setOrder(result.orders[0]);
         }
         getOrder();
+        clearCart();
     }, [orderslipid]);
 
     useEffect(() => {
         if (order?.payment_terms.id == 4) {
             setFee(0);
+        }
+        else if (order?.payment_terms.id == 3) {
+            setFee(250);
         }
         else {
             setFee(99);
@@ -174,7 +180,7 @@ export default function OrderSlip({ orderslipid }: { orderslipid: string }) {
                             order?.products_ordered.map((product, index) => (
                                 <Table.Tbody key={index}>
                                     <Table.Tr>
-                                        <Table.Td>{product.product_id.Model}</Table.Td>
+                                        <Table.Td>{`${product.product_id.Brand} ${product.product_id.Model}`}</Table.Td>
                                         <Table.Td>{product.product_id.Colorway}</Table.Td>
                                         <Table.Td>{product.product_id.Size}</Table.Td>
                                         <Table.Td>{product.quantity}</Table.Td>

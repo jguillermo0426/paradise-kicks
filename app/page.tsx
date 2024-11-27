@@ -1,17 +1,20 @@
+'use client'
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import Home from "@/components/Home";
 import { MantineProvider, Paper } from "@mantine/core";
+import { CartProvider } from "@/utils/useCart";
 
-export default function Home() {
+export default function HomePage() {
   return (
     <MantineProvider>
-      <Header navSelected="None"/>
-      <Paper shadow="xl">
-        <main className="min-h-screen mb-[18rem] w-full bg-white">
-            <p>home page</p>
-        </main>
+      <CartProvider>
+        <Header navSelected="None"/>
+        <Paper shadow="xl">
+          <Home />
         </Paper>
-      <Footer/>
+        <Footer/>
+      </CartProvider>
     </MantineProvider>
   );
 }

@@ -10,7 +10,8 @@ export async function POST(req: Request) {
             history_id, order_id, updated_at,
             order_status!status_history_status_id_fkey (status)
         `)
-        .eq('order_id', id);
+        .eq('order_id', id)
+        .order('updated_at', { ascending: true });
 
     if (error) {
         console.error("Error fetching data: ", error);
