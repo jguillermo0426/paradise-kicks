@@ -21,14 +21,10 @@ export default function OrderTracker() {
 
     const getOrderStatus = async () => {
         if (!orderNumber) {
-            notifications.show({
-                message: "Please provide an order number.",
-                color: "yellow"
-            });
-            setOrderStatusHistory([]);
+            console.log("Order number is not set.");
             return;
         }
-
+        
         const response = await fetch(`/api/orders/get_order_status?orderNumber=${orderNumber}`, {
             method: "GET"
         });
@@ -76,6 +72,14 @@ export default function OrderTracker() {
         <circle cx="30" cy="30" r="24" fill="#1C1C1C"/>
         </svg>
         )
+
+    
+    const emptyOrderNumber = () => {
+        notifications.show({
+            message: "Please provide an order number.",
+            color: "yellow"
+        });
+    }
     
 
     return (
@@ -136,7 +140,15 @@ export default function OrderTracker() {
                                 />
                             </div> 
 
-                            <UnstyledButton onClick={() => getOrderStatus()}>
+                            <UnstyledButton 
+                                onClick={() => {
+                                    if (orderNumber === "") {
+                                        emptyOrderNumber();
+                                    } else {
+                                        getOrderStatus();
+                                    }
+                                }}
+                            >
                                 <div className="flex flex-col items-center justify-center w-[430px] h-[78px] bg-black rounded-md">
                                     <p className="text-[24px] text-[#EDEDED] font-semibold -tracking-[0.025em]" style={epilogue.style}>
                                         Track Order
