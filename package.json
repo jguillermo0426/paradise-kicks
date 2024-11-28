@@ -24,6 +24,7 @@
     "@supabase/supabase-js": "^2.45.4",
     "@tabler/icons-react": "^3.21.0",
     "dayjs": "^1.11.13",
+    "embla-carousel-autoplay": "^7.1.0",
     "embla-carousel-react": "^7.1.0",
     "firebase": "^10.13.2",
     "framer-motion": "^11.11.17",

@@ -1,6 +1,7 @@
 'use client'
 import { MantineProvider, UnstyledButton, Image, Divider, Accordion, Button, Affix, Popover, Skeleton } from '@mantine/core';
 import { Carousel } from '@mantine/carousel';
+import Autoplay from 'embla-carousel-autoplay';
 import '@mantine/carousel/styles.css';
 import { BrandsType, GroupedProduct2, Product, FaqsType } from '@/types/types'
 import { useEffect, useRef, useState } from 'react';
@@ -205,6 +206,8 @@ export default function Home() {
         element?.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
     }
 
+    const autoplay = useRef(Autoplay({ delay: 750, stopOnInteraction: false }));
+
     return (
         <MantineProvider>
             <div className="flex flex-col items-center z-0 relative bg-white h-full">
@@ -256,7 +259,7 @@ export default function Home() {
                             Our Featured Brands
                         </p>
                     </div>
-                    <div className="flex flex-row items-center w-full justify-center mb-10">
+                    <div className="flex flex-row items-center w-[95%] justify-center mb-10">
                         {loadingBrands ? (
                             <div className="flex flex-row w-full justify-start gap-4">
                                 {Array.from({ length: 5 }).map((_, index) => (
@@ -265,6 +268,7 @@ export default function Home() {
                             </div>
                         ) : (
                             <Carousel
+                                withControls={false}
                                 className="w-full"
                                 height={68}
                                 loop
@@ -272,7 +276,10 @@ export default function Home() {
                                 slideGap="16px"
                                 slidesToScroll={1}
                                 controlsOffset="xs"
-                                align="start"
+                                align="center"
+                                plugins={[autoplay.current]}
+                                onMouseEnter={autoplay.current.stop}
+                                onMouseLeave={autoplay.current.reset}
                             >
                                 {brands ? (
                                     brands.map((brand, brandIndex) => (
