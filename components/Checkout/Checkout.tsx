@@ -220,7 +220,7 @@ export default function Checkout() {
     }
 
     return (
-        <div className="flex flex-col items-start m-20 relative z-50 mb-[18rem] bg-white overflow-x-hidden min-h-screen">
+        <div className="flex flex-col p-3 items-start mt-20 mx-20 relative z-50 bg-white overflow-x-hidden min-h-screen">
             <Button
                 component="a"
                 href="/cart"
@@ -228,6 +228,7 @@ export default function Checkout() {
                 fullWidth
                 color="black"
                 radius="md"
+                className="hover:outline hover:outline-offset-2 hover:outline-dark-gray shadow-lg"
                 styles={{
                     root: {
                         height: "46px",

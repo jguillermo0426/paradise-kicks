@@ -82,7 +82,7 @@ export default function OrderTracker() {
 
     return (
         <MantineProvider>
-            <div className='flex flex-col items-center m-4 relative z-50 mb-[18rem] bg-white overflow-hidden min-h-screen'>
+            <div className='p-20 flex flex-col items-center mx-4 mt-4 relative z-0 bg-white overflow-hidden min-h-screen'>
                 <Notifications />
                 <div className="flex flex-col items-center justify-center w-full mb-20 px-20 py-10">
                     {/* RETURN BUTTON */}
@@ -94,14 +94,16 @@ export default function OrderTracker() {
                             fullWidth
                             color="black"
                             radius="md"
+                            className="hover:outline hover:outline-offset-2 hover:outline-dark-gray shadow-lg"
                             styles={{
                                 root: {
                                     height: "46px",
-                                    width: "207px"
+                                    width: "150px"
                                 },
                                 label: {
                                     fontFamily: "Epilogue",
-                                    fontSize: "20px",
+                                    fontWeight: 700,
+                                    fontSize: "16px",
                                     color: "#EDEDED"
                                 }
                             }}
@@ -147,7 +149,8 @@ export default function OrderTracker() {
                                     }
                                 }}
                             >
-                                <div className="flex flex-col items-center justify-center w-[430px] h-[78px] bg-black rounded-md">
+                                <div className="flex flex-col items-center justify-center w-[430px] h-[78px] bg-black rounded-md
+                                                hover:outline hover:outline-offset-2 hover:outline-dark-gray shadow-lg">
                                     <p className="text-[24px] text-[#EDEDED] font-semibold -tracking-[0.025em]" style={epilogue.style}>
                                         Track Order
                                     </p>
