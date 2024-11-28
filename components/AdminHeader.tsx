@@ -31,7 +31,7 @@ export default function Header({ navSelected }: SelectedProps) {
     return (
         <main className="flex flex-col bg-white w-full h-[6rem] justify-between items-center">
             <div className="flex flex-row bg-white w-full h-auto justify-between items-between px-10">
-                <div className='w-[40rem]'>
+                <div className='pl-12 w-[40rem]'>
                     <Image
                         src="/blue logo.png"
                         h={90}
@@ -91,7 +91,7 @@ export default function Header({ navSelected }: SelectedProps) {
                         </svg>
                     </div>
                     <Anchor onClick={logOut} underline='never'>
-                        <p style={epilogue.style} className='font-semibold text-black text-xl'>Logout</p>
+                        <p style={epilogue.style} className='pr-12 font-semibold text-black text-xl'>Logout</p>
                     </Anchor>
                 </div>
             </div>

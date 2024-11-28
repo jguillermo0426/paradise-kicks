@@ -45,7 +45,7 @@ export default function AdminStock() {
     };
 
     return (
-        <div className="relative z-50 mb-[18rem] bg-white overflow-hidden flex flex-col items-center justify-items-center min-h-screen p-8 pb-20 sm:p-20">
+        <div className="bg-white relative z-50 mb-[18rem] overflow-hidden flex flex-col items-center justify-items-center min-h-screen p-8 pb-20 sm:p-20">
             <div className='flex flex-row items-center justify-end w-full'>
                 {(value == "2" || value == "3") && 
                     <div className="flex flex-row">
