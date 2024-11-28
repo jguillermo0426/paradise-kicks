@@ -421,10 +421,10 @@ export default function Checkout() {
                                 <Button
                                     className={`${styles.button} ${payMethod === "Metrobank" ? styles.activeButton : styles.button}`}
                                     color="white"
-                                    onClick={() => { setPayMethod("Metrobank"); setPaymentImage("/MetroBank.png"); setQr("/metrobank qr.jpg"); form.setFieldValue("paymentMethod", "Metrobank"); }}
+                                    onClick={() => { setPayMethod("Metrobank"); setPaymentImage("/Metrobank.png"); setQr("/metrobank qr.jpg"); form.setFieldValue("paymentMethod", "Metrobank"); }}
                                 >
                                     <Image
-                                        src="/MetroBank.png"
+                                        src="/Metrobank.png"
                                         w="auto"
                                     />
                                 </Button>
