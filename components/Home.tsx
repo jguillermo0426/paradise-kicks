@@ -277,8 +277,8 @@ export default function Home() {
                                 {brands ? (
                                     brands.map((brand, brandIndex) => (
                                         <Carousel.Slide key={brandIndex}>
-                                            <div className="max-[768px]:mt-3 max-[768px]:h-[80%] align-items-center flex items-center justify-center w-full h-full px-2 border border-dark-gray border-opacity-10 rounded-lg
-                                                            hover:border hover:border-black hover:border-2">
+                                            <div className="max-[768px]:mt-3 max-[768px]:h-[80%] align-items-center flex items-center justify-center w-full h-full px-2 rounded-lg
+                                                            border border-black border-2">
                                                 <Image
                                                     className="max-[768px]:h-[25px] h-[35px]"
                                                     fit="contain"
