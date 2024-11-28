@@ -257,6 +257,7 @@ export default function Cart() {
                                     <Button
                                         variant="filled"
                                         fullWidth
+                                        disabled={cart.length === 0}
                                         radius="md"
                                         color="black"
                                         styles={{
