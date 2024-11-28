@@ -152,7 +152,7 @@ export default function Brands() {
             </div>
 
             <div className='flex flex-row items-start justify-between w-full'>
-                <div className='w-[45.208vw] h-auto border-black border-2 rounded-2xl mt-12 py-[3.239vh] px-[3.542vw]'>
+                <div className='w-[60%] h-auto border-black border-2 rounded-2xl mt-12 py-[3.239vh] px-[3.542vw]'>
                     <SimpleGrid cols={3} spacing="xl">
                         {brands?.map((brand, index) => (
                             <div key={index} className='flex flex-col items-center justify-center w-full'>

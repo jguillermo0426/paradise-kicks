@@ -10,10 +10,10 @@ export default function Inventory() {
     return (
         <MantineProvider>
             <AdminHeader navSelected="Brands"></AdminHeader>
-            <Paper shadow="xl">
+            <Paper shadow="">
                 <Brands></Brands>
             </Paper>
-            <Footer></Footer>
+            
         </MantineProvider>
     );
 }

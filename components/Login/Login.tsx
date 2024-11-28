@@ -47,21 +47,21 @@ export default function Login() {
     
     return (
         <main>
-            <div className="flex flex-row w-full items-center justify-center" style={{ height: "100vh" }}>
+            <div className="bg-black flex flex-row w-full items-center justify-center" style={{ height: "100vh" }}>
                 <div className="flex flex-col items-center h-full justify-center p-20">
-                    <div className="flex flex-col items-center justify-start  drop-shadow-xl w-[600px] h-full py-10 bg-[#319694]" style={{ paddingInline: "100px", borderRadius: "20px" }}>
+                    <div className="flex flex-col items-center justify-center drop-shadow-xl w-[600px] h-full py-10 bg-[#319694]" style={{ paddingInline: "100px", borderRadius: "20px" }}>
                         <Image
                             src="/white logo.png"
                             h={80}
                             w={80}
                         />
-                        <p style={epilogue.style} className="text-[45px] font-bold text-[#EDEDED] mt-5 mb-0">Paradise Kicks</p>
-                        <p style={epilogue.style} className="text-[13px] font-light italic text-[#EDEDED] mb-5">Please enter your admin login credentials.</p>
+                        <p style={epilogue.style} className="text-[45px] font-bold text-[#EDEDED] mt-5 mb-0 pb-0">Paradise Kicks</p>
+                        <p style={epilogue.style} className="text-[13px] font-light italic text-[#EDEDED] mb-8">Please enter your admin login credentials.</p>
                         
                         {/* LOG IN FORM */}
                         <form onSubmit={(e) => logIn(e)} id="login-form" className="flex flex-col w-9/12 items-start justify-center">
                             <p style={epilogue.style} className="text-[15px] font-light text-[#EDEDED]">
-                                Username<span style={{ color: "#E53835", fontSize: "20px" }}>*</span>
+                                Username<span style={{ color: "#E53835", fontSize: "20px" }}> *</span>
                             </p>
                             <TextInput 
                                 name="username"
@@ -71,7 +71,7 @@ export default function Login() {
                                 required
                             />
                             <p style={epilogue.style} className="text-[15px] font-light text-[#EDEDED]">
-                                Password<span style={{ color: "#E53835", fontSize: "20px" }}>*</span>
+                                Password<span style={{ color: "#E53835", fontSize: "20px" }}> *</span>
                             </p>
                             <PasswordInput 
                                 name="username"
@@ -82,11 +82,11 @@ export default function Login() {
                             />
                             <Button 
                                 fullWidth
-                                className="mt-4 p-1" 
+                                className="mt-8 p-1 shadow-lg bg-success hover:outline hover:outline-3 hover:outline-offset-2 hover:outline-[#216923]"  
                                 type="submit"
                                 styles={{
                                     root: {
-                                        backgroundColor: "#38bdba"
+                                        backgroundColor: "#2E7D31"
                                     }
                                 }}
                             >
