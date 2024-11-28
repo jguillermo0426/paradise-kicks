@@ -81,7 +81,7 @@ export default function Header({navSelected}: SelectedProps) {
 
                     <Anchor href="/order-tracker" underline='never'>
                         <div className={navSelected === "Order Tracker" ? selected : unselected}>
-                            <p style={epilogue.style} className={navSelected === "Order Tracker" ? selectedText : unselectedText}>Order Tracker</p>
+                            <p style={epilogue.style} className={navSelected === "Order Tracker" ? selectedText : unselectedText}>Tracker</p>
                         </div>
                     </Anchor>
                 </div>
@@ -181,10 +181,10 @@ export default function Header({navSelected}: SelectedProps) {
                                 </motion.div>
 
                                 <motion.div>
-                                    <Anchor href="/" underline='never'>
-                                        <div className="justify-stretch flex flex row items-center px-3 mb-3">
-                                            <div className={`group ${navSelected === "Contact" ? selectedToggle : unselectedToggle}`}>
-                                                <p style={epilogue.style} className={navSelected === "Contact" ? selectedTextToggle : unselectedTextToggle}>Contact</p>
+                                <Anchor href="/order-tracker" underline='never'>
+                                        <div className="my-1 justify-stretch flex flex row items-center px-3 mb-1">
+                                            <div className={`group ${navSelected === "Order Tracker" ? selectedToggle : unselectedToggle}`}>
+                                                <p style={epilogue.style} className={navSelected === "Order Tracker" ? selectedTextToggle : unselectedTextToggle}>Tracker</p>
                                                 <svg className="w-[20px] h-[20px] ml-auto mt-1 stroke-[#177F7D]" data-slot="icon" fill="none" strokeWidth="3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                                     <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
                                                 </svg>
