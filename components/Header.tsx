@@ -18,6 +18,7 @@ type SelectedProps = {
 
 export default function Header({navSelected}: SelectedProps) {
 
+
     const selected = "max-[1024px]:w-[7rem] max-[912px]:mx-1 group mx-5 transition-colors flex items-center justify-center w-[9rem] pt-20 pb-3 px-5 border-2 border-solid rounded-b-[0.625rem] border-[#177F7D] -mt-16 hover:bg-[#F0F0F0] hover:cursor-pointer";
     const unselected = "max-[1024px]:w-[7rem] max-[912px]:mx-1 group mx-5 transition-colors flex items-center hover:bg-[#177F7D] w-[9rem] justify-center pt-20 pb-3 px-5 border-2 border-none rounded-b-[0.625rem] -mt-16 hover:cursor-pointer";
 
@@ -78,9 +79,9 @@ export default function Header({navSelected}: SelectedProps) {
                         </div>
                     </Anchor>
 
-                    <Anchor href="/" underline='never'>
-                        <div className={navSelected === "Contact" ? selected : unselected}>
-                            <p style={epilogue.style} className={navSelected === "Contact" ? selectedText : unselectedText}>Contact</p>
+                    <Anchor href="/order-tracker" underline='never'>
+                        <div className={navSelected === "Order Tracker" ? selected : unselected}>
+                            <p style={epilogue.style} className={navSelected === "Order Tracker" ? selectedText : unselectedText}>Order Tracker</p>
                         </div>
                     </Anchor>
                 </div>

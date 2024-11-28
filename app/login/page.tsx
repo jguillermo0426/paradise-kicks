@@ -2,6 +2,7 @@
 import '@mantine/notifications/styles.css';
 import Login from "@/components/Login/Login";
 import { MantineProvider } from "@mantine/core";
+
 const Loginpage = () => {
     return (
         <>
@@ -11,4 +12,5 @@ const Loginpage = () => {
         </>
     );
 }
+
 export default Loginpage;

@@ -7,8 +7,8 @@ export async function GET(req: Request) {
     let { data: faqs, error } = await supabase
         .from('faqs')
         .select()
+        .order('id', { ascending: true })
 
 
     console.log("faqs: ", faqs);
     return Response.json({ faqs });
-}

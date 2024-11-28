@@ -14,6 +14,7 @@ type SelectedProps = {
     navSelected: string;
 }
 
+
 export default function Header({ navSelected }: SelectedProps) {
     const router = useRouter();
 
@@ -27,6 +28,7 @@ export default function Header({ navSelected }: SelectedProps) {
         Cookies.remove("loggedin");
         router.push("/login");
     }
+
 
     return (
         <main className="flex flex-col bg-white w-full h-[6rem] justify-between items-center">
@@ -58,7 +60,7 @@ export default function Header({ navSelected }: SelectedProps) {
                         </div>
                     </Anchor>
 
-                    <Anchor href="/" underline='never'>
+                    <Anchor href="/admin-dashboard/faqs" underline='never'>
                         <div className={navSelected === "FAQs" ? selected : unselected}>
                             <p style={epilogue.style} className={navSelected === "FAQs" ? selectedText : unselectedText}>FAQs</p>
                         </div>

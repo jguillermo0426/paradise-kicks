@@ -44,6 +44,12 @@ export default function AdminStock() {
         });
     };
 
+    const handleError = (message: string) => {
+        showNotification({
+            message: message
+        });
+    };
+
     return (
         <div className="bg-white relative z-50 mb-[18rem] overflow-hidden flex flex-col items-center justify-items-center min-h-screen p-8 pb-20 sm:p-20">
             <div className='flex flex-row items-center justify-end w-full'>
@@ -92,11 +98,11 @@ export default function AdminStock() {
             </div>
 
             {value == "1" &&
-                <AddItemMemoized onSuccess={handleNotification} />
+                <AddItemMemoized onSuccess={handleNotification} onError={handleError}/>
             }
 
             {value === "2" &&
-                <EditItems searchValue={searchValue} onSuccess={handleNotification} />
+                <EditItems searchValue={searchValue} onSuccess={handleNotification} onError={handleError} />
             }
 
             {value === "3" &&
