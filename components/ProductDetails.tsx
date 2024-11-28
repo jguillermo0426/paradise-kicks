@@ -490,6 +490,7 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                 {/* PRODUCT PICTURES */}
                                 <div className="flex flex-col items-center w-[55%] max-w-[724px] mx-8">
                                     <Carousel
+                                        className="border border-gray rounded-xl"
                                         withIndicators
                                         height={764}
                                         loop
@@ -498,10 +499,11 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                         {product.colorways.map((colorway, colorwayIndex) => <Carousel.Slide key={colorwayIndex}>
                                             <Image
                                                 alt="Card background"
-                                                className="object-cover rounded-xl"
+                                                className="object-contain rounded-xl"
                                                 src={getImageLink(product, colorway.colorway) || "https://static.nike.com/a/images/t_PDP_936_v1/f_auto,q_auto:eco/af53d53d-561f-450a-a483-70a7ceee380f/W+NIKE+DUNK+LOW.png"}
                                                 width={724}
-                                                height={764} />
+                                                height={764} 
+                                            />
                                             <p>Hello</p>
                                         </Carousel.Slide>
                                         )}
