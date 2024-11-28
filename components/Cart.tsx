@@ -217,7 +217,7 @@ export default function Cart() {
                                         </div>
                                         <div className="h-full flex flex-col items-end justify-between ml-auto">
                                             <Image
-                                                src={brandLogoMap.get(item.product.Brand)}
+                                                src={getBrandLogo(item.product.Brand)}
                                                 height={28}
                                             />
                                             <p className="text-[24px]" style={{ fontFamily: "EpilogueMedium", marginBottom: "-8px" }}>
@@ -259,26 +259,27 @@ export default function Cart() {
                                         src="/gcash.png"
                                     />
                                 </div>
-                                <Button
-                                    className="hover:outline hover:outline-offset-2 hover:outline-dark-gray shadow-lg mt-auto"
-                                    variant="filled"
-                                    fullWidth
-                                    radius="md"
-                                    color="black"
-                                    styles={{
-                                        root: {
-                                            height: "78px"
-                                        },
-                                        label: {
-                                            fontFamily: "EpilogueBold",
-                                            fontSize: "24px",
-                                            color: "#EDEDED"
-                                        }
-                                    }}
-                                >
-                                    Proceed to Checkout
-                                </Button>
-                                    
+                                <Link href="/checkout" className='w-full mt-auto'>
+                                    <Button
+                                        className="hover:outline hover:outline-offset-2 hover:outline-dark-gray shadow-lg mt-auto"
+                                        variant="filled"
+                                        fullWidth
+                                        radius="md"
+                                        color="black"
+                                        styles={{
+                                            root: {
+                                                height: "78px"
+                                            },
+                                            label: {
+                                                fontFamily: "EpilogueBold",
+                                                fontSize: "24px",
+                                                color: "#EDEDED"
+                                            }
+                                        }}
+                                    >
+                                        Proceed to Checkout
+                                    </Button>
+                                </Link>
                             </div> 
                         </div>
                     </div>
