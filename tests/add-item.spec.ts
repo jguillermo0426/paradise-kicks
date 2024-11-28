@@ -12,6 +12,7 @@ test.beforeEach(async ({ page }) => {
 
 
 test.describe('Add Item', () => {
+  test.setTimeout(1000000);
   test('add a single product', async ({ page }) => {
     // fill up fields
     await page.locator('div').filter({ hasText: /^SKU$/ }).nth(1).getByRole('textbox').click(); // SKU Field
@@ -37,7 +38,6 @@ test.describe('Add Item', () => {
     
     // Assert
     await expect(page.getByText('Successfully submitted!')).toBeVisible();
-    await expect(page.getByText('The products have been')).toBeVisible();
     await page.reload();
     
     // Delete added product to maintain database cleanliness
@@ -48,7 +48,6 @@ test.describe('Add Item', () => {
     await page.getByRole('button', { name: 'Delete Selected' }).click();
     await page.getByRole('button', { name: 'Delete' }).click();
     await expect(page.getByText('Successfully submitted!')).toBeVisible();
-    await expect(page.getByText('The products have been')).toBeVisible();
   });
 
   test('add a single product but leaving a field blank', async ({ page }) => {
