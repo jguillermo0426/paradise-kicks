@@ -12,7 +12,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('delete a single product', async ({ page }) => {
-  test.setTimeout(300000);
+  //test.setTimeout(300000);
   //Add a testing product "Delete Me" to be deleted so as not to delete from current database
   await page.locator('div').filter({ hasText: /^SKU$/ }).nth(1).getByRole('textbox').click(); 
   await page.locator('div').filter({ hasText: /^SKU$/ }).nth(1).getByRole('textbox').fill('Delete Me');
@@ -51,7 +51,7 @@ test('delete a single product', async ({ page }) => {
 });
 
 test('delete multiple products', async ({ page }) => {
-  test.setTimeout(3000000);
+  //test.setTimeout(3000000);
   //Add a testing product "Delete Me 1" to be deleted so as not to delete from current database
   await page.locator('div').filter({ hasText: /^SKU$/ }).nth(1).getByRole('textbox').click();
   await page.locator('div').filter({ hasText: /^SKU$/ }).nth(1).getByRole('textbox').fill('Delete Me 1');
