@@ -206,7 +206,7 @@ export default function Home() {
         element?.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
     }
 
-    const autoplay = useRef(Autoplay({ delay: 500, stopOnInteraction: false }));
+    const autoplay = useRef(Autoplay({ delay: 2000, stopOnInteraction: false }));
 
     return (
         <MantineProvider>
