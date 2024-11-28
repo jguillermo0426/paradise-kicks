@@ -29,7 +29,7 @@ export default function DeleteItems({onSuccess, searchValue}: deleteItemProps) {
 
     useEffect(() => {
         const filterProducts = () => {
-            var productsArray: Product[] = [];
+            let productsArray: Product[] = [];
 
             if (searchValue) {
                 products.forEach((product) => {

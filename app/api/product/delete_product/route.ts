@@ -11,7 +11,7 @@ export async function POST(req: Request) {
     const products: Product[] = [];
 
     const promises = formData.map(async (product: Product) => {
-        let myuuid = uuidv4();
+        const myuuid = uuidv4();
         const { data } = await supabase
             .from('product')
             .update({

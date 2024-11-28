@@ -1,19 +1,16 @@
 'use client'
-import { MantineProvider, Select, TextInput, Popover, Button, Pagination, Image, LoadingOverlay, Affix, UnstyledButton, Loader } from '@mantine/core';
-import { useEffect, useState } from 'react';
-import { GroupedProduct2, Product, BrandsType } from '@/types/types';
+import { BrandsType, GroupedProduct2, Product } from '@/types/types';
+import { Affix, Button, Image, Loader, LoadingOverlay, MantineProvider, Pagination, Popover, Select, TextInput, UnstyledButton } from '@mantine/core';
 import { Card, CardBody } from "@nextui-org/react";
 import Link from 'next/link';
-import React from 'react';
-import classes from "./css/tabs.module.css";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from 'react';
 import { useDebounce } from "use-debounce";
-import { useCart } from '@/utils/useCart';
+import classes from "./css/tabs.module.css";
 // import ScrollToHashElement from "@cascadia-code/scroll-to-hash-element";
 
 
-export default function ProductListing({ searchParams }: { searchParams: string }) {
-    const [groupedProducts, setGroupedProducts] = useState<GroupedProduct2[]>([]);
+export default function ProductListing() {
     const brandLogoMap: Map<string, string> = new Map();
     const [totalPages, setTotalPages] = useState<number>(1);
     const [activePage, setPage] = useState(1);
@@ -42,7 +39,7 @@ export default function ProductListing({ searchParams }: { searchParams: string 
     }, [query, router]);
 
     const getBrands = async () => {
-        let fetchedBrandsArray: BrandsType[] = [];
+        const fetchedBrandsArray: BrandsType[] = [];
         let fetchedBrand: BrandsType;
         
         const response = await fetch(`/api/brands/get_brands`, {
@@ -51,7 +48,7 @@ export default function ProductListing({ searchParams }: { searchParams: string 
     
         const result = await response.json();
         if (result.brands.length !== 0) {
-            result.brands.forEach((brand: any) => {
+            result.brands.forEach((brand: BrandsType) => {
                 fetchedBrand = {
                     id: brand.id,
                     brand_name: brand.brand_name,
@@ -127,8 +124,6 @@ export default function ProductListing({ searchParams }: { searchParams: string 
                 } else if (filterParam === "high_to_low") {
                     sorted2 = products.sort((a: GroupedProduct2, b: GroupedProduct2) => b.colorways[0].sizes[0].price - a.colorways[0].sizes[0].price); // Descending Price order
                 }
-
-                setGroupedProducts(sorted2);
 
                 if (sortFilter) {
                     setSortedProducts(sorted2);
@@ -212,7 +207,7 @@ export default function ProductListing({ searchParams }: { searchParams: string 
 
     const getTotalColors = (groupedProduct: GroupedProduct2) => {
         let totalColors = 0;
-        groupedProduct.colorways.forEach((colorway) => {
+        groupedProduct.colorways.forEach(() => {
             totalColors += 1;
         });
 
@@ -243,7 +238,7 @@ export default function ProductListing({ searchParams }: { searchParams: string 
     }
 
     const getBrandLogo = (brandName: string) => {
-        let brandImageLink = (brands?.find(brand => brand.brand_name === brandName))?.brand_image;
+        const brandImageLink = (brands?.find(brand => brand.brand_name === brandName))?.brand_image;
         return brandImageLink;
     }
 
@@ -255,16 +250,16 @@ export default function ProductListing({ searchParams }: { searchParams: string 
     };
 
 
-    const handleScrollToFAQs = () => {
-        router.push("/");
+    // const handleScrollToFAQs = () => {
+    //     router.push("/");
 
-        setTimeout(() => {
-            const faqSection = document.getElementById('faq-section');
-            if (faqSection) {
-                faqSection.scrollIntoView({ behavior: 'smooth' });
-            }
-        }, 300); 
-    };
+    //     setTimeout(() => {
+    //         const faqSection = document.getElementById('faq-section');
+    //         if (faqSection) {
+    //             faqSection.scrollIntoView({ behavior: 'smooth' });
+    //         }
+    //     }, 300); 
+    // };
 
     const quickHelpArrow = (<svg width="20" height="30" viewBox="0 0 20 30" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M1 28.9618L19.1652 14.4362L1 1.00002" stroke="#1C1C1C"/>

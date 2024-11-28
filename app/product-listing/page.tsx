@@ -12,7 +12,7 @@ export default function ProductListingPage() {
             <CartProvider>
             <Header navSelected="Catalogue"/>
             <Paper shadow="xl">
-                <ProductListing searchParams={""}/>
+                <ProductListing/>
             </Paper>
             <Footer/>
             </CartProvider>

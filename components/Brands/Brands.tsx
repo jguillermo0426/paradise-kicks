@@ -1,13 +1,13 @@
 'use client'
-import { BrandsType, Product } from '@/types/types';
-import { SimpleGrid, Image, Button, Box, LoadingOverlay, TextInput } from '@mantine/core';
+import { storage } from '@/firebase/firebase';
+import { BrandsType } from '@/types/types';
+import { Box, Button, Image, SimpleGrid, TextInput } from '@mantine/core';
+import { useForm } from '@mantine/form';
 import { Notifications, showNotification } from '@mantine/notifications';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { Epilogue } from 'next/font/google';
 import { useEffect, useRef, useState } from 'react';
-import { useForm } from '@mantine/form';
-import styles from "../css/inputfield.module.css"
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { storage } from '@/firebase/firebase';
+import styles from "../css/inputfield.module.css";
 
 const epilogue = Epilogue({
     subsets: ['latin'],
@@ -173,7 +173,7 @@ export default function Brands() {
                                     fallbackSrc="/placeholder.svg"
                                     fit="contain"
                                     className='mt-3 hover:cursor-pointer'
-                                    onClick={(e) => deleteBrand(brand.brand_name)}
+                                    onClick={() => deleteBrand(brand.brand_name)}
                                 />
                             </div>
                         ))}

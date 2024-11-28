@@ -1,13 +1,11 @@
 
 'use client'
-import { FormEventHandler, useState } from "react";
-import { useReducedMotion } from 'framer-motion';
-import { NextResponse } from 'next/server';
-import Cookies from 'js-cookie';
-import { useRouter } from 'next/navigation';
-import { Image, PasswordInput, TextInput, Button } from '@mantine/core';
+import { Button, Image, PasswordInput, TextInput } from '@mantine/core';
 import { Notifications, showNotification } from '@mantine/notifications';
+import Cookies from 'js-cookie';
 import { Epilogue } from 'next/font/google';
+import { useRouter } from 'next/navigation';
+import { FormEventHandler, useState } from "react";
 
 
 const epilogue = Epilogue({
@@ -19,7 +17,6 @@ const epilogue = Epilogue({
 export default function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState<string | null>(null);
     const router = useRouter();
   
     const envUsername = process.env.NEXT_PUBLIC_USERNAME;

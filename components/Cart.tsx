@@ -1,14 +1,13 @@
 'use client'
-import { MantineProvider, Button, ActionIcon, UnstyledButton } from '@mantine/core';
-import { useEffect, useState } from 'react';
-import { Product, itemOrder, BrandsType } from '@/types/types';
-import React from 'react';
-import { Image } from "@nextui-org/image";
+import { BrandsType, itemOrder } from '@/types/types';
 import { useCart } from '@/utils/useCart';
-import '@mantine/notifications/styles.css';
+import { ActionIcon, Button, MantineProvider, UnstyledButton } from '@mantine/core';
 import { notifications, Notifications } from '@mantine/notifications';
-import { useRouter } from "next/navigation"; 
+import '@mantine/notifications/styles.css';
+import { Image } from "@nextui-org/image";
 import { Link } from '@nextui-org/react';
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from 'react';
 
 
 export default function Cart() {
@@ -24,7 +23,7 @@ export default function Cart() {
     brandLogoMap.set("Puma", "/puma.png");
 
     const getBrands = async () => {
-        let fetchedBrandsArray: BrandsType[] = [];
+        const fetchedBrandsArray: BrandsType[] = [];
         let fetchedBrand: BrandsType;
         
         const response = await fetch(`/api/brands/get_brands`, {
@@ -33,7 +32,7 @@ export default function Cart() {
     
         const result = await response.json();
         if (result.brands.length !== 0) {
-            result.brands.forEach((brand: any) => {
+            result.brands.forEach((brand: BrandsType) => {
                 fetchedBrand = {
                     id: brand.id,
                     brand_name: brand.brand_name,
@@ -58,7 +57,7 @@ export default function Cart() {
     }
 
     const increaseQuantity = (item: itemOrder) => {
-        let newQuantity = item.quantity + 1;
+        const newQuantity = item.quantity + 1;
 
         if (newQuantity <= item.product.Stock) {
             increaseCartItem(item.sku);
@@ -99,7 +98,7 @@ export default function Cart() {
     }
 
     const getBrandLogo = (brandName: string) => {
-        let brandImageLink = (brands?.find(brand => brand.brand_name === brandName))?.brand_image;
+        const brandImageLink = (brands?.find(brand => brand.brand_name === brandName))?.brand_image;
         console.log("BRAND IMAGE: ", brandImageLink);
         return brandImageLink;
     }
@@ -264,6 +263,7 @@ export default function Cart() {
                                         className="hover:outline hover:outline-offset-2 hover:outline-dark-gray shadow-lg mt-auto"
                                         variant="filled"
                                         fullWidth
+                                        disabled={cart.length === 0}
                                         radius="md"
                                         color="black"
                                         styles={{

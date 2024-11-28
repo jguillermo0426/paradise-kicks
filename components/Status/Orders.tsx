@@ -1,15 +1,13 @@
 'use client'
-import { useForm } from '@mantine/form';
-import { TextInput, Button, NumberInput, FileButton, Tooltip, FloatingIndicator, Tabs, Image, Select, Pagination } from '@mantine/core';
-import { useCallback, useEffect, useState } from 'react';
-import { CardProduct, GroupedProduct, OrderHistory, Product, ProductsOrdered } from '@/types/types';
+import { OrderHistory, ProductsOrdered } from '@/types/types';
+import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import { Button, Image, Pagination, Select, TextInput } from '@mantine/core';
 import { Notifications, showNotification } from '@mantine/notifications';
-import SearchBar from '../SearchBar';
 import { Epilogue } from 'next/font/google';
+import { useCallback, useEffect, useState } from 'react';
 import styles from '../css/searchbar.module.css';
-import { ChevronDownIcon } from "@heroicons/react/24/outline"
-import StatusCard from './StatusCard';
 import classes from '../css/tabs.module.css';
+import StatusCard from './StatusCard';
 
 const epilogue = Epilogue({
     subsets: ['latin'],
@@ -27,26 +25,23 @@ const status = [
     "Cancelled"
 ]
 
+const statusHistory = {
+    history_id: 0,
+    order_id: "",
+    order_status: {
+        id: 0,
+        status: ""
+    },
+    updated_at: new Date()
+}
+
 
 export default function AdminStock() {
     const [orderIds, setOrderIds] = useState<string[]>([]);
     const [orderProducts, setOrderProducts] = useState<ProductsOrdered[]>();
     const [selectedStatus, setSelectedStatus] = useState<string | null>(status[0]);
     const [sortedProducts, setSortedProducts] = useState<ProductsOrdered[]>();
-    const [statusHistory, setStatusHistory] = useState<OrderHistory>({
-        history_id: 0,
-        order_id: "",
-        order_status: {
-            id: 0,
-            status: ""
-        },
-        updated_at: new Date()
-    });
-    const [controlsRefs, setControlsRefs] = useState<Record<string, HTMLButtonElement | null>>({});
-    const setControlRef = (val: string) => (node: HTMLButtonElement) => {
-        controlsRefs[val] = node;
-        setControlsRefs(controlsRefs);
-    };
+
     const [activePage, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState<number>(1);
     const [searchValue, setSearchValue] = useState<string>('');
@@ -73,6 +68,7 @@ export default function AdminStock() {
 
             const result = await response.json();
             console.log(result.order);
+            setTotalPages(Math.ceil(result.totalOrders / 12));
             const orders = Array.from(new Set(result.order));
             setOrderIds(orders as string[]);
         }
@@ -181,6 +177,7 @@ export default function AdminStock() {
         setToShip(tempToShip);
         setInTransit(tempInTransit);
     }, [orderProducts]);
+
 
     return (
         <div className="relative z-50 mb-[18rem] bg-white overflow-hidden flex flex-col items-center justify-items-center min-h-screen p-8 pb-20 sm:p-20">

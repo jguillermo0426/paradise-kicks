@@ -67,7 +67,7 @@ export async function POST(req: Request) {
     });
 
 
-    const { data: status, error: statusError } = await supabase
+    const { error: statusError } = await supabase
         .from('status_history')
         .insert([
             {

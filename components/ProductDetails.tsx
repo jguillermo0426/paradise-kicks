@@ -1,15 +1,15 @@
 'use client'
-import { MantineProvider, Skeleton, Divider, Button, ActionIcon, Tooltip, Notification } from '@mantine/core';
-import '@mantine/carousel/styles.css';
-import { Carousel } from '@mantine/carousel';
-import { useEffect, useRef, useState } from 'react';
 import { GroupedProduct2, Product } from '@/types/types';
-import { Image } from "@nextui-org/react";
-import classes from './css/actionicon.module.css';
-import { EmblaCarouselType } from 'embla-carousel-react';
-import '@mantine/notifications/styles.css';
-import { notifications, Notifications } from '@mantine/notifications';
 import { useCart } from '@/utils/useCart';
+import { Carousel } from '@mantine/carousel';
+import '@mantine/carousel/styles.css';
+import { ActionIcon, Button, Divider, MantineProvider, Skeleton, Tooltip } from '@mantine/core';
+import { notifications, Notifications } from '@mantine/notifications';
+import '@mantine/notifications/styles.css';
+import { Image } from "@nextui-org/react";
+import { EmblaCarouselType } from 'embla-carousel-react';
+import { useEffect, useRef, useState } from 'react';
+import classes from './css/actionicon.module.css';
 
 type ProductProps = {
     productModel: string;
@@ -25,10 +25,8 @@ export default function ProductDetails({ productModel }: ProductProps) {
     const [quantity, setQuantity] = useState(0);
     const emblaRef = useRef<EmblaCarouselType>();
     const [uniqueSizes, setUniqueSizes] = useState<string[]>([]);
-    const [addCartItem, setAddCartItem] = useState<Product>();
-    const [addedSKU, setAddedSKU] = useState<string>('');
 
-    const { cart, addToCart, itemExists, removeFromCart, getItemFromCart, updateItemQuantity, clearCart } = useCart();
+    const { cart, addToCart, getItemFromCart, updateItemQuantity } = useCart();
 
     const buttonStyles = {
         selected: {
@@ -333,8 +331,8 @@ export default function ProductDetails({ productModel }: ProductProps) {
     };
 
     const startingPriceDisplay = (product: GroupedProduct2) => {
-        let lowestPrice = getLowestPrice(product);
-        let highestPrice = getHighestPrice(product);
+        const lowestPrice = getLowestPrice(product);
+        const highestPrice = getHighestPrice(product);
 
         if (lowestPrice === highestPrice) {
             return `₱${lowestPrice.toString()}`;
@@ -366,8 +364,8 @@ export default function ProductDetails({ productModel }: ProductProps) {
     };
 
     const increaseQuantity = () => {
-        let newQuantity = quantity + 1;
-        let itemInCart = cart.find(item => item.sku === selectedSKU);
+        const newQuantity = quantity + 1;
+        const itemInCart = cart.find(item => item.sku === selectedSKU);
         let itemQuantity = 0;
         let newItemQuantity = 0;
 
@@ -398,13 +396,12 @@ export default function ProductDetails({ productModel }: ProductProps) {
 
     const decreaseQuantity = () => {
         if (quantity > 0) {
-            let newQuantity = quantity - 1;
+            const newQuantity = quantity - 1;
             setQuantity(newQuantity);
         }
     }
 
     const getImageLink = (groupedProduct: GroupedProduct2, selectedColorway: string) => {
-        let imageLink = "";
 
         const colorway = groupedProduct.colorways.find(
             (colorway) => colorway.colorway === selectedColorway

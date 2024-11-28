@@ -1,13 +1,12 @@
 'use client'
-import { MantineProvider, UnstyledButton, Image, Divider, Accordion, Button, Affix, Popover, Skeleton } from '@mantine/core';
+import { BrandsType, FaqsType, GroupedProduct2, Product } from '@/types/types';
 import { Carousel } from '@mantine/carousel';
-import Autoplay from 'embla-carousel-autoplay';
 import '@mantine/carousel/styles.css';
-import { BrandsType, GroupedProduct2, Product, FaqsType } from '@/types/types'
-import { useEffect, useRef, useState } from 'react';
-import React from 'react';
+import { Accordion, Affix, Button, Divider, Image, MantineProvider, Popover, Skeleton, UnstyledButton } from '@mantine/core';
 import { Card, CardBody } from "@nextui-org/react";
+import Autoplay from 'embla-carousel-autoplay';
 import Link from 'next/link';
+import { useEffect, useRef, useState } from 'react';
 
 
 export default function Home() {
@@ -31,7 +30,7 @@ export default function Home() {
         const getBrands = async () => {
             setLoadingBrands(true);
     
-            let fetchedBrandsArray: BrandsType[] = [];
+            const fetchedBrandsArray: BrandsType[] = [];
             let fetchedBrand: BrandsType;
             
             const response = await fetch(`/api/brands/get_brands`, {
@@ -40,7 +39,7 @@ export default function Home() {
         
             const result = await response.json();
             if (result.brands.length !== 0) {
-                result.brands.forEach((brand: any) => {
+                result.brands.forEach((brand: BrandsType) => {
                     fetchedBrand = {
                         id: brand.id,
                         brand_name: brand.brand_name,
@@ -137,7 +136,7 @@ export default function Home() {
 
     useEffect(() => {
         const getFaqs = async () => {
-            let fetchedFaqsArray: FaqsType[] = [];
+            const fetchedFaqsArray: FaqsType[] = [];
             let fetchedFaq: FaqsType;
             
             const response = await fetch(`/api/faqs/get_faqs`, {
@@ -146,7 +145,7 @@ export default function Home() {
         
             const result = await response.json();
             if (result.faqs.length !== 0) {
-                result.faqs.forEach((faq: any) => {
+                result.faqs.forEach((faq: FaqsType) => {
                     fetchedFaq = {
                         id: faq.id,
                         question: faq.question,
@@ -178,7 +177,7 @@ export default function Home() {
 
     const getTotalColors = (groupedProduct: GroupedProduct2) => {
         let totalColors = 0;
-        groupedProduct.colorways.forEach((colorway) => {
+        groupedProduct.colorways.forEach(() => {
             totalColors += 1;
         });
 
@@ -206,7 +205,7 @@ export default function Home() {
     };
 
     const getBrandLogo = (brandName: string) => {
-        let brandImageLink = (brands?.find(brand => brand.brand_name === brandName))?.brand_image;
+        const brandImageLink = (brands?.find(brand => brand.brand_name === brandName))?.brand_image;
         return brandImageLink;
     }
 
@@ -230,7 +229,7 @@ export default function Home() {
                             <div className="flex flex-col w-full h-full items-start justify-between px-16 py-[25%] max-[769px]:px-10 max-[477px]:px-5">
                                 <p className="ml-10 text-[4vw] tracking-tighter" style={{ fontFamily: "EpilogueBold", color: "white", lineHeight: 1.1 }}>
                                     <span className="text-[5vw] mr-[1.5px]" style={{ fontStyle: "italic" }}>B</span>ringing<br/>
-                                    today's most<br/>
+                                    today&#39;s most<br/>
                                     in-demand<br/>
 
                                     <div className="max-[769px]:mb-1" style={{ display: "inline-block", transform: "rotate(-4deg)"}}>

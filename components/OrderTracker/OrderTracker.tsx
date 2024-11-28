@@ -1,11 +1,10 @@
 'use client'
-import { Button, MantineProvider, Input, UnstyledButton } from '@mantine/core';
-import React from 'react';
-import { useEffect, useState } from 'react';
-import { Order, OrderHistory } from '@/types/types'
-import { Epilogue } from 'next/font/google';
-import '@mantine/notifications/styles.css';
+import { OrderHistory } from '@/types/types';
+import { Button, Input, MantineProvider, UnstyledButton } from '@mantine/core';
 import { notifications, Notifications } from '@mantine/notifications';
+import '@mantine/notifications/styles.css';
+import { Epilogue } from 'next/font/google';
+import { useEffect, useState } from 'react';
 
 
 const epilogue = Epilogue({
@@ -16,7 +15,6 @@ const epilogue = Epilogue({
 
 export default function OrderTracker() {
     const [orderNumber, setOrderNumber] = useState<string>('');
-    const [lastName, setLastName] = useState<string>('');
     const [orderStatusHistory, setOrderStatusHistory] = useState<OrderHistory[]>([]);
 
     const getOrderStatus = async () => {
