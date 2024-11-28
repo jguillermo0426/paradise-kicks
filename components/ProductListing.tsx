@@ -9,7 +9,7 @@ import classes from "./css/tabs.module.css";
 import { useRouter } from "next/navigation";
 import { useDebounce } from "use-debounce";
 import { useCart } from '@/utils/useCart';
-import ScrollToHashElement from "@cascadia-code/scroll-to-hash-element";
+// import ScrollToHashElement from "@cascadia-code/scroll-to-hash-element";
 
 
 export default function ProductListing({ searchParams }: { searchParams: string }) {
@@ -60,7 +60,7 @@ export default function ProductListing({ searchParams }: { searchParams: string 
                 fetchedBrandsArray.push(fetchedBrand);
             });
     
-            console.log(fetchedBrandsArray);
+            //console.log(fetchedBrandsArray);
             setBrands(fetchedBrandsArray);
         } else {
             console.log("brands not found");
@@ -91,7 +91,7 @@ export default function ProductListing({ searchParams }: { searchParams: string 
             });
 
             const result = await response.json();
-            console.log(result.products);
+            //console.log(result.products);
             if (result.products.length !== 0) {
                 const sortedProducts = result.products.sort((a: Product, b: Product) => {
                     if (a.Colorway < b.Colorway) return -1;
@@ -110,9 +110,9 @@ export default function ProductListing({ searchParams }: { searchParams: string 
         
             
 
-                console.log(sortedProducts);
+                //console.log(sortedProducts);
                 const products = groupProducts(sortedProducts);
-
+                console.log("Grouped products: ", products);
                 let sorted2 = products;
                 if (filterParam == "alphabetical") {
                     sorted2 = products.sort((a: GroupedProduct2, b: GroupedProduct2) => {
@@ -173,8 +173,15 @@ export default function ProductListing({ searchParams }: { searchParams: string 
                 // if the group of the colorways doesnt exist, create it
                 if (!colorwayGroup) {
                     colorwayGroup = { id: colorwayId, image_link: image_link, colorway: Colorway, sizes: [], model: Model, brand: Brand };
+                    if (image_link) {
+                        colorwayGroup.image_link = image_link;  // assign image link if available
+                    }
                     grouped[Model].colorways.push(colorwayGroup);
                     colorwayId += 1;
+                }
+                
+                if (image_link) {
+                    colorwayGroup.image_link = image_link;  // assign image link if available
                 }
 
                 // assign the individual sku, size, stock, and price for the shoe
@@ -237,14 +244,12 @@ export default function ProductListing({ searchParams }: { searchParams: string 
 
     const getBrandLogo = (brandName: string) => {
         let brandImageLink = (brands?.find(brand => brand.brand_name === brandName))?.brand_image;
-        console.log("BRAND IMAGE: ", brandImageLink);
         return brandImageLink;
     }
 
 
     const getImageLink = (groupedProduct: GroupedProduct2) => {
         const colorwayWithImage = groupedProduct.colorways.find((colorway) => colorway.image_link && colorway.image_link.trim() !== '');
-        console.log(colorwayWithImage);
 
         return colorwayWithImage ? colorwayWithImage.image_link : "";
     };
@@ -269,7 +274,6 @@ export default function ProductListing({ searchParams }: { searchParams: string 
     return (
         <MantineProvider>
             <div className="flex flex-col items-center mt-3 mx-3 min-[993px]:mt-20 min-[993px]:mx-20 relative z-0 bg-white overflow-x-hidden min-h-screen"> 
-                <ScrollToHashElement behavior="smooth" inline="center" block="center" />
                 <div className="flex flex-col items-center w-full max-w-[1440px] m-6">
                     <div className="w-full flex flex-col min-[993px]:flex-row items-end justify-between mb-0 px-2
                                     min-[1368px]:mb-8

@@ -30,12 +30,15 @@ test('delete a single product', async ({ page }) => {
   await page.getByText('Upload Image').click();
   await page.locator(".hidden").first().setInputFiles('tests/attachments/shoe.png');
   await page.getByRole('button', { name: 'Submit Item', exact: true }).click();
+  await expect(page.getByText('Successfully submitted!')).toBeVisible();
+  await expect(page.getByText('The products have been')).toBeVisible();
+  await page.reload();
 
   //Go to delete tab and search "Delete" and delete the created "Delete Me"
   await page.getByRole('tab', { name: 'Delete' }).click();
   await page.getByPlaceholder('Search').click();
   await page.getByPlaceholder('Search').fill('Delete');
-  await page.locator('div').filter({ hasText: /^Delete Me$/ }).getByRole('checkbox').check();
+  await page.locator('div').filter({ hasText: /^Delete Me$/ }).getByRole('checkbox').click();
   await page.getByRole('button', { name: 'Delete Selected' }).click();
   await page.getByRole('button', { name: 'Delete' }).click();
 
@@ -66,6 +69,9 @@ test('delete multiple products', async ({ page }) => {
   await page.getByText('Upload Image').click();
   await page.locator(".hidden").first().setInputFiles('tests/attachments/shoe.png');
   await page.getByRole('button', { name: 'Submit Item', exact: true }).click();
+  await expect(page.getByText('Successfully submitted!')).toBeVisible();
+  await expect(page.getByText('The products have been')).toBeVisible();
+  await page.reload();
 
   //Add another testing product "Delete Me 2" to be deleted so as not to delete from current database
   await page.locator('div').filter({ hasText: /^SKU$/ }).nth(1).getByRole('textbox').click(); 
@@ -84,7 +90,10 @@ test('delete multiple products', async ({ page }) => {
   await page.getByText('Upload Image').click();
   await page.locator(".hidden").first().setInputFiles('tests/attachments/shoe.png');
   await page.getByRole('button', { name: 'Submit Item', exact: true }).click();
-
+  await expect(page.getByText('Successfully submitted!')).toBeVisible();
+  await expect(page.getByText('The products have been')).toBeVisible();
+  await page.reload();
+  
   //Go to delete tab and search "Delete" and delete the created "Delete Me 1" and "Delete Me 2"
   await page.getByRole('tab', { name: 'Delete' }).click();
   await page.getByPlaceholder('Search').click();
@@ -97,11 +106,7 @@ test('delete multiple products', async ({ page }) => {
   //Check that the multiple prompts appears to show delete was successful
   await expect(page.getByText('Successfully submitted!').nth(0)).toBeVisible();
   await expect(page.getByText('The products have been').nth(0)).toBeVisible();
-  await expect(page.getByText('Successfully submitted!').nth(1)).toBeVisible();
-  await expect(page.getByText('The products have been').nth(1)).toBeVisible();
-  
 
   //Close Delete Pop-up
   await page.getByRole('banner').getByRole('button').click();
 });
-

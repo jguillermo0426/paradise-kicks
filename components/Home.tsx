@@ -73,6 +73,8 @@ export default function Home() {
             if(result.products.length != 0) {
                 const fetchedProducts = groupProducts(result.products);
                 setGroupedProducts(fetchedProducts);
+                console.log("HOME PRODUCTS: ", groupedProducts);
+                console.log("----------")
                 setLoadingProducts(false);
             }
         }
@@ -107,8 +109,15 @@ export default function Home() {
                 // if the group of the colorways doesnt exist, create it
                 if (!colorwayGroup) {
                     colorwayGroup = { id: colorwayId, image_link: image_link, colorway: Colorway, sizes: [], model: Model, brand: Brand };
+                    if (image_link) {
+                        colorwayGroup.image_link = image_link;  // assign image link if available
+                    }
                     grouped[Model].colorways.push(colorwayGroup);
                     colorwayId += 1;
+                }
+
+                if (image_link) {
+                    colorwayGroup.image_link = image_link;  // assign image link if available
                 }
 
                 // assign the individual sku, size, stock, and price for the shoe

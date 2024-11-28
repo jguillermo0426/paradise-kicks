@@ -498,6 +498,7 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                                 max-[393px]:mx-0
                                                 max-[393px]:max-w-full max-[393px]:mx-8">
                                     <Carousel
+                                        className="border border-gray rounded-xl"
                                         withIndicators
                                         //height={764}
                                         loop
