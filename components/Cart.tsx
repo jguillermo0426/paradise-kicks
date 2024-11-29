@@ -268,11 +268,11 @@ export default function Cart() {
                                         color="#2E7D31"
                                         styles={{
                                             root: {
-                                                height: "78px"
+                                                height: "68px"
                                             },
                                             label: {
                                                 fontFamily: "EpilogueBold",
-                                                fontSize: "24px",
+                                                fontSize: "18px",
                                                 color: "white"
                                             }
                                         }}
