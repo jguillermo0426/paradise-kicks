@@ -247,7 +247,7 @@ export default function Checkout() {
                 Return
             </Button>
 
-            <p style={epilogue.style} className="text-[4.5rem] font-bold">Checkout</p>
+            <p style={epilogue.style} className="tracking-tighter text-[4.5rem] font-bold">Checkout</p>
 
             <div className="flex flex-row w-full justify-between">
                 <div className="flex flex-col w-[80%] mr-10 mt-[4.63vh] h-auto">
