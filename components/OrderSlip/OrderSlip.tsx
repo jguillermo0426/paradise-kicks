@@ -85,25 +85,26 @@ export default function OrderSlip({ orderslipid }: { orderslipid: string }) {
     }
 
     return (
-        <div className="flex flex-col items-start m-20 relative z-50 mb-[18rem] bg-white overflow-x-hidden min-h-screen">
+        <div className="flex flex-col p-3 items-start mx-20 mt-20 relative z-50 bg-white overflow-x-hidden min-h-screen">
             <Button
                 component="a"
                 href="/"
                 variant="filled"
+                className="hover:outline hover:outline-offset-2 hover:outline-dark-gray shadow-lg"
                 fullWidth
                 color="black"
                 radius="md"
                 styles={{
                     root: {
                         height: "46px",
-                        width: "207px",
+                        width: "150px",
                         marginRight: "auto",
                         marginBottom: "40px"
                     },
                     label: {
                         fontFamily: "Epilogue",
                         fontWeight: 700,
-                        fontSize: "20px",
+                        fontSize: "16px",
                         color: "#EDEDED"
                     }
                 }}
@@ -207,13 +208,21 @@ export default function OrderSlip({ orderslipid }: { orderslipid: string }) {
                 </div>
 
                 <div className="flex flex-col ml-12">
-                    <p style={epilogue.style} className="text-[2rem] font-bold mb-20">Order Confirmation Guidelines</p>
+                    <p style={epilogue.style} className="text-[2rem] font-bold">Order Confirmation Guidelines</p>
+                    <p style={epilogue.style} className="mt-10 text-[1rem] font-normal text-[#474747B3]">Important Note:</p>
+                    <div className="bg-[#FBC02D33] 2xl:h-[12.5vh] 3xl:h-[10vh] rounded-lg flex flex-row p-5 items-center justify-center mb-12">
+                        <Image
+                            src="/warning.svg"
+                        />
+                        <p className="mx-6" style={epilogue.style}>The <span style={epilogue.style} className="font-semibold">generated invoice slip should be sent to our Facebook Page or Viber.</span></p>
+                    </div>
                     <p style={epilogue.style} className="text-[1.5rem] font-bold text-[#474747]">Step 1  :  <span className="text-[1.5rem] font-normal text-[#474747]">Download the Order Invoice</span></p>
                     <Button
                         variant="filled"
                         fullWidth
                         color="black"
                         radius="md"
+                        className="hover:outline hover:outline-offset-2 hover:outline-dark-gray shadow-lg"
                         onClick={fileSave}
                         styles={{
                             root: {
@@ -236,7 +245,7 @@ export default function OrderSlip({ orderslipid }: { orderslipid: string }) {
 
                     <p style={epilogue.style} className="text-[1.5rem] font-bold text-[#474747] my-[40px]">Step 2  :  <span className="text-[1.5rem] font-normal text-[#474747]">Send Invoice to Facebook or Viber</span></p>
 
-                    <div className="flex flex-row justify-between">
+                    <div className="flex flex-row justify-center align-center gap-2">
                         <Image
                             src="/Facebook.png"
                             w={270}
@@ -248,14 +257,6 @@ export default function OrderSlip({ orderslipid }: { orderslipid: string }) {
                             fit="contain"
                             className="ml-4"
                         />
-                    </div>
-
-                    <p style={epilogue.style} className="text-[1.25rem] mt-[40px] font-normal text-[#474747B3]">Important Note:</p>
-                    <div className="bg-[#FBC02D33] 2xl:h-[12.5vh] 3xl:h-[10vh] rounded-lg flex flex-row p-5 items-center justify-center mb-12">
-                        <Image
-                            src="/warning.svg"
-                        />
-                        <p className="mx-6" style={epilogue.style}>The <span style={epilogue.style} className="font-semibold">generated invoice slip should be sent to our Facebook Page or Viber.</span></p>
                     </div>
                 </div>
             </div>
