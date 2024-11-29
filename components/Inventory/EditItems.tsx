@@ -268,13 +268,13 @@ export default function EditItems({ onSuccess, searchValue, onError }: editItemP
                 }}
             />
 
-            <Button className='mt-8'
+            <Button className='mt-8 hover:outline hover:outline-offset-2 hover:outline-success shadow-lg'
                 onClick={updateProducts}
                 styles={{
                     root: {
-                        backgroundColor: "#38BDBA",
+                        backgroundColor: "#2E7D31",
                         color: "white",
-                        width: '10vw',
+                        width: '12vw',
                     }
                 }}
             >

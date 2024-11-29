@@ -282,13 +282,13 @@ export default function AdminStock() {
                 <StatusCard key={index} orderedProducts={order} onChange={(e) => editStatus(e, order)} statusHistory={statusHistory} />
             ))}
 
-            <Button className='mt-8'
+            <Button className='mt-8 mb-10 hover:outline hover:outline-offset-2 hover:outline-success shadow-lg'
                 onClick={confirmStatus}
                 styles={{
                     root: {
-                        backgroundColor: "#38BDBA",
+                        backgroundColor: "#2E7D31",
                         color: "white",
-                        width: '10vw',
+                        width: '12vw',
                     }
                 }}
             >

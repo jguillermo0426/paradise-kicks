@@ -10,10 +10,9 @@ export default function faqs() {
     return (
         <MantineProvider>
             <AdminHeader navSelected="FAQs"></AdminHeader>
-            <Paper shadow="xl">
+            <Paper shadow="">
                 <FAQs></FAQs>
             </Paper>
-            <Footer></Footer>
         </MantineProvider>
     );
 }

@@ -120,7 +120,7 @@ export default function DeleteItems({onSuccess, searchValue}: deleteItemProps) {
 
                         </Button>
                         <Button 
-                            className='mt-8 mx-10'
+                            className='mt-8 mx-10 hover:outline hover:outline-offset-2 hover:outline-error shadow-lg'
                             style={epilogue.style}
                             styles = {{
                                 root: {
@@ -141,12 +141,12 @@ export default function DeleteItems({onSuccess, searchValue}: deleteItemProps) {
             <div className='w-full flex flex-col items-center justify-center'>
                 <div className="w-full flex flex-row items-end justify-end">
                     <Button 
-                        className='mt-8'
+                        className='mt-8 hover:outline-offset-2 hover:outline-error shadow-lg'
                         styles = {{
                             root: {
-                                backgroundColor: "#38BDBA",
+                                backgroundColor: "#E53835",
                                 color: "white",
-                                width: '10vw',
+                                width: '12vw',
                             }
                         }}
                         onClick={() => {
