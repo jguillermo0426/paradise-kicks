@@ -495,7 +495,7 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                                 max-[393px]:mx-0
                                                 max-[393px]:max-w-full max-[393px]:mx-8">
                                     <Carousel
-                                        className="border border-gray rounded-xl"
+                                        className="rounded-xl"
                                         withIndicators
                                         //height={764}
                                         loop
@@ -510,7 +510,7 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                                            min-[1228px]:h-[764px]
                                                            max-[1228px]:h-[534px]
                                                            max-[456px]:h-[234px]
-                                                           max-[393px]:max-w-screen bg-[#EDEDED]"
+                                                           max-[393px]:max-w-screen"
                                                 src={getImageLink(product, colorway.colorway) || "https://static.nike.com/a/images/t_PDP_936_v1/f_auto,q_auto:eco/af53d53d-561f-450a-a483-70a7ceee380f/W+NIKE+DUNK+LOW.png"}
                                                 //width={724}
                                                 //height={764} 
