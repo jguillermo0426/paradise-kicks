@@ -110,7 +110,7 @@ export default function Cart() {
                             mt-20 ml-20 mr-20 relative z-0 bg-white overflow-x-hidden min-h-screen">
                 <div className="flex flex-col items-center justify-center w-full max-w-[1440px] m-6">
                     <Button
-                    className="hover:outline hover:outline-offset-2 hover:outline-dark-gray shadow-lg"
+                    className="ml-2 hover:outline hover:outline-offset-2 hover:outline-dark-gray shadow-lg"
                     component="a"
                     href="/product-listing"
                     variant="filled"
@@ -145,14 +145,14 @@ export default function Cart() {
                                           text-black "
                                           style={{ fontFamily: "EpilogueBold", letterSpacing: "-3px", marginRight: "20px" }}>My Cart</p>
                         <Notifications />
-                        <div className="w-full flex max-[1390px]:flex-col flex-row max-[1390px]:items-center items-start justify-start mt-10">
+                        <div className="w-full flex max-[1237px]:flex-col flex-row max-[1237px]:items-center items-start justify-start mt-10">
                             {/* CART ITEMS LIST*/}
-                            <div className="ml-[-15px] w-full flex flex-col justify-center items-center">
+                            <div className="max-[1390px]-ml-0 ml-[-15px] w-full flex flex-col justify-center items-center">
                                 {cart.map((item, itemIndex) => (
                                     <div key={itemIndex} className="flex flex-row w-[95%] h-[228px] items-center justify-start mb-8 p-6 border-[#474747] border-2 rounded-xl">
                                         {/* REMOVE BUTTON */}
                                         <UnstyledButton onClick={() => {removeItem(item.product.SKU)}}>
-                                            <svg className="mr-6" width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <svg className="mr-4" width="32" height="32" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M22.11 13.5L21.591 27.0001M14.409 27.0001L13.89 13.5M28.842 8.68505C29.355 8.76305 29.865 8.84555 30.375 8.93405M28.842 8.68505L27.24 29.5095C27.1746 30.3574 26.7916 31.1493 26.1675 31.7269C25.5435 32.3045 24.7244 32.6253 23.874 32.625H12.126C11.2756 32.6253 10.4565 32.3045 9.83247 31.7269C9.2084 31.1493 8.82538 30.3574 8.76 29.5095L7.158 8.68505M28.842 8.68505C27.1108 8.42332 25.3706 8.22469 23.625 8.08955M7.158 8.68505C6.645 8.76155 6.135 8.84405 5.625 8.93255M7.158 8.68505C8.8892 8.42333 10.6294 8.2247 12.375 8.08955M23.625 8.08955V6.71555C23.625 4.94555 22.26 3.46955 20.49 3.41405C18.8304 3.36101 17.1696 3.36101 15.51 3.41405C13.74 3.46955 12.375 4.94705 12.375 6.71555V8.08955M23.625 8.08955C19.8806 7.80017 16.1194 7.80017 12.375 8.08955" stroke="#E53835" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                             </svg>
                                         </UnstyledButton>  
@@ -160,13 +160,13 @@ export default function Cart() {
                                         <UnstyledButton onClick={() => router.push(`/product-details/${item.product.Model}`)}>
                                             <Image
                                             radius="md"
-                                            className="h-[192px] w-[192px] object-cover mr-6"
+                                            className="max-[675px]:w-[50px] max-[675px]:h-[50px] max-[900px]:w-[100px] max-[900px]:h-[100px] h-[192px] w-[192px] object-cover mr-6"
                                             src={item.product.image_link ? item.product.image_link : "https://www.svgrepo.com/show/508699/landscape-placeholder.svg"}
                                             />
                                         </UnstyledButton>
                                         <div className="flex flex-col justify-start">
                                             {/* BRAND AND MODEL */}
-                                            <p className="text-[20px]" style={{ fontFamily: "Epilogue", fontWeight: 600, letterSpacing: "-0.5px" }}>
+                                            <p className="max-[650px]:text-[16px] max-[798px]:leading-none text-[20px]" style={{ fontFamily: "Epilogue", fontWeight: 600, letterSpacing: "-0.5px" }}>
                                                 {item.product.Brand} {item.product.Model}
                                             </p>
                                             {/* PRICE */}
@@ -214,12 +214,12 @@ export default function Cart() {
                                                 </ActionIcon>
                                             </div>
                                         </div>
-                                        <div className="h-full flex flex-col items-end justify-between ml-auto">
+                                        <div className="max-[768]:w-[20px] h-full flex flex-col items-end justify-between ml-auto">
                                             <Image
                                                 src={getBrandLogo(item.product.Brand)}
-                                                height={28}
+                                                height={26}
                                             />
-                                            <p className="text-[24px]" style={{ fontFamily: "EpilogueMedium", marginBottom: "-8px" }}>
+                                            <p className="max-[798px]:leading-none tracking-tight text-black max-[798px]:text-[16px] text-[24px]" style={{ fontFamily: "EpilogueMedium", marginBottom: "-8px" }}>
                                                 &#8369; {(item.product.Price * item.quantity).toFixed(2)}
                                             </p>
                                         </div>
@@ -228,20 +228,20 @@ export default function Cart() {
                                 ))}
                             </div>
                             {/* ORDER SUMMARY */}
-                            <div className="mb-20 w-full flex flex-col basis-2/5 min-w-[493px] min-h-[558px] max-h-[558px] justify-start items-center py-12 px-16 border-[#474747] border-2 rounded-xl">
-                                <p className="text-[32px] mr-auto mb-12" style={{ fontFamily: "EpilogueBold" }}>
+                            <div className="z-50 mb-20 w-[95%] flex flex-col basis-2/5  min-h-[558px] max-h-[558px] justify-start items-center py-12 px-16 border-[#474747] border-2 rounded-xl">
+                                <p className="text-[32px] mr-auto mb-12 leading-none" style={{ fontFamily: "EpilogueBold" }}>
                                     Order Summary</p>
                                 
                                 <div className="w-full flex flex-row items-center justify-between">
-                                    <p className="text-[20px]" style={{ fontFamily: "EpilogueBold" }}>
+                                    <p className="text-[18px]" style={{ fontFamily: "EpilogueBold" }}>
                                         Quantity</p>
-                                    <p className="text-[20px]" style={{ fontFamily: "Epilogue" }}>
+                                    <p className="text-[18px]" style={{ fontFamily: "Epilogue" }}>
                                         {getTotalQuantity()} items</p>
                                 </div>
                                 <div className="w-full flex flex-row items-center justify-between">
-                                    <p className="text-[20px]" style={{ fontFamily: "EpilogueBold" }}>
+                                    <p className="text-[18px]" style={{ fontFamily: "EpilogueBold" }}>
                                         Total</p>
-                                    <p className="text-[20px]" style={{ fontFamily: "Epilogue" }}>
+                                    <p className="text-[18px]" style={{ fontFamily: "Epilogue" }}>
                                         &#8369; {getTotalPrice().toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                                 </div>
                                 <p className="text-[14px] mr-auto mb-12" style={{ fontFamily: "Epilogue", color: "gray" }}>
