@@ -149,18 +149,20 @@ export default function Cart() {
                             {/* CART ITEMS LIST*/}
                             <div className="max-[1390px]-ml-0 ml-[-15px] w-full flex flex-col justify-center items-center">
                                 {cart.map((item, itemIndex) => (
-                                    <div key={itemIndex} className="flex flex-row w-[95%] h-[228px] items-center justify-start mb-8 p-6 border-[#474747] border-2 rounded-xl">
+                                    <div key={itemIndex} className="hover:bg-off-white hover:border-4 hover:border-black flex flex-row w-[95%] h-[228px] items-center justify-start mb-8 p-6 border-dark-gray border-2 rounded-xl">
                                         {/* REMOVE BUTTON */}
-                                        <UnstyledButton onClick={() => {removeItem(item.product.SKU)}}>
-                                            <svg className="mr-4" width="32" height="32" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M22.11 13.5L21.591 27.0001M14.409 27.0001L13.89 13.5M28.842 8.68505C29.355 8.76305 29.865 8.84555 30.375 8.93405M28.842 8.68505L27.24 29.5095C27.1746 30.3574 26.7916 31.1493 26.1675 31.7269C25.5435 32.3045 24.7244 32.6253 23.874 32.625H12.126C11.2756 32.6253 10.4565 32.3045 9.83247 31.7269C9.2084 31.1493 8.82538 30.3574 8.76 29.5095L7.158 8.68505M28.842 8.68505C27.1108 8.42332 25.3706 8.22469 23.625 8.08955M7.158 8.68505C6.645 8.76155 6.135 8.84405 5.625 8.93255M7.158 8.68505C8.8892 8.42333 10.6294 8.2247 12.375 8.08955M23.625 8.08955V6.71555C23.625 4.94555 22.26 3.46955 20.49 3.41405C18.8304 3.36101 17.1696 3.36101 15.51 3.41405C13.74 3.46955 12.375 4.94705 12.375 6.71555V8.08955M23.625 8.08955C19.8806 7.80017 16.1194 7.80017 12.375 8.08955" stroke="#E53835" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                            </svg>
-                                        </UnstyledButton>  
+                                        <div className="transition-all duration-200 ease-in-out hover:bg-black w-[42px] hover:rounded-full items-center justify-center content-around">
+                                            <UnstyledButton onClick={() => {removeItem(item.product.SKU)}}>
+                                                <svg className="p-1 mt-1 mr-4" width="42" height="42" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M22.11 13.5L21.591 27.0001M14.409 27.0001L13.89 13.5M28.842 8.68505C29.355 8.76305 29.865 8.84555 30.375 8.93405M28.842 8.68505L27.24 29.5095C27.1746 30.3574 26.7916 31.1493 26.1675 31.7269C25.5435 32.3045 24.7244 32.6253 23.874 32.625H12.126C11.2756 32.6253 10.4565 32.3045 9.83247 31.7269C9.2084 31.1493 8.82538 30.3574 8.76 29.5095L7.158 8.68505M28.842 8.68505C27.1108 8.42332 25.3706 8.22469 23.625 8.08955M7.158 8.68505C6.645 8.76155 6.135 8.84405 5.625 8.93255M7.158 8.68505C8.8892 8.42333 10.6294 8.2247 12.375 8.08955M23.625 8.08955V6.71555C23.625 4.94555 22.26 3.46955 20.49 3.41405C18.8304 3.36101 17.1696 3.36101 15.51 3.41405C13.74 3.46955 12.375 4.94705 12.375 6.71555V8.08955M23.625 8.08955C19.8806 7.80017 16.1194 7.80017 12.375 8.08955" stroke="#E53835" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                            </UnstyledButton>  
+                                        </div>
                                         {/* PRODUCT IMAGE */}
                                         <UnstyledButton onClick={() => router.push(`/product-details/${item.product.Model}`)}>
                                             <Image
                                             radius="md"
-                                            className="max-[675px]:w-[50px] max-[675px]:h-[50px] max-[900px]:w-[100px] max-[900px]:h-[100px] h-[192px] w-[192px] object-cover mr-6"
+                                            className="ml-5 max-[675px]:w-[50px] max-[675px]:h-[50px] max-[900px]:w-[100px] max-[900px]:h-[100px] h-[192px] w-[192px] object-cover mr-6"
                                             src={item.product.image_link ? item.product.image_link : "https://www.svgrepo.com/show/508699/landscape-placeholder.svg"}
                                             />
                                         </UnstyledButton>
