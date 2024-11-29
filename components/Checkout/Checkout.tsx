@@ -250,13 +250,13 @@ export default function Checkout() {
             <p style={epilogue.style} className="text-[4.5rem] font-bold">Checkout</p>
 
             <div className="flex flex-row w-full justify-between">
-                <div className="flex flex-col w-[43.906vw] mt-[4.63vh] h-auto">
-                    <div className="w-[43.906vw] h-[7.778vh] bg-[#474747] rounded-lg flex items-center justify-start px-10">
-                        <p style={epilogue.style} className="text-[2rem] font-bold text-white">Personal Information</p>
+                <div className="flex flex-col w-[80%] mr-10 mt-[4.63vh] h-auto">
+                    <div className="w-full h-[7.778vh] bg-[#474747] rounded-lg flex items-center justify-start px-10">
+                        <p style={epilogue.style} className="text-[1.5rem] font-bold text-white">Personal Information</p>
                     </div>
                     <SimpleGrid cols={2}>
                         <TextInput
-                            className="font-normal text-[14px] pt-[2.778vh] w-[20.677vw]"
+                            className="font-normal text-[14px] pt-[2.778vh] w-full"
                             label="First Name"
                             required
                             style={epilogue.style}
@@ -272,7 +272,7 @@ export default function Checkout() {
                             {...form.getInputProps('firstname')}
                         />
                         <TextInput
-                            className="font-normal text-[14px] pt-[2.778vh] w-[20.677vw]"
+                            className="font-normal text-[14px] pt-[2.778vh] w-full "
                             label="Last Name"
                             required
                             style={epilogue.style}
@@ -288,7 +288,7 @@ export default function Checkout() {
                             {...form.getInputProps('lastname')}
                         />
                         <TextInput
-                            className="font-normal text-[14px] pt-[2.778vh] w-[20.677vw]"
+                            className="font-normal text-[14px] pt-[2.778vh] w-full"
                             label="Email Address"
                             type="email"
                             required
@@ -305,7 +305,7 @@ export default function Checkout() {
                             {...form.getInputProps('email')}
                         />
                         <TextInput
-                            className="font-normal text-[14px] pt-[2.778vh] w-[20.677vw]"
+                            className="font-normal text-[14px] pt-[2.778vh] w-full"
                             label="Phone Number"
                             required
                             style={epilogue.style}
@@ -321,8 +321,8 @@ export default function Checkout() {
                             {...form.getInputProps('phone')}
                         />
                     </SimpleGrid>
-                    <div className="w-[43.906vw] h-[7.778vh] mt-[4.63vh] bg-[#474747] rounded-lg flex items-center justify-start px-10">
-                        <p style={epilogue.style} className="text-[2rem] font-bold text-white">Shipping Address</p>
+                    <div className="w-full h-[7.778vh] mt-[4.63vh] bg-[#474747] rounded-lg flex items-center justify-start px-10">
+                        <p style={epilogue.style} className="text-[1.5rem] font-bold text-white">Shipping Address</p>
                     </div>
                     <TextInput
                         className="font-normal text-[14px] pt-[2.778vh] w-full"
@@ -390,12 +390,12 @@ export default function Checkout() {
                             {...form.getInputProps('zipcode')}
                         />
                     </SimpleGrid>
-                    <div className="w-[43.906vw] h-[7.778vh] mt-[4.63vh] bg-[#474747] rounded-lg flex items-center justify-start px-10">
-                        <p style={epilogue.style} className="text-[2rem] font-bold text-white">Payment Method & Courier</p>
+                    <div className="w-full h-[7.778vh] mt-[4.63vh] bg-[#474747] rounded-lg flex items-center justify-start px-10">
+                        <p style={epilogue.style} className="text-[1.5rem] font-bold text-white">Payment Method & Courier</p>
                     </div>
 
-                    <div className="flex flex-row">
-                        <div className="flex flex-col w-[30.042vw]">
+                    <div className="justify-between flex flex-row">
+                        <div className="flex flex-col w-[60%]">
                             <p style={epilogue.style} className="mt-[2.778vh] text-[1.25 rem] font-normal text-[#474747B3]">Payment Method<span className="text-[#fa5252]"> *</span></p>
                             <SimpleGrid cols={3} className="mb-5">
                                 <Button
@@ -494,12 +494,13 @@ export default function Checkout() {
                             <p style={epilogue.style} className="mt-[2.778vh] text-[1.25 rem] font-normal text-[#474747B3]">Payment Guidelines</p>
                             <div className="bg-[#FBC02D33] w-full 2xl:h-[12.5vh] 3xl:h-[10vh] rounded-lg flex flex-row p-5 items-center justify-center mb-12">
                                 <Image
+                                    className="ml-3"
                                     src="/warning.svg"
                                 />
                                 <p className="mx-6" style={epilogue.style}>The <span style={epilogue.style} className="font-semibold">generated invoice slip</span> after proceeding this page <span style={epilogue.style} className="font-semibold">should be sent to our Facebook Page or Viber.</span></p>
                             </div>
                         </div>
-                        <div className="min-w-[15.625vw] max-w-[15.625vw] ml-5 mt-[2.778vh]">
+                        <div className="w-[50%] ml-20 mt-[2.778vh]">
                             <p style={epilogue.style} className="text-[1.25 rem] font-normal text-[#474747B3]">Payment Portal</p>
                             {payMethod === "PayPal" ? (
                                 <p style={epilogue.style} className="text-[1rem] mt-[2.778vh] font-normal w-full">{qr}</p>
@@ -564,7 +565,7 @@ export default function Checkout() {
                     <Button
                         variant="filled"
                         fullWidth
-                        color="black"
+                        color="#2E7D31"
                         radius="md"
                         onClick={submitInfo}
                         styles={{
@@ -576,7 +577,7 @@ export default function Checkout() {
                             label: {
                                 fontFamily: "Epilogue",
                                 fontWeight: 700,
-                                fontSize: "1.5rem",
+                                fontSize: "1.3rem",
                                 color: "#EDEDED"
                             }
                         }}
