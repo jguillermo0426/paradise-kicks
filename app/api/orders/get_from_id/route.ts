@@ -1,22 +1,37 @@
+import { OrderHistory } from "@/types/types";
 import { createClient } from "@/utils/supabase/server";
 
 export async function POST(req: Request) {
     const supabase = createClient();
-    const id = await req.json();
-    
-    const { data: order, error } = await supabase
-        .from('products_ordered')
+    const ids = await req.json();
+
+    const { data: orders, error } = await supabase
+        .from('orders')
         .select(`
-            orders!products_ordered_order_id_fkey (*),
-            product (*)
+            *,
+            products_ordered!products_ordered_order_id_fkey (quantity, product_id(*)),
+            payment_terms (*),
+            status_history(*, order_status!status_history_status_id_fkey(*))
         `)
-        .eq('order_id', id);
+        .in('id', ids);
 
     if (error) {
         console.error("Error fetching data: ", error);
-    } else {
-        console.log("orders: ", order);
-        console.log(order);
-        return Response.json({order});
+        return Response.json({ error: error.message }, { status: 500 });
     }
+
+    if (orders) {
+        // Sort the `status_history` within each order by `updated_at`
+        const sortedOrders = orders.map(order => ({
+            ...order,
+            status_history: order.status_history.sort((a: OrderHistory, b: OrderHistory) =>
+                new Date(a.updated_at).getTime() - new Date(b.updated_at).getTime()
+            )
+        }));
+
+        console.log("Sorted orders: ", sortedOrders);
+        return Response.json({ orders: sortedOrders });
+    }
+
+    return Response.json({ orders: [] });
 }

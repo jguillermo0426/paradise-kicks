@@ -8,9 +8,17 @@ export async function GET(req: Request) {
     const { data: model } = await supabase
         .from('product')
         .select()
-        .eq('Model', productModel)
+        .eq('Model', productModel);
+    
+    // const query = `
+    //     SELECT DISTINCT "Size"
+    //     FROM product
+    //     WHERE "Model" = '${productModel}';
+    // `
+    const { data: sizes } = await supabase
+        .rpc('get_unique_sizes', { model: productModel});
 
-    console.log("productModelll:", productModel);
-    console.log(model);
-    return Response.json({model});
+    console.log("Model: ", productModel);
+    //console.log("Sizes: ", sizes);
+    return Response.json({ model, sizes });
 }

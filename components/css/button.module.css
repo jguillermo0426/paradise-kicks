@@ -1,0 +1,16 @@
+.button {
+    border: 1px solid #474747;
+    height: 9.259vh;
+    border-radius: 0.5rem;
+    margin-top: 2.778vh;
+}
+
+.button:hover {
+    border: 1px solid #38BDBA;
+    background-color: white;
+}
+
+.activeButton {
+    border: 1px solid #38BDBA;
+    background-color: white;
+}

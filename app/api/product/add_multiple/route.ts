@@ -5,24 +5,52 @@ export async function POST(req: Request) {
     const supabase = createClient();
     const formData = await req.json();
 
-    console.log(formData);
-    const products: Product[] = [];
+    const requiredFields = [
+        "SKU",
+        "Model",
+        "Brand",
+        "Stock",
+        "Price",
+        "Size",
+        "Colorway",
+    ];
 
-    formData.forEach((item: Product) => {
-        products.push({
-            SKU: item.SKU,
-            Model: item.Model,
-            Brand: item.Brand,
-            Stock: item.Stock,
-            Price: item.Price,
-            Size: item.Size,
-            Colorway: item.Colorway
-        })
-    })
-    const { data } = await supabase
-        .from('product')
-        .insert(products)
-        .select()
+    for (const item of formData) {
+        for (const field of requiredFields) {
+            if (!item[field]) {
+                console.log("Missing required field");
+                return Response.json({
+                    status: 400,
+                    error: `Missing required field: ${field}`,
+                });
+            }
+        }
 
-    return Response.json({data});
+        if (isNaN(item.Stock) || isNaN(item.Price)) {
+            return Response.json({
+                status: 400,
+                error: `Invalid data type for Stock or Price`,
+            });
+        }
+    }
+
+    const products: Product[] = formData.map((item: Product) => ({
+        SKU: item.SKU,
+        Model: item.Model,
+        Brand: item.Brand,
+        Stock: item.Stock,
+        Price: item.Price,
+        Size: item.Size,
+        Colorway: item.Colorway,
+        image_link: item.image_link,
+        available: true,
+    }));
+
+    const { data, error } = await supabase.from("product").insert(products);
+
+    if (error) {
+        return Response.json({ status: 500, error: error.message });
+    }
+
+    return Response.json({ status: 200, data });
 }
