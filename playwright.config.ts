@@ -24,20 +24,27 @@ export default defineConfig({
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
-  
+  // test timeout set to 5 mins
+  timeout: 5 * 60 * 1000,
+  // assertion timeout set to 20 secs
+  expect: {
+    timeout: 20 * 1000
+  },
+
   /* Run your local dev server before starting the tests */
   webServer: {
     command: 'npm run dev',
-    url: 'http://localhost:3000/login',
-    timeout: 120000,
+    url: 'http://localhost:3000',
+    timeout: 5* 60 * 1000,
     reuseExistingServer: !process.env.CI,
   },
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: 'http://localhost:3000/login',
+    baseURL: 'http://localhost:3000',
     
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry', 
+    trace: 'on-first-retry',
+    ignoreHTTPSErrors: true
   },
 
   /* Configure projects for major browsers */

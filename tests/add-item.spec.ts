@@ -12,7 +12,7 @@ test.beforeEach(async ({ page }) => {
 
 
 test.describe('Add Item', () => {
-  //test.setTimeout(300000);
+  //test.setTimeout(180000);
   test('add a single product', async ({ page }) => {
     // fill up fields
     await page.locator('div').filter({ hasText: /^SKU$/ }).nth(1).getByRole('textbox').click(); // SKU Field
