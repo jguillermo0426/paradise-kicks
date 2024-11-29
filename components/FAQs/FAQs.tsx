@@ -1,11 +1,10 @@
 'use client'
-import { Epilogue } from 'next/font/google';
-import { UnstyledButton, Modal } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
 import { FaqsType } from '@/types/types';
-import { useState, useEffect } from 'react';
-import '@mantine/notifications/styles.css';
+import { Modal, UnstyledButton } from '@mantine/core';
 import { notifications, Notifications } from '@mantine/notifications';
+import '@mantine/notifications/styles.css';
+import { Epilogue } from 'next/font/google';
+import { useEffect, useState } from 'react';
 
 const epilogue = Epilogue({
     subsets: ['latin'],
@@ -60,7 +59,7 @@ export default function FAQs() {
         const result = await response.json();
 
         if (result.faqs.length) {
-            const fetchedFaqs = result.faqs.map((faq: any) => ({
+            const fetchedFaqs = result.faqs.map((faq: FaqsType) => ({
                 id: faq.id,
                 question: faq.question,
                 answer: faq.answer,
@@ -133,7 +132,7 @@ export default function FAQs() {
 
 
     // delete faqs
-    const deleteFaq = async (faqId: Number) => {
+    const deleteFaq = async (faqId: number) => {
         const response = await fetch(`/api/faqs/delete_faqs`, {
             method: "POST",
             body: JSON.stringify({ faqId })

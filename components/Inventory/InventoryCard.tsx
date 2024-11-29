@@ -1,10 +1,10 @@
 'use client'
-import { CardProduct, Size } from '@/types/types';
+import { CardProduct } from '@/types/types';
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
-import { ActionIcon, Button, Divider, Image, Modal, NumberInput, NumberInputHandlers, TextInput } from '@mantine/core';
+import { Button, Divider, Image, Modal, NumberInput } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Epilogue } from 'next/font/google';
-import { ChangeEvent, Dispatch, MutableRefObject, SetStateAction, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 import InputField from '../InputField';
 import StockInput from './StockInput';
@@ -26,12 +26,10 @@ export default function CardTest({ cardProduct, onChange }: CardTestProps) {
     const [totalStock, setTotalStock] = useState(0);
     const [opened, { open, close }] = useDisclosure(false);
     const [editedSizes, setEditedSizes] = useState({ cardId, modelId, colorId, model, brand, colorway, sizes, image_link, image_file });
-    const [same, setSame] = useState<boolean[]>([]);
     const [invalidStock, isInvalidStock] = useState<boolean[]>([]);
     const [invalidPrice, isInvalidPrice] = useState<boolean[]>([]);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const [previewURL, setPreviewURL] = useState<string | null>(null);
-    const [file, setFile] = useState<File>();
 
     useEffect(() => {
         setEditedSizes({ cardId, modelId, colorId, model, brand, colorway, sizes, image_link, image_file });
@@ -44,15 +42,6 @@ export default function CardTest({ cardProduct, onChange }: CardTestProps) {
         });
         setTotalStock(tempStock);
     }, [sizes]);
-
-    const handleStockChange = (item: Size) => {
-        const updatedSizes = [...editedSizes.sizes, item];
-
-        setEditedSizes({
-            ...editedSizes,
-            sizes: updatedSizes
-        });
-    }
 
     const handleChangeNumber = (e: string | number, index: number, toChange: string) => {
         const updatedSizes = [...editedSizes.sizes];
@@ -98,13 +87,6 @@ export default function CardTest({ cardProduct, onChange }: CardTestProps) {
             sizes: updatedSizes
         });
 
-        if (toChange === "SKU") {
-            const skuErrorArray = updatedSizes.map((size, index) => {
-                const isDuplicate = updatedSizes.some((otherSize, otherIndex) => otherSize.SKU === size.SKU && index !== otherIndex);
-                return isDuplicate;
-            });
-            setSame(skuErrorArray);
-        }
 
         onChange({ ...editedSizes, sizes: updatedSizes });
     }
@@ -130,12 +112,10 @@ export default function CardTest({ cardProduct, onChange }: CardTestProps) {
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
-            setFile(e.target.files[0]);
             setPreviewURL(URL.createObjectURL(e.target.files[0]));
             const updatedSizes = { ...editedSizes, image_file: e.target.files[0] };
             onChange(updatedSizes)
         } else {
-            setFile(undefined);
             console.log('no file uploaded');
         }
     };

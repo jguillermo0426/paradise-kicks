@@ -1,15 +1,13 @@
 'use client'
-import { useForm } from '@mantine/form';
-import { TextInput, Button, NumberInput, FileButton, Tooltip, FloatingIndicator, Tabs, Image, Select, Pagination } from '@mantine/core';
-import { useCallback, useEffect, useState } from 'react';
-import { CardProduct, GroupedProduct, OrderHistory, Product, ProductsOrdered } from '@/types/types';
+import { OrderHistory, ProductsOrdered } from '@/types/types';
+import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import { Button, Image, Pagination, Select, TextInput } from '@mantine/core';
 import { Notifications, showNotification } from '@mantine/notifications';
-import SearchBar from '../SearchBar';
 import { Epilogue } from 'next/font/google';
+import { useCallback, useEffect, useState } from 'react';
 import styles from '../css/searchbar.module.css';
-import { ChevronDownIcon } from "@heroicons/react/24/outline"
-import StatusCard from './StatusCard';
 import classes from '../css/tabs.module.css';
+import StatusCard from './StatusCard';
 
 const epilogue = Epilogue({
     subsets: ['latin'],
@@ -27,26 +25,23 @@ const status = [
     "Cancelled"
 ]
 
+const statusHistory = {
+    history_id: 0,
+    order_id: "",
+    order_status: {
+        id: 0,
+        status: ""
+    },
+    updated_at: new Date()
+}
+
 
 export default function AdminStock() {
     const [orderIds, setOrderIds] = useState<string[]>([]);
     const [orderProducts, setOrderProducts] = useState<ProductsOrdered[]>();
     const [selectedStatus, setSelectedStatus] = useState<string | null>(status[0]);
     const [sortedProducts, setSortedProducts] = useState<ProductsOrdered[]>();
-    const [statusHistory, setStatusHistory] = useState<OrderHistory>({
-        history_id: 0,
-        order_id: "",
-        order_status: {
-            id: 0,
-            status: ""
-        },
-        updated_at: new Date()
-    });
-    const [controlsRefs, setControlsRefs] = useState<Record<string, HTMLButtonElement | null>>({});
-    const setControlRef = (val: string) => (node: HTMLButtonElement) => {
-        controlsRefs[val] = node;
-        setControlsRefs(controlsRefs);
-    };
+
     const [activePage, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState<number>(1);
     const [searchValue, setSearchValue] = useState<string>('');
@@ -73,6 +68,7 @@ export default function AdminStock() {
 
             const result = await response.json();
             console.log(result.order);
+            setTotalPages(Math.ceil(result.totalOrders / 12));
             const orders = Array.from(new Set(result.order));
             setOrderIds(orders as string[]);
         }
@@ -182,6 +178,7 @@ export default function AdminStock() {
         setInTransit(tempInTransit);
     }, [orderProducts]);
 
+
     return (
         <div className="relative z-50 mb-[18rem] bg-white overflow-hidden flex flex-col items-center justify-items-center min-h-screen p-8 pb-20 sm:p-20">
             <div className='flex flex-row items-center justify-end w-full'>
@@ -231,32 +228,50 @@ export default function AdminStock() {
                     </div>
 
                     <div className='w-[13vw] h-[14vh] p-2 bg-[#38BDBA33] rounded-lg flex flex-row items-start justify-start'>
-                        <Image
-                            src="/clock blue.svg"
-                            h={50}
-                            w="auto"
-                            fit="contain"
-                            fallbackSrc="/placeholder.svg"
-                            className='mr-4 mt-1'
-                        />
+                        <div className="w-14 h-14 mr-4 ml-1">
+                            <svg
+                                data-slot="icon"
+                                fill="none"
+                                strokeWidth="1"
+                                stroke="#38BDBA"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                                aria-hidden="true"
+                            >
+                                <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M21 7.5l-9-5.25L3 7.5m18 0-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9"
+                                />
+                            </svg>
+                        </div>
                         <div className='flex flex-col items-start justify-start'>
                             <p style={epilogue.style} className="text-[40px] font-bold p-0 m-0 text-[#38BDBA]">{toShip}</p>
                             <p style={epilogue.style} className="text-[20px] font-normal p-0 -mt-3 text-[#38BDBA]">To Ship</p>
                         </div>
                     </div>
 
-                    <div className='w-[13vw] h-[14vh] p-2 bg-[#4747474D] rounded-lg flex flex-row items-start justify-start'>
-                        <Image
-                            src="/clock gray.svg"
-                            h={50}
-                            w="auto"
-                            fit="contain"
-                            fallbackSrc="/placeholder.svg"
-                            className='mr-4 mt-1'
-                        />
+                    <div className='w-[13vw] h-[14vh] p-2 bg-[#2E7D3133] rounded-lg flex flex-row items-start justify-start'>
+                        <div className="w-14 h-14 mr-4 ml-1">
+                            <svg
+                                data-slot="icon"
+                                fill="none"
+                                strokeWidth="1"
+                                stroke="#2E7D31"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                                aria-hidden="true"
+                            >
+                                <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"
+                                />
+                            </svg>
+                        </div>
                         <div className='flex flex-col items-start justify-start'>
-                            <p style={epilogue.style} className="text-[40px] font-bold p-0 m-0 text-[#474747]">{inTransit}</p>
-                            <p style={epilogue.style} className="text-[20px] font-normal p-0 -mt-3 text-[#474747]">In Transit</p>
+                            <p style={epilogue.style} className="text-[40px] font-bold p-0 m-0 text-[#2E7D31]">{inTransit}</p>
+                            <p style={epilogue.style} className="text-[20px] font-normal p-0 -mt-3 text-[#2E7D31]">In Transit</p>
                         </div>
                     </div>
                 </div>
@@ -267,13 +282,13 @@ export default function AdminStock() {
                 <StatusCard key={index} orderedProducts={order} onChange={(e) => editStatus(e, order)} statusHistory={statusHistory} />
             ))}
 
-            <Button className='mt-8'
+            <Button className='mt-8 mb-10 hover:outline hover:outline-offset-2 hover:outline-success shadow-lg'
                 onClick={confirmStatus}
                 styles={{
                     root: {
-                        backgroundColor: "#38BDBA",
+                        backgroundColor: "#2E7D31",
                         color: "white",
-                        width: '10vw',
+                        width: '12vw',
                     }
                 }}
             >

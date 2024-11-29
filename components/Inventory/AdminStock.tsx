@@ -1,16 +1,13 @@
 'use client'
-import { Button, FloatingIndicator, Tabs, TextInput } from '@mantine/core';
-import { useState, useCallback } from 'react';
+import { FloatingIndicator, Tabs, TextInput } from '@mantine/core';
 import { Notifications, showNotification } from '@mantine/notifications';
-import SearchBar from '../SearchBar';
 import { Epilogue } from 'next/font/google';
-import classes from '../css/tabs.module.css';
-import BrandSelect from '../BrandsSelect';
-import AddItem from './AddItem';
-import EditItems from './EditItems';
-import DeleteItems from './DeleteItems';
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import styles from "../css/inputfield.module.css";
+import classes from '../css/tabs.module.css';
+import AddItem from './AddItem';
+import DeleteItems from './DeleteItems';
+import EditItems from './EditItems';
 
 const epilogue = Epilogue({
     subsets: ['latin'],
@@ -51,7 +48,7 @@ export default function AdminStock() {
     };
 
     return (
-        <div className="relative z-50 mb-[18rem] bg-white overflow-hidden flex flex-col items-center justify-items-center min-h-screen p-8 pb-20 sm:p-20">
+        <div className="bg-white relative z-50 mb-[18rem] overflow-hidden flex flex-col items-center justify-items-center min-h-screen p-8 pb-20 sm:p-20">
             <div className='flex flex-row items-center justify-end w-full'>
                 {(value == "2" || value == "3") && 
                     <div className="flex flex-row">

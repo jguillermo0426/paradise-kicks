@@ -336,7 +336,7 @@ export default function AddItem({ onSuccess, onError }: addItemProps) {
                         />
                         <p style={epilogue.style} className="font-semibold text-[16px]">Choose a file containing products</p>
                         <p style={epilogue.style} className="font-light text-[13px]">Supported files: CSV</p>
-                        <Button className='mt-8'
+                        <Button className='mt-8 hover:outline hover:outline-offset-2 hover:outline-brand-primary shadow-lg'
                             onClick={handleDivClick}
                             styles={{
                                 root: {

@@ -1,12 +1,11 @@
 'use client'
-import { OrderHistory, Product, ProductsOrdered } from '@/types/types';
-import styles from '../css/searchbar.module.css';
-import { Image, Select } from '@mantine/core';
+import { OrderHistory, ProductsOrdered } from '@/types/types';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
-import { useEffect, useState } from 'react';
-import { Epilogue } from 'next/font/google';
+import { Image, Modal, Select } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { Modal } from '@mantine/core';
+import { Epilogue } from 'next/font/google';
+import { useEffect, useState } from 'react';
+import styles from '../css/searchbar.module.css';
 
 const epilogue = Epilogue({
     subsets: ['latin'],
@@ -32,29 +31,12 @@ type StatusProps = {
 
 export default function StatusCard({ orderedProducts, onChange }: StatusProps) {
     const [latestStatus, setLatestStatus] = useState<string>("");
-    const [totalQty, setTotalQty] = useState<number>(0);
-    const [totalPrice, setTotalPrice] = useState<number>(0);
     const [opened, { open, close }] = useDisclosure(false);
 
     useEffect(() => {
         const historyCount = orderedProducts.status_history.length;
         setLatestStatus(orderedProducts.status_history[historyCount - 1].order_status.status)
-
-        var qty = 0;
-        var price = 0;
-        orderedProducts.products_ordered.forEach(product => {
-            qty += product.quantity;
-            price += product.product_id.Price;
-        });
-
-
-        setTotalQty(qty);
-        setTotalPrice(price);
     }, [orderedProducts]);
-
-    const findLatest = (orderStatus: string) => {
-        return orderStatus === latestStatus;
-    }
 
     const handleStatusChange = (value: string | null) => {
         if (value) {
@@ -84,15 +66,23 @@ export default function StatusCard({ orderedProducts, onChange }: StatusProps) {
                 <div className='p-10 flex flex-row'>
                     <Image
                         src={orderedProducts.products_ordered[0].product_id.image_link}
-                        h={100}
+                        h={400}
                         w="auto"
                         fit="contain"
+                        className='mr-20 pr-1'
                     />
 
                     <div className='flex flex-col'>
-                        <p>{orderedProducts.products_ordered[0].product_id.Model}</p>
-                        <p>{orderedProducts.products_ordered[0].product_id.Colorway}</p>
-                        <p>{orderedProducts.products_ordered[0].product_id.Size}</p>
+                        <p className="text-[12px] font-bold tracking-widest text-[#177F7D] text-opacity-50"> ITEM DETAILS </p>
+                        <p className="font-bold text-[45px] tracking-tighter -mt-3">{orderedProducts.products_ordered[0].product_id.Model}</p><br />
+
+                        <p className="text-[15px] font-bold tracking-tighter mb-1 text-black text-opacity-50"> Color </p>
+                        <p>{orderedProducts.products_ordered[0].product_id.Colorway}</p><br />
+
+                        <p className="text-[15px] font-bold tracking-tighter mb-1 text-black text-opacity-50"> Size </p>
+                        <p>{orderedProducts.products_ordered[0].product_id.Size}</p><br />
+
+                        <p className="text-[15px] font-bold tracking-tighter mb-1 text-black text-opacity-50"> Quantity </p>
                         <p>{orderedProducts.products_ordered[0].quantity}</p>
                     </div>
                 </div>

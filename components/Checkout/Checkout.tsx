@@ -1,15 +1,14 @@
 'use client'
 
-import { Button, NumberInput, SimpleGrid, TextInput, Image, Select, SelectProps, Divider, Textarea } from "@mantine/core"
-import { useCart } from '@/utils/useCart';
-import { forwardRef, useEffect, useState } from "react";
-import { Epilogue } from 'next/font/google';
-import { useForm } from "@mantine/form";
-import styles from "../css/button.module.css"
-import select from "../css/select.module.css"
 import { itemOrder } from "@/types/types";
-import ShortUniqueId from 'short-unique-id';
+import { useCart } from '@/utils/useCart';
+import { Button, Divider, Image, Select, SelectProps, SimpleGrid, Textarea, TextInput } from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { Epilogue } from 'next/font/google';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from "react";
+import ShortUniqueId from 'short-unique-id';
+import styles from "../css/button.module.css";
 
 const epilogue = Epilogue({
     subsets: ['latin'],
@@ -168,7 +167,7 @@ export default function Checkout() {
         }
     };
 
-    const renderSelectOption: SelectProps['renderOption'] = ({ option, checked }) => {
+    const renderSelectOption: SelectProps['renderOption'] = ({ option }) => {
         const [mainText, feeText] = option.label.split('+');
         const [topText, bottomText] = mainText.split('&');
         return (
@@ -190,9 +189,9 @@ export default function Checkout() {
         );
     }
 
-    const renderCourier: SelectProps['renderOption'] = ({ option, checked }) => {
-        var mainText = option.label;
-        var subText = "";
+    const renderCourier: SelectProps['renderOption'] = ({ option }) => {
+        let mainText = option.label;
+        let subText = "";
         if (option.label.includes("Pick-Up")) {
             mainText = "LBC Branch";
             subText = "Pick-Up"
@@ -221,7 +220,7 @@ export default function Checkout() {
     }
 
     return (
-        <div className="flex flex-col items-start m-20 relative z-50 mb-[18rem] bg-white overflow-x-hidden min-h-screen">
+        <div className="flex flex-col p-3 items-start mt-20 mx-20 relative z-50 bg-white overflow-x-hidden min-h-screen">
             <Button
                 component="a"
                 href="/cart"
@@ -229,6 +228,7 @@ export default function Checkout() {
                 fullWidth
                 color="black"
                 radius="md"
+                className="hover:outline hover:outline-offset-2 hover:outline-dark-gray shadow-lg"
                 styles={{
                     root: {
                         height: "46px",
@@ -247,16 +247,16 @@ export default function Checkout() {
                 Return
             </Button>
 
-            <p style={epilogue.style} className="text-[4.5rem] font-bold">Checkout</p>
+            <p style={epilogue.style} className="tracking-tighter text-[4.5rem] font-bold">Checkout</p>
 
             <div className="flex flex-row w-full justify-between">
-                <div className="flex flex-col w-[43.906vw] mt-[4.63vh] h-auto">
-                    <div className="w-[43.906vw] h-[7.778vh] bg-[#474747] rounded-lg flex items-center justify-start px-10">
-                        <p style={epilogue.style} className="text-[2rem] font-bold text-white">Personal Information</p>
+                <div className="flex flex-col w-[80%] mr-10 mt-[4.63vh] h-auto">
+                    <div className="w-full h-[7.778vh] bg-[#474747] rounded-lg flex items-center justify-start px-10">
+                        <p style={epilogue.style} className="text-[1.5rem] font-bold text-white">Personal Information</p>
                     </div>
                     <SimpleGrid cols={2}>
                         <TextInput
-                            className="font-normal text-[14px] pt-[2.778vh] w-[20.677vw]"
+                            className="font-normal text-[14px] pt-[2.778vh] w-full"
                             label="First Name"
                             required
                             style={epilogue.style}
@@ -272,7 +272,7 @@ export default function Checkout() {
                             {...form.getInputProps('firstname')}
                         />
                         <TextInput
-                            className="font-normal text-[14px] pt-[2.778vh] w-[20.677vw]"
+                            className="font-normal text-[14px] pt-[2.778vh] w-full "
                             label="Last Name"
                             required
                             style={epilogue.style}
@@ -288,7 +288,7 @@ export default function Checkout() {
                             {...form.getInputProps('lastname')}
                         />
                         <TextInput
-                            className="font-normal text-[14px] pt-[2.778vh] w-[20.677vw]"
+                            className="font-normal text-[14px] pt-[2.778vh] w-full"
                             label="Email Address"
                             type="email"
                             required
@@ -305,7 +305,7 @@ export default function Checkout() {
                             {...form.getInputProps('email')}
                         />
                         <TextInput
-                            className="font-normal text-[14px] pt-[2.778vh] w-[20.677vw]"
+                            className="font-normal text-[14px] pt-[2.778vh] w-full"
                             label="Phone Number"
                             required
                             style={epilogue.style}
@@ -321,8 +321,8 @@ export default function Checkout() {
                             {...form.getInputProps('phone')}
                         />
                     </SimpleGrid>
-                    <div className="w-[43.906vw] h-[7.778vh] mt-[4.63vh] bg-[#474747] rounded-lg flex items-center justify-start px-10">
-                        <p style={epilogue.style} className="text-[2rem] font-bold text-white">Shipping Address</p>
+                    <div className="w-full h-[7.778vh] mt-[4.63vh] bg-[#474747] rounded-lg flex items-center justify-start px-10">
+                        <p style={epilogue.style} className="text-[1.5rem] font-bold text-white">Shipping Address</p>
                     </div>
                     <TextInput
                         className="font-normal text-[14px] pt-[2.778vh] w-full"
@@ -390,18 +390,18 @@ export default function Checkout() {
                             {...form.getInputProps('zipcode')}
                         />
                     </SimpleGrid>
-                    <div className="w-[43.906vw] h-[7.778vh] mt-[4.63vh] bg-[#474747] rounded-lg flex items-center justify-start px-10">
-                        <p style={epilogue.style} className="text-[2rem] font-bold text-white">Payment Method & Courier</p>
+                    <div className="w-full h-[7.778vh] mt-[4.63vh] bg-[#474747] rounded-lg flex items-center justify-start px-10">
+                        <p style={epilogue.style} className="text-[1.5rem] font-bold text-white">Payment Method & Courier</p>
                     </div>
 
-                    <div className="flex flex-row">
-                        <div className="flex flex-col w-[30.042vw]">
+                    <div className="justify-between flex flex-row">
+                        <div className="flex flex-col w-[60%]">
                             <p style={epilogue.style} className="mt-[2.778vh] text-[1.25 rem] font-normal text-[#474747B3]">Payment Method<span className="text-[#fa5252]"> *</span></p>
                             <SimpleGrid cols={3} className="mb-5">
                                 <Button
                                     className={`${styles.button} ${payMethod === "BDO" ? styles.activeButton : styles.button}`}
                                     color="white"
-                                    onClick={(e) => { setPayMethod("BDO"); setPaymentImage("/BDO.png"); setQr("/bdo qr.jpg"); form.setFieldValue("paymentMethod", "BDO"); }}
+                                    onClick={() => { setPayMethod("BDO"); setPaymentImage("/BDO.png"); setQr("/bdo qr.jpg"); form.setFieldValue("paymentMethod", "BDO"); }}
                                 >
                                     <Image
                                         src="/BDO.png"
@@ -411,7 +411,7 @@ export default function Checkout() {
                                 <Button
                                     className={`${styles.button} ${payMethod === "BPI" ? styles.activeButton : styles.button}`}
                                     color="white"
-                                    onClick={(e) => { setPayMethod("BPI"); setPaymentImage("/BPI.png"); setQr("/bpi qr.jpg"); form.setFieldValue("paymentMethod", "BPI"); }}
+                                    onClick={() => { setPayMethod("BPI"); setPaymentImage("/BPI.png"); setQr("/bpi qr.jpg"); form.setFieldValue("paymentMethod", "BPI"); }}
                                 >
                                     <Image
                                         src="/BPI.png"
@@ -421,17 +421,17 @@ export default function Checkout() {
                                 <Button
                                     className={`${styles.button} ${payMethod === "Metrobank" ? styles.activeButton : styles.button}`}
                                     color="white"
-                                    onClick={(e) => { setPayMethod("Metrobank"); setPaymentImage("/MetroBank.png"); setQr("/metrobank qr.jpg"); form.setFieldValue("paymentMethod", "Metrobank"); }}
+                                    onClick={() => { setPayMethod("Metrobank"); setPaymentImage("/Metrobank.png"); setQr("/metrobank qr.jpg"); form.setFieldValue("paymentMethod", "Metrobank"); }}
                                 >
                                     <Image
-                                        src="/MetroBank.png"
+                                        src="/Metrobank.png"
                                         w="auto"
                                     />
                                 </Button>
                                 <Button
                                     className={`${styles.button} ${payMethod === "UnionBank" ? styles.activeButton : styles.button}`}
                                     color="white"
-                                    onClick={(e) => { setPayMethod("UnionBank"); setPaymentImage("/UnionBank.png"); setQr("/unionbank qr.jpg"); form.setFieldValue("paymentMethod", "UnionBank"); }}
+                                    onClick={() => { setPayMethod("UnionBank"); setPaymentImage("/UnionBank.png"); setQr("/unionbank qr.jpg"); form.setFieldValue("paymentMethod", "UnionBank"); }}
                                 >
                                     <Image
                                         src="/UnionBank.png"
@@ -441,7 +441,7 @@ export default function Checkout() {
                                 <Button
                                     className={`${styles.button} ${payMethod === "GCash" ? styles.activeButton : styles.button}`}
                                     color="white"
-                                    onClick={(e) => { setPayMethod("GCash"); setPaymentImage("/gcash.png"); setQr("/gcash qr.jpg"); form.setFieldValue("paymentMethod", "GCash"); }}
+                                    onClick={() => { setPayMethod("GCash"); setPaymentImage("/gcash.png"); setQr("/gcash qr.jpg"); form.setFieldValue("paymentMethod", "GCash"); }}
                                 >
                                     <Image
                                         src="/gcash.png"
@@ -451,7 +451,7 @@ export default function Checkout() {
                                 <Button
                                     className={`${styles.button} ${payMethod === "Maya" ? styles.activeButton : styles.button}`}
                                     color="white"
-                                    onClick={(e) => { setPayMethod("Maya"); setPaymentImage("/Maya.png"); setQr("/maya qr.jpg"); form.setFieldValue("paymentMethod", "Maya"); }}
+                                    onClick={() => { setPayMethod("Maya"); setPaymentImage("/Maya.png"); setQr("/maya qr.jpg"); form.setFieldValue("paymentMethod", "Maya"); }}
                                 >
                                     <Image
                                         src="/Maya.png"
@@ -461,7 +461,7 @@ export default function Checkout() {
                                 <Button
                                     className={`${styles.button} ${payMethod === "PayPal" ? styles.activeButton : styles.button}`}
                                     color="white"
-                                    onClick={(e) => { setPayMethod("PayPal"); setPaymentImage("/PayPal.png"); setQr("https://www.paypal.me/paradisekicks"); form.setFieldValue("paymentMethod", "PayPal"); }}
+                                    onClick={() => { setPayMethod("PayPal"); setPaymentImage("/PayPal.png"); setQr("https://www.paypal.me/paradisekicks"); form.setFieldValue("paymentMethod", "PayPal"); }}
                                 >
                                     <Image
                                         src="/PayPal.png"
@@ -494,12 +494,13 @@ export default function Checkout() {
                             <p style={epilogue.style} className="mt-[2.778vh] text-[1.25 rem] font-normal text-[#474747B3]">Payment Guidelines</p>
                             <div className="bg-[#FBC02D33] w-full 2xl:h-[12.5vh] 3xl:h-[10vh] rounded-lg flex flex-row p-5 items-center justify-center mb-12">
                                 <Image
+                                    className="ml-3"
                                     src="/warning.svg"
                                 />
                                 <p className="mx-6" style={epilogue.style}>The <span style={epilogue.style} className="font-semibold">generated invoice slip</span> after proceeding this page <span style={epilogue.style} className="font-semibold">should be sent to our Facebook Page or Viber.</span></p>
                             </div>
                         </div>
-                        <div className="min-w-[15.625vw] max-w-[15.625vw] ml-5 mt-[2.778vh]">
+                        <div className="w-[50%] ml-20 mt-[2.778vh]">
                             <p style={epilogue.style} className="text-[1.25 rem] font-normal text-[#474747B3]">Payment Portal</p>
                             {payMethod === "PayPal" ? (
                                 <p style={epilogue.style} className="text-[1rem] mt-[2.778vh] font-normal w-full">{qr}</p>
@@ -515,24 +516,24 @@ export default function Checkout() {
                 </div>
 
                 <div className="flex flex-col w-[31.25vw] h-fit mt-[4.63vh] rounded-lg border-[1px] p-10 border-[#474747]">
-                    <p style={epilogue.style} className="text-[2rem] font-bold">Order Summary</p>
+                    <p style={epilogue.style} className="text-[2rem] font-bold leading-none">Order Summary</p>
 
                     <SimpleGrid cols={2} className="mt-10 items-center">
-                        <p style={epilogue.style} className="text-[1.25rem] font-bold">Sub Total</p>
-                        <p style={epilogue.style} className="text-[1.25rem] font-normal pl-10">&#8369; {getTotalPrice().toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-                        <p style={epilogue.style} className="text-[1.25rem] font-bold">Additional Fees</p>
-                        <p style={epilogue.style} className="text-[1.25rem] font-normal pl-10">&#8369;  {addFees.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                        <p style={epilogue.style} className="text-[1.25rem] leading-none font-bold">Sub Total</p>
+                        <p style={epilogue.style} className="text-[1.25rem] leading-none font-normal pl-10">&#8369; {getTotalPrice().toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                        <p style={epilogue.style} className="text-[1.25rem] leading-none font-bold">Additional Fees</p>
+                        <p style={epilogue.style} className="text-[1.25rem] leading-none font-normal pl-10">&#8369;  {addFees.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                     </SimpleGrid>
 
                     <Divider orientation='horizontal' className='w-full mt-3 border-[#B1B1B180]' />
 
                     <SimpleGrid cols={2} className="mt-10 items-center">
-                        <p style={epilogue.style} className="text-[1.25rem] font-bold">Total</p>
-                        <p style={epilogue.style} className="text-[1.25rem] font-normal pl-10">&#8369; {(getTotalPrice() + addFees).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                        <p style={epilogue.style} className="text-[1.25rem] leading-none font-bold">Total</p>
+                        <p style={epilogue.style} className="text-[1.25rem] leading-none font-normal pl-10">&#8369; {(getTotalPrice() + addFees).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                     </SimpleGrid>
 
                     <SimpleGrid cols={2} className="mt-10 items-center">
-                        <p style={epilogue.style} className="text-[1.25rem] font-bold h-[60px]">Payment Method</p>
+                        <p style={epilogue.style} className="text-[1.25rem] leading-none font-bold h-[60px]">Payment Method</p>
                         <div className="h-[60px]">
                             <Image
                                 src={paymentImage}
@@ -543,13 +544,13 @@ export default function Checkout() {
                     </SimpleGrid>
 
                     <SimpleGrid cols={2} className="mt-2 items-center">
-                        <p style={epilogue.style} className="text-[1.25rem] font-bold">Payment Term</p>
-                        <p style={epilogue.style} className="text-[0.875rem] font-normal pl-10">{term}</p>
+                        <p style={epilogue.style} className="text-[1.25rem] leading-none font-bold">Payment Term</p>
+                        <p style={epilogue.style} className="text-[0.875rem] leading-none font-normal pl-10">{term}</p>
                     </SimpleGrid>
 
                     <SimpleGrid cols={2} className="mt-10 items-center">
-                        <p style={epilogue.style} className="text-[1.25rem] font-bold">Courier</p>
-                        <p style={epilogue.style} className="text-[0.875rem] font-normal pl-10">{selectedCouriers.label}</p>
+                        <p style={epilogue.style} className="text-[1.25rem] leading-none font-bold">Courier</p>
+                        <p style={epilogue.style} className="text-[0.875rem] leading-none font-normal pl-10">{selectedCouriers.label}</p>
                     </SimpleGrid>
 
                     <Textarea
@@ -564,7 +565,7 @@ export default function Checkout() {
                     <Button
                         variant="filled"
                         fullWidth
-                        color="black"
+                        color="#2E7D31"
                         radius="md"
                         onClick={submitInfo}
                         styles={{
@@ -576,7 +577,7 @@ export default function Checkout() {
                             label: {
                                 fontFamily: "Epilogue",
                                 fontWeight: 700,
-                                fontSize: "1.5rem",
+                                fontSize: "1.3rem",
                                 color: "#EDEDED"
                             }
                         }}

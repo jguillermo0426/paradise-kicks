@@ -1,13 +1,13 @@
 'use client'
-import { BrandsType, Product } from '@/types/types';
-import { SimpleGrid, Image, Button, Box, LoadingOverlay, TextInput } from '@mantine/core';
+import { storage } from '@/firebase/firebase';
+import { BrandsType } from '@/types/types';
+import { Box, Button, Image, SimpleGrid, TextInput } from '@mantine/core';
+import { useForm } from '@mantine/form';
 import { Notifications, showNotification } from '@mantine/notifications';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { Epilogue } from 'next/font/google';
 import { useEffect, useRef, useState } from 'react';
-import { useForm } from '@mantine/form';
-import styles from "../css/inputfield.module.css"
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { storage } from '@/firebase/firebase';
+import styles from "../css/inputfield.module.css";
 
 const epilogue = Epilogue({
     subsets: ['latin'],
@@ -152,7 +152,7 @@ export default function Brands() {
             </div>
 
             <div className='flex flex-row items-start justify-between w-full'>
-                <div className='w-[45.208vw] h-auto border-black border-2 rounded-2xl mt-12 py-[3.239vh] px-[3.542vw]'>
+                <div className='w-[60%] h-auto border-black border-2 rounded-2xl mt-12 py-[3.239vh] px-[3.542vw]'>
                     <SimpleGrid cols={3} spacing="xl">
                         {brands?.map((brand, index) => (
                             <div key={index} className='flex flex-col items-center justify-center w-full'>
@@ -173,7 +173,7 @@ export default function Brands() {
                                     fallbackSrc="/placeholder.svg"
                                     fit="contain"
                                     className='mt-3 hover:cursor-pointer'
-                                    onClick={(e) => deleteBrand(brand.brand_name)}
+                                    onClick={() => deleteBrand(brand.brand_name)}
                                 />
                             </div>
                         ))}
