@@ -516,24 +516,24 @@ export default function Checkout() {
                 </div>
 
                 <div className="flex flex-col w-[31.25vw] h-fit mt-[4.63vh] rounded-lg border-[1px] p-10 border-[#474747]">
-                    <p style={epilogue.style} className="text-[2rem] font-bold">Order Summary</p>
+                    <p style={epilogue.style} className="text-[2rem] font-bold leading-none">Order Summary</p>
 
                     <SimpleGrid cols={2} className="mt-10 items-center">
-                        <p style={epilogue.style} className="text-[1.25rem] font-bold">Sub Total</p>
-                        <p style={epilogue.style} className="text-[1.25rem] font-normal pl-10">&#8369; {getTotalPrice().toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-                        <p style={epilogue.style} className="text-[1.25rem] font-bold">Additional Fees</p>
-                        <p style={epilogue.style} className="text-[1.25rem] font-normal pl-10">&#8369;  {addFees.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                        <p style={epilogue.style} className="text-[1.25rem] leading-none font-bold">Sub Total</p>
+                        <p style={epilogue.style} className="text-[1.25rem] leading-none font-normal pl-10">&#8369; {getTotalPrice().toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                        <p style={epilogue.style} className="text-[1.25rem] leading-none font-bold">Additional Fees</p>
+                        <p style={epilogue.style} className="text-[1.25rem] leading-none font-normal pl-10">&#8369;  {addFees.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                     </SimpleGrid>
 
                     <Divider orientation='horizontal' className='w-full mt-3 border-[#B1B1B180]' />
 
                     <SimpleGrid cols={2} className="mt-10 items-center">
-                        <p style={epilogue.style} className="text-[1.25rem] font-bold">Total</p>
-                        <p style={epilogue.style} className="text-[1.25rem] font-normal pl-10">&#8369; {(getTotalPrice() + addFees).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                        <p style={epilogue.style} className="text-[1.25rem] leading-none font-bold">Total</p>
+                        <p style={epilogue.style} className="text-[1.25rem] leading-none font-normal pl-10">&#8369; {(getTotalPrice() + addFees).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                     </SimpleGrid>
 
                     <SimpleGrid cols={2} className="mt-10 items-center">
-                        <p style={epilogue.style} className="text-[1.25rem] font-bold h-[60px]">Payment Method</p>
+                        <p style={epilogue.style} className="text-[1.25rem] leading-none font-bold h-[60px]">Payment Method</p>
                         <div className="h-[60px]">
                             <Image
                                 src={paymentImage}
@@ -544,13 +544,13 @@ export default function Checkout() {
                     </SimpleGrid>
 
                     <SimpleGrid cols={2} className="mt-2 items-center">
-                        <p style={epilogue.style} className="text-[1.25rem] font-bold">Payment Term</p>
-                        <p style={epilogue.style} className="text-[0.875rem] font-normal pl-10">{term}</p>
+                        <p style={epilogue.style} className="text-[1.25rem] leading-none font-bold">Payment Term</p>
+                        <p style={epilogue.style} className="text-[0.875rem] leading-none font-normal pl-10">{term}</p>
                     </SimpleGrid>
 
                     <SimpleGrid cols={2} className="mt-10 items-center">
-                        <p style={epilogue.style} className="text-[1.25rem] font-bold">Courier</p>
-                        <p style={epilogue.style} className="text-[0.875rem] font-normal pl-10">{selectedCouriers.label}</p>
+                        <p style={epilogue.style} className="text-[1.25rem] leading-none font-bold">Courier</p>
+                        <p style={epilogue.style} className="text-[0.875rem] leading-none font-normal pl-10">{selectedCouriers.label}</p>
                     </SimpleGrid>
 
                     <Textarea
