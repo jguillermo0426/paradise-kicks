@@ -45,7 +45,7 @@ export default function Login() {
     return (
         <main>
             <div className="bg-black flex flex-row w-full items-center justify-center" style={{ height: "100vh" }}>
-                <div className="flex flex-col items-center h-full justify-center p-20">
+                <div className="flex flex-col items-center h-full justify-center p-12">
                     <div className="flex flex-col items-center justify-center drop-shadow-xl w-[600px] h-full py-10 bg-[#319694]" style={{ paddingInline: "100px", borderRadius: "20px" }}>
                         <Image
                             src="/white logo.png"
