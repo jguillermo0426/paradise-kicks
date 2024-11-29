@@ -25,12 +25,12 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: Run Playwright tests
+      run: npx playwright test --max-failures=5
       env:
         NEXT_PUBLIC_SUPABASE_URL: ${( secrets.NEXT_PUBLIC_SUPABASE_URL )}
         NEXT_PUBLIC_SUPABASE_ANON_KEY: ${( secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY )}
         NEXT_PUBLIC_USERNAME: ${( secrets.NEXT_PUBLIC_USERNAME )}
         NEXT_PUBLIC_PASSWORD: ${( secrets.NEXT_PUBLIC_PASSWORD )}
-      run: npx playwright test --max-failures=5
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
