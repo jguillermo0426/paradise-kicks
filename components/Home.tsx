@@ -108,16 +108,21 @@ export default function Home() {
                 // if the group of the colorways doesnt exist, create it
                 if (!colorwayGroup) {
                     colorwayGroup = { id: colorwayId, image_link: image_link, colorway: Colorway, sizes: [], model: Model, brand: Brand };
-                    if (image_link) {
-                        colorwayGroup.image_link = image_link;  // assign image link if available
+                    if (image_link && image_link.trim() !== '') {
+                        if (!colorwayGroup.image_link) {
+                            colorwayGroup.image_link = image_link;  // assign image link if available
+                        }
                     }
                     grouped[Model].colorways.push(colorwayGroup);
                     colorwayId += 1;
                 }
 
-                if (image_link) {
-                    colorwayGroup.image_link = image_link;  // assign image link if available
+                if (image_link && image_link.trim() !== '') {
+                    if (!colorwayGroup.image_link) {
+                        colorwayGroup.image_link = image_link;  // assign only if not already set
+                    }
                 }
+                
 
                 // assign the individual sku, size, stock, and price for the shoe
                 colorwayGroup.sizes.push({
@@ -227,18 +232,21 @@ export default function Home() {
                         />
                         <div className="max-[320px]:w-[80%] max-[477px]:w-[70%] max-[769px]:w-[65%] max-[769px]:-mt-10 max-[1200px]:w-[50%] absolute inset-0 z-10 w-[40%] h-full mr-auto shadow-2xl" style={{ backgroundColor: 'rgba(28, 28, 28, 0.23)' }}>
                             <div className="flex flex-col w-full h-full items-start justify-between px-16 py-[25%] max-[769px]:px-10 max-[477px]:px-5">
-                                <p className="ml-10 text-[4vw] tracking-tighter" style={{ fontFamily: "EpilogueBold", color: "white", lineHeight: 1.1 }}>
-                                    <span className="text-[5vw] mr-[1.5px]" style={{ fontStyle: "italic" }}>B</span>ringing<br/>
-                                    today&#39;s most<br/>
-                                    in-demand<br/>
+                                <div className="ml-10 text-[4vw] tracking-tighter" style={{ fontFamily: "EpilogueBold", color: "white", lineHeight: 1.1 }}>
+                                    <p>
+                                        <span className="text-[5vw] mr-[1.5px]" style={{ fontStyle: "italic" }}>B</span>ringing<br />
+                                        today&#39;s most<br />
+                                        in-demand<br />
+                                    </p>
+                                    <div className="max-[769px]:mb-1" style={{ display: "inline-block", transform: "rotate(-4deg)" }}>
+                                        <span className="max-[769px]:rounded-[5px] max-[769px]:p-1 max-[769px]:px-2 shadow-2xl text-[#1A5756] bg-[#EDEDED] p-2 pb-1 px-4 rounded-[10px]">sneakers</span>
+                                    </div>
+                                    <p>
+                                        within your<br />
+                                        reach.
+                                    </p>
+                                </div>
 
-                                    <div className="max-[769px]:mb-1" style={{ display: "inline-block", transform: "rotate(-4deg)"}}>
-                                        <span className="max-[769px]:rounded-[5px] max-[769px]:p-1 max-[769px]:px-2shadow-2xl text-[#1A5756] bg-[#EDEDED] p-2 pb-1 px-4 rounded-[10px]">sneakers</span><br/>
-                                    </div><br/>
-                                    
-                                    within your<br/>
-                                    reach.
-                                </p>
                                 <div className="max-[477px]:mt-5 max-[1200px]:mt-10 ml-10 flex flex-col justify-center">
                                     <UnstyledButton component="a" href="/product-listing">
                                         <div className="max-[477px]:h-[25px] max-[477px]:w-[165px] max-[477px]:outline-2 max-[477px]:outline-offset-2 max-[477px]:rounded-sm
