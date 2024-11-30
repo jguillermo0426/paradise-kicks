@@ -82,11 +82,19 @@ export default function OrderTracker() {
 
     return (
         <MantineProvider>
-            <div className='p-20 flex flex-col items-center mx-4 mt-4 relative z-0 bg-white overflow-hidden min-h-screen'>
+            <div className="p-5
+                            tablet:p-4
+                            desktop:p-4
+                            flex flex-col items-center relative 
+                            z-0 bg-white overflow-hidden min-h-screen">
                 <Notifications />
-                <div className="max-[745px]:p-0 max-[745px]:m-0 mt-5 flex flex-col items-center justify-center w-full mb-20 px-20 py-10">
+                <div className="max-[745px]:p-0 max-[745px]:m-0
+        
+                                tablet:mt-5
+                                desktop:mt-5
+                                flex flex-col items-center justify-center w-full mb-20 px-20 py-10">
                     {/* RETURN BUTTON */}
-                    <div className="mr-auto -mt-10 mb-12">
+                    <div className="mr-auto mt-10 mb-12">
                         <Button
                             component="a"
                             href="/product-listing"
@@ -115,18 +123,29 @@ export default function OrderTracker() {
                     <div className="max-[1146px]:flex-col max-[1146px]:gap-x-0 max-[1146px]:gap-y-20 flex flex-row items-start justify-center w-full gap-x-40">
                         {/* LEFT SIDE */}
                         <div className="max-[709px]:w-full max-[1146px]:w-full flex flex-col items-start w-[55%] mt-16">
-                            <p className="max-[709px]:text-[52px] max-[842px]:text-[62px] leading-none text-[72px] font-bold mb-[-22px] -tracking-[0.025em]" style={epilogue.style}>
+                            <p className="text-[40px] 
+                                        tablet:text-[72px] 
+                                        desktop:text-[72px] 
+                                        leading-none font-bold mb-[-22px] -tracking-[0.025em]" style={epilogue.style}>
                                 Order Tracker
                             </p>
-                            <p className="max-[709px]:text-[20px] text-[24px] mb-14 mt-5" style={epilogue.style}>
+                            <p className="text-[15px] 
+                                        tablet:text-[30px] 
+                                        desktop:text-[30px]
+                                         mb-14 mt-5" style={epilogue.style}>
                                 Check your order status here.
                             </p>
                             <p className="text-[20px] text-[#7F7F7F] -tracking-[0.025em]" style={epilogue.style}>
                                 Order Number
                             </p>
-                            <div className="mb-16">
+                            <div className="mb-16
+                                            tablet:mb-16
+                                            desktop:mb-16">
                                 <Input 
-                                    className="w-[425px] max-[559px]:h-[40px] max-[559px]:w-[355px]"
+                                    className="h-[50px] w-[355px] 
+                                            tablet:h-[40px] tablet:w-[430px]
+                                            desktop:h-[40px] desktop:w-[430px]"
+                        
                                     value={orderNumber}
                                     onChange={(event) => setOrderNumber(event.currentTarget.value)}
                                     size="xl" 
