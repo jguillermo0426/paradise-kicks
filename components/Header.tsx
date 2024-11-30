@@ -116,7 +116,7 @@ export default function Header({navSelected}: SelectedProps) {
                             
                         {/* CART FOR SMALL SCREENS */}
                         <Link href="/cart">
-                            <div className="-mt-[3.2rem] pb-5 mr-10 flex flex-row items-center justify-end pt-20 border-2 border-none md:hidden">
+                            <div className="-mt-[3.2rem] pb-5 mr-2 flex flex-row items-center justify-end pt-20 border-2 border-none md:hidden">
                                 <Badge size="sm" color="#2E7D31" circle 
                                 className="z-10"
                                 styles={{ 

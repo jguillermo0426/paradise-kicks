@@ -17,7 +17,7 @@ export default function Home() {
     const [faqs, setFaqs] = useState<FaqsType[]>();
 
 
-    const exploreIcon = (<svg className="max-[477px]:w-[11px] max-[477px]:stroke-1 max-[769px]:w-[13px] stroke-2" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+    const exploreIcon = (<svg className="max-sm:w-[11px] max-sm:stroke-1 max-tablet:w-[13px] stroke-2" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M1.5625 13.4375L13.4375 1.5625M13.4375 1.5625H4.53125M13.4375 1.5625V10.4688" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>)
 
@@ -230,16 +230,16 @@ export default function Home() {
                             className="w-screen shadow-lg"
                             src="/homeimage.png"
                         />
-                        <div className="max-[320px]:w-[80%] max-[477px]:w-[70%] max-[769px]:w-[65%] max-[769px]:-mt-10 max-[1200px]:w-[50%] absolute inset-0 z-10 w-[40%] h-full mr-auto shadow-2xl" style={{ backgroundColor: 'rgba(28, 28, 28, 0.23)' }}>
-                            <div className="flex flex-col w-full h-full items-start justify-between px-16 py-[25%] max-[769px]:px-10 max-[477px]:px-5">
-                                <div className="ml-10 text-[4vw] tracking-tighter" style={{ fontFamily: "EpilogueBold", color: "white", lineHeight: 1.1 }}>
+                        <div className="w-[70%] sm:w-[50%] absolute inset-0 z-10 lg:w-[40%] h-full mr-auto shadow-2xl" style={{ backgroundColor: 'rgba(28, 28, 28, 0.23)' }}>
+                            <div className="flex flex-col w-full h-full items-start justify-between pb-10 sm:pl-10 tablet:pl-20 px-16 pt-[25%] px-5 pb-0 mb-0">
+                                <div className="-mt-10 sm:-mt-0 ml-10 text-[4vw] tracking-tighter" style={{ fontFamily: "EpilogueBold", color: "white", lineHeight: 1.1 }}>
                                     <p>
                                         <span className="text-[5vw] mr-[1.5px]" style={{ fontStyle: "italic" }}>B</span>ringing<br />
                                         today&#39;s most<br />
                                         in-demand<br />
                                     </p>
-                                    <div className="max-[769px]:mb-1" style={{ display: "inline-block", transform: "rotate(-4deg)" }}>
-                                        <span className="max-[769px]:rounded-[5px] max-[769px]:p-1 max-[769px]:px-2 shadow-2xl text-[#1A5756] bg-[#EDEDED] p-2 pb-1 px-4 rounded-[10px]">sneakers</span>
+                                    <div className="mb-1" style={{ display: "inline-block", transform: "rotate(-4deg)" }}>
+                                        <span className="rounded-[5px] p-1 px-2 shadow-2xl text-[#1A5756] bg-[#EDEDED] tablet:p-2 tablet:pb-1 tablet:px-4 tablet:rounded-[10px]">sneakers</span>
                                     </div>
                                     <p>
                                         within your<br />
@@ -247,15 +247,14 @@ export default function Home() {
                                     </p>
                                 </div>
 
-                                <div className="max-[477px]:mt-5 max-[1200px]:mt-10 ml-10 flex flex-col justify-center">
+                                <div className="ml-10 flex flex-col justify-center tablet:-mt-10 -mt-1 h-full">
                                     <UnstyledButton component="a" href="/product-listing">
-                                        <div className="max-[477px]:h-[25px] max-[477px]:w-[165px] max-[477px]:outline-2 max-[477px]:outline-offset-2 max-[477px]:rounded-sm
-                                                        max-[769px]:h-[32px] max-[769px]:w-[190px] max-[769px]:outline-2 max-[769px]:outline-offset-3
-                                                        flex flex-row items-center justify-between h-[40px] w-[250px] px-4 py-2
+                                        <div className="h-[25px] w-[165px] outline-2 outline-offset-2 rounded-sm
+                                                        tablet:h-[32px] tablet:w-[190px] tablet:outline-2 tablet:outline-offset-3
+                                                        flex flex-row items-center justify-between md:h-[40px] md:w-[250px] px-4 py-2
                                                         hover:ease-in hover:duration-200 hover:outline hover:outline-offset-4 hover:outline-[#177F7D] hover:bg-[#177F7D]
-                                                        outline outline-offset-4 outline-[#22A7A4] bg-[#22A7A4] shadow-xl rounded-lg">
-                                            <p className="max-[477px]:pl-0
-                                                          max-[477px]:text-[11px] max-[769px]:text-[13px] pl-1 pt-1 text-[16px] font-semibold" style={{ fontFamily: "Epilogue", color: "white" }}>
+                                                        outline outline-offset-4 outline-[#22A7A4] bg-[#22A7A4] shadow-xl md:rounded-lg">
+                                            <p className="pl-0 text-[11px] tablet:text-[13px] pl-1 pt-1 md:text-[16px] font-semibold" style={{ fontFamily: "Epilogue", color: "white" }}>
                                                 Explore Catalogue
                                             </p> 
                                             {exploreIcon}
@@ -268,10 +267,10 @@ export default function Home() {
                     </div>   
                 </div>
 
-                <div className="mt-5 w-full flex flex-col items-center justify-center max-[420px]:px-5 max-[768px]:py-6 max-[768px]:px-12 px-16 py-10">
+                <div className="mt-5 w-full flex flex-col items-center justify-center max-sm:px-5 max-tablet:py-6 max-tablet:px-12 px-16 py-10">
                     {/* FEATURED BRANDS */}
                     <div className="w-full flex flex-col items-center justify-center mb-6 p-1">
-                        <p className="text-[4vw] md:text-[40px] max-[768px]:text-[22px] max-[768px]:-mb-5" style={{ fontFamily: "EpilogueBold", color: "#1C1C1C", letterSpacing: -1 }}> 
+                        <p className="text-[4vw] md:text-[40px] max-tablet:text-[22px] max-tablet:-mb-5" style={{ fontFamily: "EpilogueBold", color: "#1C1C1C", letterSpacing: -1 }}> 
                             Our Featured Brands
                         </p>
                     </div>
@@ -300,10 +299,10 @@ export default function Home() {
                                 {brands ? (
                                     brands.map((brand, brandIndex) => (
                                         <Carousel.Slide key={brandIndex}>
-                                            <div className="max-[768px]:mt-3 max-[768px]:h-[80%] align-items-center flex items-center justify-center w-full h-full px-2 rounded-lg
+                                            <div className="max-tablet:mt-3 max-tablet:h-[80%] align-items-center flex items-center justify-center w-full h-full px-2 rounded-lg
                                                             border border-black border-2">
                                                 <Image
-                                                    className="max-[768px]:h-[25px] h-[35px]"
+                                                    className="h-[25px] tablet:h-[35px]"
                                                     fit="contain"
                                                     src={brand.brand_image}
                                                     alt={`Brand ${brandIndex}`}
