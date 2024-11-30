@@ -166,35 +166,38 @@ export default function Cart() {
                                             src={item.product.image_link ? item.product.image_link : "https://www.svgrepo.com/show/508699/landscape-placeholder.svg"}
                                             />
                                         </UnstyledButton>
-                                        <div className="flex flex-col justify-start">
+                                        <div className="flex flex-col justify-start mobile:ml-[50px] mobile:mt-[50px] mobile:mb-[50px]">
                                             {/* BRAND AND MODEL */}
-                                            <p className="max-[650px]:text-[16px] max-[798px]:leading-none text-[20px]" style={{ fontFamily: "Epilogue", fontWeight: 600, letterSpacing: "-0.5px" }}>
+                                            <p className="font-bold max-[650px]:text-[16px] max-[798px]:leading-none 
+                                                        mobile:text-[10px] mobile:font-semibold
+                                                        sm:text-[18px] 
+                                                        lg:text-[20px]" style={{ fontFamily: "Epilogue", fontWeight: 600, letterSpacing: "-0.5px" }}>
                                                 {item.product.Brand} {item.product.Model}
                                             </p>
                                             {/* PRICE */}
-                                            <p className="text-[14px] mb-4" style={{ fontFamily: "Epilogue", letterSpacing: "-0.5px" }}>
+                                            <p className="sm:text-[12px] lg:text-[14px] mb-4" style={{ fontFamily: "Epilogue", letterSpacing: "-0.5px" }}>
                                                 &#8369; {item.product.Price.toFixed(2)}
                                             </p>
                                             {/* COLOR */}
                                             <div className="w-full flex flex-row justify-start">
-                                                <p className="text-[14px] w-[70px]" style={{ fontFamily: "Epilogue", color: "gray", letterSpacing: "-0.5px" }}>
+                                                <p className="sm:text-[12px] lg:text-[14px] w-[70px]" style={{ fontFamily: "Epilogue", color: "gray", letterSpacing: "-0.5px" }}>
                                                     Color
                                                 </p>
-                                                <p className="text-[14px]" style={{ fontFamily: "Epilogue", letterSpacing: "-0.5px" }}>
+                                                <p className="sm:text-[12px] lg:text-[14px]" style={{ fontFamily: "Epilogue", letterSpacing: "-0.5px" }}>
                                                     {item.product.Colorway}
                                                 </p>
                                             </div>
                                             {/* SIZE */}
                                             <div className="w-full flex flex-row justify-start mb-4">
-                                                <p className="text-[14px] w-[70px]" style={{ fontFamily: "Epilogue", color: "gray", letterSpacing: "-0.5px" }}>
+                                                <p className="sm:text-[12px] lg:text-[14px] w-[70px]" style={{ fontFamily: "Epilogue", color: "gray", letterSpacing: "-0.5px" }}>
                                                     Size
                                                 </p>
-                                                <p className="text-[14px]" style={{ fontFamily: "Epilogue", letterSpacing: "-0.5px" }}>
+                                                <p className="sm:text-[12px] lg:text-[14px]" style={{ fontFamily: "Epilogue", letterSpacing: "-0.5px" }}>
                                                     {item.product.Size}
                                                 </p>
                                             </div>
                                             {/* QUANTITY */}
-                                            <p className="text-[14px]" style={{ fontFamily: "Epilogue", color: "dark gray", letterSpacing: "-0.5px" }}>
+                                            <p className="sm:text-[12px] lg:text-[14px]" style={{ fontFamily: "Epilogue", color: "dark gray", letterSpacing: "-0.5px" }}>
                                                 Quantity
                                             </p>
                                             <div className="flex flex-row items-center justify-between w-[100px] h-[30px] bg-[#1C1C1C] rounded-md">
@@ -221,7 +224,7 @@ export default function Cart() {
                                                 src={getBrandLogo(item.product.Brand)}
                                                 height={26}
                                             />
-                                            <p className="max-[798px]:leading-none tracking-tight text-black max-[798px]:text-[16px] text-[24px]" style={{ fontFamily: "EpilogueMedium", marginBottom: "-8px" }}>
+                                            <p className="max-[798px]:leading-none tracking-tight text-black sm:text-[18px] lg:text-[20px]" style={{ fontFamily: "EpilogueMedium", marginBottom: "-8px" }}>
                                                 &#8369; {(item.product.Price * item.quantity).toFixed(2)}
                                             </p>
                                         </div>
