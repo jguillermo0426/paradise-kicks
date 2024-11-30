@@ -149,7 +149,7 @@ export default function Cart() {
                         <Notifications />
                         <div className="w-full flex max-[1237px]:flex-col flex-row max-[1237px]:items-center items-start justify-start mt-10">
                             {/* CART ITEMS LIST*/}
-                            <div className="max-[1390px]-ml-0 ml-[-15px] w-full flex flex-col justify-center items-center">
+                            <div className="w-full flex flex-col justify-center items-center">
                                 {cart.map((item, itemIndex) => (
                                     <div key={itemIndex} className="flex-row hover:bg-off-white hover:border-4 hover:border-black flex flex-row w-[95%] h-[228px] items-center justify-start mb-8 p-6 border-dark-gray border-2 rounded-xl">
                                         
@@ -236,8 +236,8 @@ export default function Cart() {
                                                 src={getBrandLogo(item.product.Brand)}
                                                 height={26}
                                             />
-                                            <p className="max-[798px]:leading-none tracking-tight text-black sm:text-[18px] lg:text-[20px]" style={{ fontFamily: "EpilogueMedium", marginBottom: "-8px" }}>
-                                                &#8369; {(item.product.Price * item.quantity).toFixed(2)}
+                                            <p className="ml-5 tablet:ml-0 desktop:ml-0 max-[798px]:leading-none tracking-tight text-black sm:text-[18px] lg:text-[20px]" style={{ fontFamily: "EpilogueMedium", marginBottom: "-8px" }}>
+                                                &#8369;{(item.product.Price * item.quantity).toFixed(2)}
                                             </p>
                                         </div>
                                         
