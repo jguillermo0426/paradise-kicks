@@ -268,7 +268,7 @@ export default function ProductListing() {
                         {/* CATALOGUE TITLE */}
                         <div className="order-2 desktop:order-1 w-full flex flex-row items-center justify-start
                                         md:w-auto md:mb-0 md:mt-4 mb-4">
-                            <p className="text-[32px] tablet:text-[72px] mr-2 text-black font-bold" style={epilogue.style}>Catalogue</p>
+                            <p className="text-[32px] tablet:text-[72px] mr-2 text-black font-bold tracking-tighter" style={epilogue.style}>Catalogue</p>
                             <p className="text-[12px] tablet:text-[20px] tablet:mb-[-25px] font-semibold" style={epilogue.style}>All items</p>
                         </div>
                         
@@ -432,7 +432,7 @@ export default function ProductListing() {
                     </Popover.Target>
                     <Popover.Dropdown>
                         <div className="p-2">
-                            <p className="text-[12px] tablet:text-[16px] mb-4" style={{ fontFamily: "EpilogueBold" }}>
+                            <p className="font-bold text-[12px] tablet:text-[16px] mb-4" style={{ fontFamily: "EpilogueBold" }}>
                                 Quick Help
                             </p>
                             <UnstyledButton component="a" href='/order-tracker'>
