@@ -1,11 +1,11 @@
-import type { Config } from "tailwindcss";
+/** @type {import('postcss-load-config').Config} */
+//import type { Config } from "tailwindcss";
 
-const config: Config = {
+module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./Components/**/*.{js,ts,jsx,tsx,mdx}",
-
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./app/**/*.{js,ts,jsx,tsx,mdx}"
   ],
   theme: {
     screens: {
@@ -13,7 +13,8 @@ const config: Config = {
       'tablet': '768px',
       'md': '960px',
       'lg': '1024px',
-      'desktop': '1440px'
+      'desktop': '1440px',
+      '3xl': '1920px'
     },
     colors: {
       'brand-primary': '#38BDBA',
@@ -30,11 +31,8 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
-      screens: {
-        '3xl': '1920px'
-     }
     },
   },
   plugins: [],
 };
-export default config;
+
