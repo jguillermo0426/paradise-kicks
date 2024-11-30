@@ -416,8 +416,8 @@ export default function ProductDetails({ productModel }: ProductProps) {
 
     return (
         <MantineProvider>
-            <div className='pb-[3rem] flex flex-col items-center 
-                            m-0 relative z-0 bg-white overflow-hidden min-h-screen'>
+            <div className='pb-[3rem] bg-warning flex flex-col items-center 
+                            m-0 relative z-0 overflow-hidden min-h-screen'>
                 {loading ? (
                     <><div className="ml-[35px] mt-10 desktop:ml-[65px]" style={{ marginRight: "auto" }}>
                         <Button
@@ -485,15 +485,12 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                     Return
                                 </Button>
                             </div>
-                            <div key={productIndex} className="flex flex-col min-[878px]:flex-row justify-center w-full mx-8 my-2 py-6">
+                            <div key={productIndex} className="flex md:flex-row flex-col justify-center w-full mx-8 mt-2 pt-6">
                                 {/* PRODUCT PICTURES */}
                                 <div className="h-[764px] flex flex-col items-center rounded-xl mx-8 
-                                                min-[879px]:w-[55%]
-                                                min-[1228px]:max-w-[724px]
-                                                max-[1228px]:h-[534px] max-[1228px]:mb-10
-                                                max-[456px]:h-[234px] max-[1228px]:mb-3
-                                                max-[393px]:mx-0
-                                                max-[393px]:max-w-full max-[393px]:mx-8">
+                                                lg:max-w-[724px]
+                                                tablet:w-full
+                                                max-w-full mx-8 mb-0 pb-0">
                                     <Carousel
                                         className="rounded-xl"
                                         withIndicators
@@ -505,12 +502,9 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                             <Image
                                                 alt="Card background"
                                                 className="object-cover rounded-xl 
-                                                           w-[724px] h-[664px] 
-                                                           min-[1228px]:w-[724px] 
-                                                           min-[1228px]:h-[764px]
-                                                           max-[1228px]:h-[534px]
-                                                           max-[456px]:h-[234px]
-                                                           max-[393px]:max-w-screen"
+                                                           w-[724px] md:h-[664px] 
+                                                           sm:h-[434px] h-[234px]
+                                                           max-w-screen"
                                                 src={getImageLink(product, colorway.colorway) || "https://static.nike.com/a/images/t_PDP_936_v1/f_auto,q_auto:eco/af53d53d-561f-450a-a483-70a7ceee380f/W+NIKE+DUNK+LOW.png"}
                                                 //width={724}
                                                 //height={764} 
@@ -522,18 +516,14 @@ export default function ProductDetails({ productModel }: ProductProps) {
                                 </div>
 
                                 {/* PRODUCT DETAILS */}
-                                <div className="max-[878px]:w-full 
-                                                max-[878px]:px-10
-                                                max-[878px]:py-5 
-                                                max-[878px]:mx-0
-                                                flex flex-col w-[45%] justify-start mx-4">
-                                    <p className="font-semibold text-success max-[456px]:text-[12px] text-[18px] min-[1228px]:text-[20px] text-[#474747]" style={{ fontFamily: "Epilogue", marginBottom: "8px" }}>
+                                <div className="w-full px-4 mx-0 flex flex-col w-[45%] justify-start mx-4">
+                                    <p className="font-semibold text-success text-[12px] sm:text-[18px] lg:text-[20px] text-[#474747]" style={{ fontFamily: "Epilogue", marginBottom: "8px" }}>
                                         {selectedColorway === ''
                                             ? getTotalStocks(product)
                                             : stock} stocks left
                                     </p>
-                                    <p className="max-[456px]:text-[32px] text-[52px] min-[1228px]:text-[72px] tracking-tighter" style={{ fontFamily: "EpilogueBold", lineHeight: "1.00" }}>{product.brand} {product.model}</p>
-                                    <p className="text-[20px] min-[1228px]:text-[24px]" style={{ fontFamily: "EpilogueMedium" }}>
+                                    <p className="text-[32px] sm:text-[52px] lg:text-[72px] tracking-tighter" style={{ fontFamily: "EpilogueBold", lineHeight: "1.00" }}>{product.brand} {product.model}</p>
+                                    <p className="text-[20px] lg:text-[24px]" style={{ fontFamily: "EpilogueMedium" }}>
                                         {selectedColorway === "" && selectedSKU === ""
                                             ? `${startingPriceDisplay(product)}`
                                             : selectedColorway !== "" && selectedSKU === ""
