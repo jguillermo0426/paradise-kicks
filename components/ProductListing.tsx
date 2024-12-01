@@ -1,6 +1,6 @@
 'use client'
 import { BrandsType, GroupedProduct2, Product } from '@/types/types';
-import { Affix, Button, Image, Loader, LoadingOverlay, MantineProvider, Pagination, Popover, Select, TextInput, UnstyledButton } from '@mantine/core';
+import { Affix, Image, Loader, LoadingOverlay, MantineProvider, Pagination, Popover, Select, TextInput, UnstyledButton } from '@mantine/core';
 import { Card, CardBody } from "@nextui-org/react";
 import Link from 'next/link';
 import { useRouter } from "next/navigation";
