@@ -165,7 +165,10 @@ export default function Cart() {
                                         <UnstyledButton onClick={() => router.push(`/product-details/${item.product.Model}`)}>
                                             <Image
                                             radius="md"
-                                            className="ml-5 max-[675px]:w-[50px] max-[675px]:h-[50px] max-[900px]:w-[100px] max-[900px]:h-[100px] h-[192px] w-[192px] object-cover mr-6"
+                                            className="hidden tablet:block desktop:block 
+                                                    ml-5 tablet:w-[100px] tablet:h-[100px] 
+                                                    desktop:w-[100px] desktop:h-[100px] 
+                                                    object-cover mr-6"
                                             src={item.product.image_link ? item.product.image_link : "https://www.svgrepo.com/show/508699/landscape-placeholder.svg"}
                                             />
                                         </UnstyledButton>
@@ -206,9 +209,7 @@ export default function Cart() {
                                                 Quantity
                                             </p>
                                             <div className="flex flex-row items-center justify-between 
-                                                            w-[50px] h-[15px]
-                                                            tablet:w-[100px] tablet:h-[30px]
-                                                            desktop:w-[100px] desktop:h-[30px] 
+                                                            w-[100px] h-[30px]
                                                             bg-[#1C1C1C] rounded-md">
                                                 {/* MINUS BUTTON */}
                                                 <ActionIcon onClick={() => {decreaseQuantity(item)} }variant="filled" color="#474747" size={30} aria-label="minus">
@@ -228,9 +229,9 @@ export default function Cart() {
                                                 </ActionIcon>
                                             </div>
                                         </div>
-                                        <div className="w-[20px] h-full
-                                                        tablet:w-[20px] tablet:h-full 
-                                                        desktop:w-[20px] desktop:h-full 
+                                        <div className="w-[25px] h-full
+                                                        tablet:w-[25px] tablet:h-full 
+                                                        desktop:w-[25px] desktop:h-full 
                                                         flex flex-col items-end justify-between ml-auto">
                                             <Image
                                                 src={getBrandLogo(item.product.Brand)}
