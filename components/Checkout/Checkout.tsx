@@ -220,7 +220,7 @@ export default function Checkout() {
     }
 
     return (
-        <div className="flex flex-col p-0 desktop:p-3 items-start 
+        <div className="flex flex-col p-0 desktop:p-5 items-start 
                         mt-10 mx-10
                         desktop:mt-20 desktop:mx-20 relative z-50 bg-white overflow-x-hidden min-h-screen">
             <Button
